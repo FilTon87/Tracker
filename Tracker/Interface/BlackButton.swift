@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class Button: UIButton {
+final class BlackButton: UIButton {
     
     init(title: String) {
         super.init(frame: .zero)

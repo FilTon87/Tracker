@@ -5,12 +5,12 @@
 //  Created by Anton Filipchuk on 05.12.2023.
 //
 
-import Foundation
+import UIKit
 
 struct Tracker {
-    let id: Int
+    let id: UUID
     let trackerName: String
-    let trackerColor: String
+    let trackerColor: UIColor
     let trackerEmoji: String
 //    let расписание: 
 }

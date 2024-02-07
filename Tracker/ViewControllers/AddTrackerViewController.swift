@@ -7,46 +7,44 @@
 
 import UIKit
 
-protocol AddTrackViewControllerDelegate: AnyObject {
+protocol AddTrackerViewControllerDelegate: AnyObject {
     
 }
 
-final class AddTrackViewController: UIViewController {
+final class AddTrackerViewController: UIViewController {
     
     //MARK: - Private property
     private let label = UILabel()
     private let habitButton = BlackButton(title: "Привычка")
     private let eventButton = BlackButton(title: "Нерегулярное событие")
     
-    weak var delegate: AddTrackViewControllerDelegate?
+    weak var delegate: AddTrackerViewControllerDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        makeViewController()
+        setupViewController()
     }
 }
 
 
 //MARK: - Setting Views
-private extension AddTrackViewController {
-    func makeViewController() {
+private extension AddTrackerViewController {
+    func setupViewController() {
         view.backgroundColor = .white
-        makeViewLabel()
+        addViewLabel()
         addSubView()
-        setupLayout()
+        addLayout()
         addTarget()
     }
     
-    func makeViewLabel() {
-        label.font = .systemFont(ofSize: 16, weight: .medium)
-        label.text = "Создание трекера"
+    func addViewLabel() {
+        navigationItem.title = "Создание трекера"
     }
 }
 
 //MARK: - Setting
-private extension AddTrackViewController {
+private extension AddTrackerViewController {
     func addSubView() {
-        view.addSubview(label)
         view.addSubview(habitButton)
         view.addSubview(eventButton)
     }
@@ -58,31 +56,27 @@ private extension AddTrackViewController {
     
     @objc private func selection(_ sender: UIButton) {
         if sender.titleLabel?.text == "Привычка" {
-            let viewController = NewTrackViewController()
+            let viewController = NewTrackerViewController()
             viewController.isHabit = true
             viewController.modalPresentationStyle = .automatic
-            present(viewController, animated: true)
+            present(UINavigationController(rootViewController: viewController), animated: true)
         } else {
-            let viewController = NewTrackViewController()
+            let viewController = NewTrackerViewController()
             viewController.isHabit = false
             viewController.modalPresentationStyle = .automatic
-            present(viewController, animated: true)
+            present(UINavigationController(rootViewController: viewController), animated: true)
         }
     }
 }
 
 //MARK: - Layout
-private extension AddTrackViewController {
-    func setupLayout() {
-        label.translatesAutoresizingMaskIntoConstraints = false
+private extension AddTrackerViewController {
+    func addLayout() {
         habitButton.translatesAutoresizingMaskIntoConstraints = false
         eventButton.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-            label.topAnchor.constraint(equalTo: view.topAnchor, constant: 13),
-            label.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            
-            habitButton.topAnchor.constraint(equalTo: label.bottomAnchor, constant: 295),
+            habitButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -357),
             habitButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             habitButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
             

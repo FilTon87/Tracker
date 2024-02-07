@@ -7,7 +7,11 @@
 
 import UIKit
 
-final class TrackersViewController: UIViewController {
+final class TrackersViewController: UIViewController, AddTrackerViewControllerDelegate {
+    
+    private var categories: [TrackerCategory] = []
+    private var completedTrackers: [TrackerRecord] = []
+//    private var currentDate: Date = UIDatePicker
     
     let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewLayout())
     
@@ -36,9 +40,11 @@ private extension TrackersViewController {
     }
     
     @objc private func switchToCreateViewController() {
-        let viewController = AddTrackViewController()
-        viewController.modalPresentationStyle = .automatic
-        self.present(viewController, animated: true)
+        let viewController = AddTrackerViewController()
+//        viewController.modalPresentationStyle = .automatic
+        viewController.delegate = self
+//        self.present(viewController, animated: true)
+        present(UINavigationController(rootViewController: viewController), animated: true)
     }
     
     private func makeCollectionView() {

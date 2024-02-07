@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class NewTrackTabelViewCell: UITableViewCell {
+final class NewTrackerTabelViewCell: UITableViewCell {
     
     private lazy var cellImage = UIImageView(image: UIImage(named: "Chevron"))
     
@@ -22,16 +22,17 @@ final class NewTrackTabelViewCell: UITableViewCell {
     }
 }
 
-private extension NewTrackTabelViewCell {
+private extension NewTrackerTabelViewCell {
     func setupCell() {
-        makeCell()
+        configCell()
         addSubView()
         setupLayout()
     }
     
-    func makeCell() {
+    func configCell() {
         self.detailTextLabel?.font = .systemFont(ofSize: 17, weight: .regular)
         self.detailTextLabel?.textColor = UIColor(named: "yGray")
+        self.backgroundColor = .yBackground
         
     }
     

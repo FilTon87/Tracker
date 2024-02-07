@@ -16,7 +16,7 @@ final class TextField: UITextField {
     //MARK: - Initializer
     init(placeholder: String) {
         super.init(frame: .zero)
-        setupTextField(placeholder: placeholder)
+        makeTextField(placeholder: placeholder)
     }
     
     @available(*, unavailable)
@@ -38,7 +38,7 @@ final class TextField: UITextField {
     }
     
     //MARK: - Private properties
-    private func setupTextField(placeholder: String) {
+    private func makeTextField(placeholder: String) {
         layer.cornerRadius = 16
         attributedPlaceholder = NSAttributedString(string: placeholder)
         backgroundColor = .yBackground

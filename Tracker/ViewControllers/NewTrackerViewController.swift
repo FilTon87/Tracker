@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class NewTrackViewController: UIViewController {
+final class NewTrackerViewController: UIViewController {
     
     var isHabit: Bool = true
     
@@ -17,37 +17,37 @@ final class NewTrackViewController: UIViewController {
     private let cancelButton = CancelButton()
     private let createButton = CreateButton()
     private let tabelView = UITableView()
+    private var settings: Array<NewTracker> = []
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        makeViewController()
+        setupViewController()
     }
 }
 
 //MARK: - Setting Views
-private extension NewTrackViewController {
-    func makeViewController() {
+private extension NewTrackerViewController {
+    func setupViewController() {
         view.backgroundColor = .white
-        makeViewLabel()
+        addViewLabel()
         addSubView()
-        setupLayout()
+        addLayout()
         addTarget()
-        makeTabelView()
+        addTabelView()
+        configCell()
     }
     
-    func makeViewLabel() {
-        label.font = .systemFont(ofSize: 16)
-        label.text = isHabit ? "Новая привычка" : "Новое нерегулярное событие"
+    func addViewLabel() {
+        navigationItem.title = isHabit ? "Новая привычка" : "Новое нерегулярное событие"
     }
 }
 
 
 //MARK: - Setting
-private extension NewTrackViewController {
+private extension NewTrackerViewController {
     func addSubView() {
         view.addSubview(textField)
-        view.addSubview(label)
         view.addSubview(cancelButton)
         view.addSubview(createButton)
         view.addSubview(tabelView)
@@ -59,24 +59,20 @@ private extension NewTrackViewController {
     }
     
     @objc private func cancel() {
-       dismiss(animated: true)
+        dismiss(animated: true)
     }
 }
 
 
 //MARK: - Layout
-private extension NewTrackViewController {
-    func setupLayout() {
+private extension NewTrackerViewController {
+    func addLayout() {
         textField.translatesAutoresizingMaskIntoConstraints = false
-        label.translatesAutoresizingMaskIntoConstraints = false
         cancelButton.translatesAutoresizingMaskIntoConstraints = false
         createButton.translatesAutoresizingMaskIntoConstraints = false
         tabelView.translatesAutoresizingMaskIntoConstraints = false
         
-        NSLayoutConstraint.activate([
-            label.topAnchor.constraint(equalTo: view.topAnchor, constant: 13),
-            label.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            
+        NSLayoutConstraint.activate([            
             textField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             textField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
             textField.topAnchor.constraint(equalTo: view.topAnchor, constant: 73),
@@ -96,38 +92,71 @@ private extension NewTrackViewController {
 }
 
 
-//MARK: - TabelView Settings 
-extension NewTrackViewController: UITableViewDataSource, UITableViewDelegate {
-    private func makeTabelView() {
+//MARK: - TabelView Settings
+extension NewTrackerViewController: UITableViewDataSource, UITableViewDelegate {
+    private func addTabelView() {
         tabelView.delegate = self
         tabelView.dataSource = self
         tabelView.rowHeight = 75
-        tabelView.register(NewTrackTabelViewCell.self, forCellReuseIdentifier: NewTrackTabelViewCell.reuseIdentifier)
+        tabelView.register(NewTrackerTabelViewCell.self, forCellReuseIdentifier: NewTrackerTabelViewCell.reuseIdentifier)
         tabelView.layer.masksToBounds = true
         tabelView.layer.cornerRadius = 16
         tabelView.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMinXMinYCorner, .layerMaxXMaxYCorner, .layerMaxXMinYCorner]
     }
     
+    private func configCell() {
+        settings.append(
+            NewTracker(
+                name: "Категория",
+                handler: { [weak self] in
+                    guard let self = self else { return }
+                    self.selectСategory()
+                }))
+        if isHabit {
+            settings.append(
+                NewTracker(
+                    name: "Расписание",
+                    handler: { [weak self] in
+                        guard let self = self else { return }
+                        self.selectShedule()
+                    }))
+        }
+    }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 2
+        return settings.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: NewTrackTabelViewCell.reuseIdentifier) as! NewTrackTabelViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: NewTrackerTabelViewCell.reuseIdentifier) as! NewTrackerTabelViewCell
         
-//        if cell == nil {
-//            cell = UITableViewCell(style: UITableViewCell.CellStyle.subtitle,
-//                                   reuseIdentifier: cellID)
-//        }
-        
-//        cell!.backgroundColor = .yBackground
-//        
-//        cell!.textLabel?.text = "Main text"
-//        cell!.detailTextLabel?.text = "some text"
-
+        cell.textLabel?.text = settings[indexPath.row].name
         
         return cell
-
     }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        settings[indexPath.row].handler()
+    }
+    
+}
 
+private extension NewTrackerViewController {
+    
+    func selectСategory() {
+        let categoryViewController = CategoryViewController()
+//        categoryViewController.delegate = self
+        categoryViewController.modalPresentationStyle = .automatic
+        present(UINavigationController(rootViewController: categoryViewController), animated: true)
+    }
+    
+    func selectShedule() {
+        let scheduleViewController = ScheduleViewController()
+//        scheduleViewController.delegate = self
+        scheduleViewController.modalPresentationStyle = .automatic
+        present(UINavigationController(rootViewController: scheduleViewController), animated: true)
+    }
+    
+    
 }
