@@ -9,26 +9,12 @@ import UIKit
 
 extension UIViewController {
     
-    func createLabel() -> UIView {
-        let view = UIView()
-//        view.frame = CGRect(x: 0, y: 0, width: 375, height: 182)
-//        view.backgroundColor = .orange
-//        view.tintColor = .orange
-        
-//        let trackerLabel = UILabel()
-//        trackerLabel.text = "Трекеры"
-//        trackerLabel.textColor = .yBlack
-//        trackerLabel.font = .boldSystemFont(ofSize: 34)
+    func createLabel() {
         self.navigationController?.navigationBar.prefersLargeTitles = true
         navigationItem.title = "Трекеры"
-//        trackerLabel.backgroundColor = .blue
-//        view.addSubview(trackerLabel)
-//
-//        NSLayoutConstraint.activate([
-//            trackerLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -35),
-//            trackerLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 16)
-//        ])
-        
+    }
+    
+    func makeSearchBar() {
         let searchController = UISearchController(searchResultsController: nil)
 //        searchController.searchResultsUpdater = TrackersViewController()
         searchController.obscuresBackgroundDuringPresentation = false
@@ -42,10 +28,7 @@ extension UIViewController {
         
         NSLayoutConstraint.activate([
             searchBar.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
-             //searchBar.topAnchor.constraint(equalTo: trackerLabel.bottomAnchor, constant: 0)
         ])
-        
-        return view
     }
     
     func makeDateButton() -> UIBarButtonItem {
@@ -77,7 +60,6 @@ extension UIViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-//            button.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 6),
             button.widthAnchor.constraint(equalToConstant: 42),
             button.heightAnchor.constraint(equalToConstant: 42)
         ])
