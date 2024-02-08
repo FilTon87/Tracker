@@ -27,7 +27,7 @@ private extension TrackersViewController {
         view.backgroundColor = .white
         
         let addTrackerButton = makeNavButton(
-            imageName: "Add tracker",
+            imageName: "Plus",
             selector: #selector(switchToCreateViewController))
         navigationItem.leftBarButtonItem = addTrackerButton
         
@@ -51,7 +51,8 @@ private extension TrackersViewController {
         view.addSubview(collectionView)
         collectionView.dataSource = self
         collectionView.translatesAutoresizingMaskIntoConstraints = false
-        collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "сell")
+        collectionView.register(TrackerCollectionViewCell.self, forCellWithReuseIdentifier: TrackerCollectionViewCell.cellReuseIdentifier)
+        collectionView.register(TrackerHeaderCollectionView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: TrackerHeaderCollectionView.headerReuseIdentifier)
         
         NSLayoutConstraint.activate([
             collectionView.topAnchor.constraint(equalTo: view.topAnchor, constant: 182),
@@ -75,7 +76,7 @@ extension TrackersViewController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "сell", for: indexPath)
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TrackerCollectionViewCell.cellReuseIdentifier, for: indexPath)
         cell.contentView.backgroundColor = .red
         return cell
     }

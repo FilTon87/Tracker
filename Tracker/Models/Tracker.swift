@@ -12,5 +12,5 @@ struct Tracker {
     let trackerName: String
     let trackerColor: UIColor
     let trackerEmoji: String
-//    let расписание: 
+//    let schedule: 
 }

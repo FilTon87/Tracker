@@ -17,6 +17,8 @@
 		5D49FE2E2B722473000D0FE0 /* CategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D49FE2D2B722473000D0FE0 /* CategoryViewController.swift */; };
 		5D49FE302B7236C0000D0FE0 /* ScheduleTabelViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D49FE2F2B7236C0000D0FE0 /* ScheduleTabelViewCell.swift */; };
 		5D49FE322B72683D000D0FE0 /* WeekDays.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D49FE312B72683D000D0FE0 /* WeekDays.swift */; };
+		5D49FE352B73AAA4000D0FE0 /* TrackerCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D49FE342B73AAA4000D0FE0 /* TrackerCollectionViewCell.swift */; };
+		5D49FE372B750DC5000D0FE0 /* TrackerHeaderCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D49FE362B750DC5000D0FE0 /* TrackerHeaderCollectionView.swift */; };
 		5D5549F42B2447B100136642 /* AddTrackerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D5549F32B2447B100136642 /* AddTrackerViewController.swift */; };
 		5D5549F62B24760700136642 /* NewTrackerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D5549F52B24760700136642 /* NewTrackerViewController.swift */; };
 		5D5549FA2B24988200136642 /* NewTrackerTabelViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D5549F92B24988200136642 /* NewTrackerTabelViewCell.swift */; };
@@ -45,6 +47,8 @@
 		5D49FE2D2B722473000D0FE0 /* CategoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryViewController.swift; sourceTree = "<group>"; };
 		5D49FE2F2B7236C0000D0FE0 /* ScheduleTabelViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleTabelViewCell.swift; sourceTree = "<group>"; };
 		5D49FE312B72683D000D0FE0 /* WeekDays.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeekDays.swift; sourceTree = "<group>"; };
+		5D49FE342B73AAA4000D0FE0 /* TrackerCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerCollectionViewCell.swift; sourceTree = "<group>"; };
+		5D49FE362B750DC5000D0FE0 /* TrackerHeaderCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerHeaderCollectionView.swift; sourceTree = "<group>"; };
 		5D5549F32B2447B100136642 /* AddTrackerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTrackerViewController.swift; sourceTree = "<group>"; };
 		5D5549F52B24760700136642 /* NewTrackerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewTrackerViewController.swift; sourceTree = "<group>"; };
 		5D5549F92B24988200136642 /* NewTrackerTabelViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewTrackerTabelViewCell.swift; sourceTree = "<group>"; };
@@ -100,9 +104,19 @@
 			path = ViewControllers;
 			sourceTree = "<group>";
 		};
+		5D49FE332B738438000D0FE0 /* CollectionViewCell */ = {
+			isa = PBXGroup;
+			children = (
+				5D49FE342B73AAA4000D0FE0 /* TrackerCollectionViewCell.swift */,
+				5D49FE362B750DC5000D0FE0 /* TrackerHeaderCollectionView.swift */,
+			);
+			path = CollectionViewCell;
+			sourceTree = "<group>";
+		};
 		5D9127BC2B2B3343001205D2 /* Interface */ = {
 			isa = PBXGroup;
 			children = (
+				5D49FE332B738438000D0FE0 /* CollectionViewCell */,
 				5D9127BD2B2B3367001205D2 /* TabelViewCell */,
 				5D25102B2B1F0C4300A800DF /* NavBarController.swift */,
 				5DE853D82B175C8D0004750C /* TabBarController.swift */,
@@ -241,12 +255,14 @@
 				5D2510362B1F402D00A800DF /* TrackerRecord.swift in Sources */,
 				5D2510312B1F3EC300A800DF /* Tracker.swift in Sources */,
 				5D5549FA2B24988200136642 /* NewTrackerTabelViewCell.swift in Sources */,
+				5D49FE372B750DC5000D0FE0 /* TrackerHeaderCollectionView.swift in Sources */,
 				5D2510332B1F3F6500A800DF /* TrackerCategory.swift in Sources */,
 				5D5549F62B24760700136642 /* NewTrackerViewController.swift in Sources */,
 				5D49FE2C2B7122A1000D0FE0 /* NewTracker.swift in Sources */,
 				5DE853C02B146F400004750C /* AppDelegate.swift in Sources */,
 				5D49FE2A2B6E32D0000D0FE0 /* ScheduleViewController.swift in Sources */,
 				5D49FE322B72683D000D0FE0 /* WeekDays.swift in Sources */,
+				5D49FE352B73AAA4000D0FE0 /* TrackerCollectionViewCell.swift in Sources */,
 				5DC615B72B2C550A00F86E27 /* CreateButton.swift in Sources */,
 				5D9127BF2B2B4529001205D2 /* CancelButton.swift in Sources */,
 				5D25102C2B1F0C4300A800DF /* NavBarController.swift in Sources */,

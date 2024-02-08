@@ -26,7 +26,7 @@ private extension NewTrackerTabelViewCell {
     func setupCell() {
         configCell()
         addSubView()
-        setupLayout()
+        addLayout()
     }
     
     func configCell() {
@@ -38,10 +38,9 @@ private extension NewTrackerTabelViewCell {
     
     func addSubView() {
         contentView.addSubview(cellImage)
-        
     }
     
-    func setupLayout() {
+    func addLayout() {
         cellImage.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([

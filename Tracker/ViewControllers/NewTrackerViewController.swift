@@ -7,9 +7,14 @@
 
 import UIKit
 
-final class NewTrackerViewController: UIViewController {
+protocol NewTrackerViewControllerDelegate: AnyObject {
+    func cancelTrackerCreation()
+}
+
+final class NewTrackerViewController: UIViewController, ScheduleViewControllerDelegate {
     
     var isHabit: Bool = true
+    weak var delegate: NewTrackerViewControllerDelegate?
     
     //MARK: - Private property
     private let textField = TextField(placeholder: "Введите название трекера")
@@ -54,12 +59,13 @@ private extension NewTrackerViewController {
     }
     
     func addTarget() {
-        cancelButton.addTarget(self, action: #selector(cancel), for: .touchUpInside)
-        createButton.addTarget(self, action: #selector(cancel), for: .touchUpInside)
+        cancelButton.addTarget(self, action: #selector(didTapCancelButton), for: .touchUpInside)
+        createButton.addTarget(self, action: #selector(didTapCancelButton), for: .touchUpInside)
     }
     
-    @objc private func cancel() {
+    @objc func didTapCancelButton() {
         dismiss(animated: true)
+        delegate?.cancelTrackerCreation()   
     }
 }
 
@@ -146,14 +152,13 @@ private extension NewTrackerViewController {
     
     func selectСategory() {
         let categoryViewController = CategoryViewController()
-//        categoryViewController.delegate = self
         categoryViewController.modalPresentationStyle = .automatic
         present(UINavigationController(rootViewController: categoryViewController), animated: true)
     }
     
     func selectShedule() {
         let scheduleViewController = ScheduleViewController()
-//        scheduleViewController.delegate = self
+        scheduleViewController.delegate = self
         scheduleViewController.modalPresentationStyle = .automatic
         present(UINavigationController(rootViewController: scheduleViewController), animated: true)
     }

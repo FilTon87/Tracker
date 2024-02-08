@@ -7,9 +7,15 @@
 
 import UIKit
 
+protocol ScheduleViewControllerDelegate: AnyObject {
+    
+}
+
 final class ScheduleViewController: UIViewController {
     
+    weak var delegate: ScheduleViewControllerDelegate?
     var weekDaysDataSource: Array<WeekDays> = []
+    
     
     //MARK: - Private property
     private let doneButton = BlackButton(title: "Готово")
@@ -18,8 +24,7 @@ final class ScheduleViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupViewController()
-        
+        setupViewController()        
     }
 }
 
@@ -53,7 +58,6 @@ private extension ScheduleViewController {
             tabelView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             tabelView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
             
-            doneButton.topAnchor.constraint(equalTo: tabelView.bottomAnchor, constant: 47),
             doneButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             doneButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
             doneButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -16)
@@ -83,8 +87,6 @@ private extension ScheduleViewController {
     }
 }
     
-    
-    
 extension ScheduleViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return weekDaysDataSource.count
@@ -92,9 +94,11 @@ extension ScheduleViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: ScheduleTabelViewCell.reuseIdentifier) as! ScheduleTabelViewCell
-        
         cell.configCell(with: weekDaysDataSource[indexPath.row])
-        
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
     }
 }

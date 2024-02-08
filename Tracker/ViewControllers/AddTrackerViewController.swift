@@ -58,11 +58,13 @@ private extension AddTrackerViewController {
         if sender.titleLabel?.text == "Привычка" {
             let viewController = NewTrackerViewController()
             viewController.isHabit = true
+            viewController.delegate = self
             viewController.modalPresentationStyle = .automatic
             present(UINavigationController(rootViewController: viewController), animated: true)
         } else {
             let viewController = NewTrackerViewController()
             viewController.isHabit = false
+            viewController.delegate = self
             viewController.modalPresentationStyle = .automatic
             present(UINavigationController(rootViewController: viewController), animated: true)
         }
@@ -87,3 +89,8 @@ private extension AddTrackerViewController {
     }
 }
 
+extension AddTrackerViewController: NewTrackerViewControllerDelegate {
+    func cancelTrackerCreation() {
+        dismiss(animated: true)
+    }
+}

@@ -7,7 +7,15 @@
 
 import UIKit
 
+protocol ScheduleTabelViewCellDelegate: AnyObject {
+    
+    func selectWeekDay(isON: Bool, weekDay: WeekDays)
+    
+}
+
 final class ScheduleTabelViewCell: UITableViewCell {
+    
+    weak var delegate: ScheduleViewControllerDelegate?
     
     private let weekDayLabel = UILabel()
     private let weekDaySwitch = UISwitch()
@@ -33,6 +41,11 @@ private extension ScheduleTabelViewCell {
     func cellProperties() {
         self.backgroundColor = .yBackground
         weekDaySwitch.onTintColor = .yBlue
+        weekDaySwitch.addTarget(self, action: #selector(changeSwitch), for: .valueChanged)
+    }
+    
+    @objc func changeSwitch() {
+        
     }
     
     func addSubView() {
