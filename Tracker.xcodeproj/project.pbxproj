@@ -7,11 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5D06ADFA2B848903007F7E76 /* TrackersPlaceholder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D06ADF92B848903007F7E76 /* TrackersPlaceholder.swift */; };
 		5D25102C2B1F0C4300A800DF /* NavBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D25102B2B1F0C4300A800DF /* NavBarController.swift */; };
 		5D25102E2B1F249500A800DF /* UIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D25102D2B1F249500A800DF /* UIView.swift */; };
 		5D2510312B1F3EC300A800DF /* Tracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D2510302B1F3EC300A800DF /* Tracker.swift */; };
 		5D2510332B1F3F6500A800DF /* TrackerCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D2510322B1F3F6400A800DF /* TrackerCategory.swift */; };
 		5D2510362B1F402D00A800DF /* TrackerRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D2510352B1F402D00A800DF /* TrackerRecord.swift */; };
+		5D4061152B999EF10033DEAA /* GeometricParams.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D4061142B999EF10033DEAA /* GeometricParams.swift */; };
+		5D4061172B99AB850033DEAA /* MokData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D4061162B99AB850033DEAA /* MokData.swift */; };
 		5D49FE2A2B6E32D0000D0FE0 /* ScheduleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D49FE292B6E32D0000D0FE0 /* ScheduleViewController.swift */; };
 		5D49FE2C2B7122A1000D0FE0 /* NewTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D49FE2B2B7122A1000D0FE0 /* NewTracker.swift */; };
 		5D49FE2E2B722473000D0FE0 /* CategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D49FE2D2B722473000D0FE0 /* CategoryViewController.swift */; };
@@ -37,11 +40,14 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		5D06ADF92B848903007F7E76 /* TrackersPlaceholder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackersPlaceholder.swift; sourceTree = "<group>"; };
 		5D25102B2B1F0C4300A800DF /* NavBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavBarController.swift; sourceTree = "<group>"; };
 		5D25102D2B1F249500A800DF /* UIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIView.swift; sourceTree = "<group>"; };
 		5D2510302B1F3EC300A800DF /* Tracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tracker.swift; sourceTree = "<group>"; };
 		5D2510322B1F3F6400A800DF /* TrackerCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerCategory.swift; sourceTree = "<group>"; };
 		5D2510352B1F402D00A800DF /* TrackerRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerRecord.swift; sourceTree = "<group>"; };
+		5D4061142B999EF10033DEAA /* GeometricParams.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeometricParams.swift; sourceTree = "<group>"; };
+		5D4061162B99AB850033DEAA /* MokData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MokData.swift; sourceTree = "<group>"; };
 		5D49FE292B6E32D0000D0FE0 /* ScheduleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleViewController.swift; sourceTree = "<group>"; };
 		5D49FE2B2B7122A1000D0FE0 /* NewTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewTracker.swift; sourceTree = "<group>"; };
 		5D49FE2D2B722473000D0FE0 /* CategoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryViewController.swift; sourceTree = "<group>"; };
@@ -124,6 +130,7 @@
 				5D9127BA2B2B2A82001205D2 /* BlackButton.swift */,
 				5D9127BE2B2B4529001205D2 /* CancelButton.swift */,
 				5DC615B62B2C550A00F86E27 /* CreateButton.swift */,
+				5D06ADF92B848903007F7E76 /* TrackersPlaceholder.swift */,
 			);
 			path = Interface;
 			sourceTree = "<group>";
@@ -174,6 +181,8 @@
 			children = (
 				5DE853D42B1488860004750C /* UIColor.swift */,
 				5D25102D2B1F249500A800DF /* UIView.swift */,
+				5D4061142B999EF10033DEAA /* GeometricParams.swift */,
+				5D4061162B99AB850033DEAA /* MokData.swift */,
 			);
 			path = Helper;
 			sourceTree = "<group>";
@@ -272,7 +281,10 @@
 				5DE853D92B175C8D0004750C /* TabBarController.swift in Sources */,
 				5DE853DB2B175E500004750C /* StatsViewController.swift in Sources */,
 				5DE853C22B146F400004750C /* SceneDelegate.swift in Sources */,
+				5D4061152B999EF10033DEAA /* GeometricParams.swift in Sources */,
+				5D4061172B99AB850033DEAA /* MokData.swift in Sources */,
 				5D9127BB2B2B2A82001205D2 /* BlackButton.swift in Sources */,
+				5D06ADFA2B848903007F7E76 /* TrackersPlaceholder.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

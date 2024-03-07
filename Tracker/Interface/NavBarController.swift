@@ -9,12 +9,12 @@ import UIKit
 
 extension UIViewController {
     
-    func createLabel() {
+    func addLabel() {
         self.navigationController?.navigationBar.prefersLargeTitles = true
         navigationItem.title = "Трекеры"
     }
     
-    func makeSearchBar() {
+    func addSearchBar() {
         let searchController = UISearchController(searchResultsController: nil)
 //        searchController.searchResultsUpdater = TrackersViewController()
         searchController.obscuresBackgroundDuringPresentation = false

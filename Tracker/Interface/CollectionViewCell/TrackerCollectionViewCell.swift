@@ -10,8 +10,9 @@ import UIKit
 final class TrackerCollectionViewCell: UICollectionViewCell {
     
     let colorView = UIView()
-    let trackerEmoji = UIImageView()
-    let trackerLabel = UILabel()
+    let emojiView = UIView()
+    let emojiLabel = UILabel()
+    let trackerNameLabel = UILabel()
     let dayLabel = UILabel()
     let doneTrackerButton = UIButton()
     
@@ -33,31 +34,42 @@ private extension TrackerCollectionViewCell {
     }
     
     func settingElements() {
-        colorView.backgroundColor = .red
+        colorView.layer.cornerRadius = 16
+        colorView.layer.masksToBounds = true
         
-        trackerLabel.textColor = .yWhite
-        trackerLabel.font = .systemFont(ofSize: 12)
-        trackerLabel.numberOfLines = 2
+        emojiView.layer.cornerRadius = 12
+        emojiView.layer.masksToBounds = true
+        emojiView.backgroundColor = .yBackground
+        
+        emojiLabel.font = .systemFont(ofSize: 16)
+        
+        trackerNameLabel.textColor = .yWhite
+        trackerNameLabel.font = .systemFont(ofSize: 12)
+        trackerNameLabel.numberOfLines = 2
         
         dayLabel.textColor = .yBlack
         dayLabel.font = .systemFont(ofSize: 12)
         
         doneTrackerButton.setImage(UIImage(named: "Plus"), for: .normal)
+        doneTrackerButton.layer.cornerRadius = 17
+        doneTrackerButton.layer.masksToBounds = true
         doneTrackerButton.backgroundColor = colorView.backgroundColor
     }
     
     func addSubView() {
         contentView.addSubview(colorView)
-        colorView.addSubview(trackerLabel)
-        colorView.addSubview(trackerEmoji)
+        colorView.addSubview(emojiView)
+        emojiView.addSubview(emojiLabel)
+        colorView.addSubview(trackerNameLabel)
         contentView.addSubview(dayLabel)
         contentView.addSubview(doneTrackerButton)
     }
     
     func addLayout() {
         colorView.translatesAutoresizingMaskIntoConstraints = false
-        trackerEmoji.translatesAutoresizingMaskIntoConstraints = false
-        trackerLabel.translatesAutoresizingMaskIntoConstraints = false
+        emojiLabel.translatesAutoresizingMaskIntoConstraints = false
+        emojiView.translatesAutoresizingMaskIntoConstraints = false
+        trackerNameLabel.translatesAutoresizingMaskIntoConstraints = false
         dayLabel.translatesAutoresizingMaskIntoConstraints = false
         doneTrackerButton.translatesAutoresizingMaskIntoConstraints = false
         
@@ -67,14 +79,17 @@ private extension TrackerCollectionViewCell {
             colorView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             colorView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -58),
             
-            trackerEmoji.heightAnchor.constraint(equalToConstant: 24),
-            trackerEmoji.widthAnchor.constraint(equalToConstant: 24),
-            trackerEmoji.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 12),
-            trackerEmoji.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 12),
+            emojiView.heightAnchor.constraint(equalToConstant: 24),
+            emojiView.widthAnchor.constraint(equalToConstant: 24),
+            emojiView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 12),
+            emojiView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 12),
             
-            trackerLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 12),
-            trackerLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -12),
-            trackerLabel.bottomAnchor.constraint(equalTo: colorView.bottomAnchor, constant: -12),
+            emojiLabel.centerYAnchor.constraint(equalTo: emojiView.centerYAnchor),
+            emojiLabel.centerXAnchor.constraint(equalTo: emojiView.centerXAnchor),
+            
+            trackerNameLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 12),
+            trackerNameLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -12),
+            trackerNameLabel.bottomAnchor.constraint(equalTo: colorView.bottomAnchor, constant: -12),
             
             dayLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 12),
             dayLabel.topAnchor.constraint(equalTo: colorView.bottomAnchor, constant: 16),
@@ -85,6 +100,15 @@ private extension TrackerCollectionViewCell {
             doneTrackerButton.topAnchor.constraint(equalTo: colorView.bottomAnchor, constant: 8),
             doneTrackerButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -12)
         ])
+    }
+}
+
+extension TrackerCollectionViewCell {
+    func fillCell(with model: Track, at indexPath: IndexPath) {
+        colorView.backgroundColor = model.trackerColor
+        trackerNameLabel.text = model.trackerName
+        emojiLabel.text = model.trackerEmoji
+        doneTrackerButton.backgroundColor = model.trackerColor
     }
 }
 

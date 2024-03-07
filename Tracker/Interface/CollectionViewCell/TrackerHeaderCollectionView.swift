@@ -28,7 +28,8 @@ private extension TrackerHeaderCollectionView {
     }
     
     func settingElements() {
-        
+        categoryLabel.textColor = .black
+        categoryLabel.font = .systemFont(ofSize: 19, weight: .bold)
     }
     
     func addSubView() {
@@ -40,8 +41,14 @@ private extension TrackerHeaderCollectionView {
         
         NSLayoutConstraint.activate([
             categoryLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 28),
-            categoryLabel.topAnchor.constraint(equalTo: topAnchor, constant: 206)
+            categoryLabel.topAnchor.constraint(equalTo: topAnchor)
         ])
+    }
+}
+
+extension TrackerHeaderCollectionView {
+    func fillHeader(with model: TrackerCategory) {
+        categoryLabel.text = model.categoryTitle
     }
 }
 
