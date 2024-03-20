@@ -145,7 +145,6 @@ extension NewTrackerViewController: UITableViewDataSource, UITableViewDelegate {
         tableView.deselectRow(at: indexPath, animated: true)
         settings[indexPath.row].handler()
     }
-    
 }
 
 private extension NewTrackerViewController {
@@ -162,6 +161,4 @@ private extension NewTrackerViewController {
         scheduleViewController.modalPresentationStyle = .automatic
         present(UINavigationController(rootViewController: scheduleViewController), animated: true)
     }
-    
-    
 }

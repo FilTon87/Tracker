@@ -10,11 +10,24 @@ import UIKit
 final class TrackersViewController: UIViewController, AddTrackerViewControllerDelegate, UICollectionViewDelegateFlowLayout {
     
     private var categories: [TrackerCategory] = []
+    private var filteredCategories: [TrackerCategory] = []
     private var completedTrackers: [TrackerRecord] = []
-    private let params = GeometricParams(cellCount: 4, leftInset: 16, rightInset: 16, cellSpacing: 9)
     private var selectedDate = Date()
+    
+    private lazy var datePicker: UIDatePicker = {
+        let datePicker = UIDatePicker()
+        datePicker.datePickerMode = .date
+        datePicker.preferredDatePickerStyle = .compact
+        datePicker.locale = Locale(identifier: "ru_RU")
+        datePicker.translatesAutoresizingMaskIntoConstraints = false
+        datePicker.addTarget(self, action: #selector(dateChanged), for: .valueChanged)
+        return datePicker
+    }()
+    
+    private lazy var searchField = UISearchBar()
+    
+    private let params = GeometricParams(cellCount: 4, leftInset: 16, rightInset: 16, cellSpacing: 9)
     private let mokData = MokData.shared
-    private let placeholderView = TrackersPlaceholder(title: <#T##String#>, image: <#T##String#>)
     
     let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
     
@@ -55,11 +68,58 @@ private extension TrackersViewController {
     
     private func setupViewController() {
         view.backgroundColor = .white
-        
         addNavBar()
-        addLabel()
-        addSearchBar()
         addCollectionView()
+    }
+    
+    private func addNavBar() {
+        navigationItem.leftBarButtonItem = addTrackerButton()
+        navigationItem.rightBarButtonItem = addDateButton()
+        navigationController?.navigationBar.prefersLargeTitles = true
+        navigationItem.title = "Трекеры"
+        addSearchField()
+    }
+    
+    private func addDateButton() -> UIBarButtonItem {
+        NSLayoutConstraint.activate([
+            datePicker.widthAnchor.constraint(equalToConstant: 120),
+            datePicker.heightAnchor.constraint(equalToConstant: 34)
+        ])
+        let addDateButton = UIBarButtonItem(customView: datePicker)
+        return addDateButton
+    }
+    
+    private func addTrackerButton() -> UIBarButtonItem {
+        let button = UIButton(type: .system)
+        button.setImage(
+            UIImage(named: "Plus")?.withRenderingMode(.alwaysTemplate),
+            for: .normal)
+        button.tintColor = .yBlack
+        button.addTarget(self, action: #selector(switchToCreateViewController), for: .touchUpInside)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            button.widthAnchor.constraint(equalToConstant: 42),
+            button.heightAnchor.constraint(equalToConstant: 42)
+        ])
+        
+        let addTrackerButton = UIBarButtonItem(customView: button)
+        return addTrackerButton
+    }
+    
+    private func addSearchField() {
+        view.addSubview(searchField)
+        searchField.delegate = self
+        searchField.placeholder = "Поиск"
+        searchField.translatesAutoresizingMaskIntoConstraints = false
+        searchField.searchBarStyle = .minimal
+        
+        NSLayoutConstraint.activate([
+            searchField.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            searchField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            searchField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            searchField.heightAnchor.constraint(equalToConstant: 36)
+        ])
     }
     
     @objc private func switchToCreateViewController() {
@@ -68,29 +128,19 @@ private extension TrackersViewController {
         present(UINavigationController(rootViewController: viewController), animated: true)
     }
     
-    private func addNavBar() {
-        let addTrackerButton = makeNavButton(
-            imageName: "Plus",
-            selector: #selector(switchToCreateViewController))
-        navigationItem.leftBarButtonItem = addTrackerButton
-        
-        let dateButton = makeDateButton()
-        navigationItem.rightBarButtonItem = dateButton
-    }
-    
     private func addCollectionView() {
         view.addSubview(collectionView)
         collectionView.dataSource = self
         collectionView.delegate = self
-
+        
         collectionView.register(TrackerCollectionViewCell.self, forCellWithReuseIdentifier: TrackerCollectionViewCell.cellReuseIdentifier)
         collectionView.register(TrackerHeaderCollectionView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: TrackerHeaderCollectionView.headerReuseIdentifier)
         
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-            collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            collectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: 84),
+            collectionView.topAnchor.constraint(equalTo: searchField.bottomAnchor, constant: 7),
+            collectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
             collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
         ])
@@ -98,16 +148,48 @@ private extension TrackersViewController {
     
     private func reloadData() {
         categories = mokData.testCategories
+        dateChanged()
+    }
+    
+    private func updateFilteredCategories() {
+        let calendar = Calendar.current
+        let selectedWeekDay = calendar.component(.weekday, from: datePicker.date)
+        let searchText = (searchField.text ?? "").lowercased()
+        
+        filteredCategories = categories.compactMap { category in
+            let trackers = category.trackers.filter { tracker in
+                let textCondition = searchText.isEmpty ||
+                tracker.trackerName.lowercased().contains(searchText)
+                let dateCondition = tracker.schedule?.contains { weekDay in
+                    weekDay.rawValue == selectedWeekDay
+                } == true
+                return textCondition && dateCondition
+            }
+            
+            if  trackers.isEmpty {
+                return nil
+            }
+            
+            return TrackerCategory(
+                categoryTitle: category.categoryTitle,
+                trackers: trackers
+            )
+        }
+        collectionView.reloadData()
+    }
+    
+    @objc private func dateChanged() {
+        updateFilteredCategories()
     }
 }
 
 extension TrackersViewController: UICollectionViewDataSource {
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return categories.count
+        return filteredCategories.count
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return categories[section].trackers.count
+        return filteredCategories[section].trackers.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -115,7 +197,7 @@ extension TrackersViewController: UICollectionViewDataSource {
         else {
             preconditionFailure("Failed to cast UICollectionViewCell as TrackerCollectionViewCell")
         }
-        let data = categories[indexPath.section].trackers[indexPath.item]
+        let data = filteredCategories[indexPath.section].trackers[indexPath.item]
         cell.fillCell(with: data, at: indexPath)
         return cell
     }
@@ -125,13 +207,13 @@ extension TrackersViewController: UICollectionViewDataSource {
         else {
             preconditionFailure("Failed to cast UICollectionViewCell as TrackerHeaderCollectionView")
         }
-        header.fillHeader(with: categories[indexPath.section])
+        header.fillHeader(with: filteredCategories[indexPath.section])
         return header
     }
 }
 
-extension TrackersViewController: UISearchResultsUpdating {
-    func updateSearchResults(for searchController: UISearchController) {
-        
+extension TrackersViewController: UISearchBarDelegate {
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        updateFilteredCategories()
     }
 }

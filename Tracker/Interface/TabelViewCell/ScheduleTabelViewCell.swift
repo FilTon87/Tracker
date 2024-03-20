@@ -68,7 +68,7 @@ private extension ScheduleTabelViewCell {
 }
 
 extension ScheduleTabelViewCell {
-    func configCell(with options: WeekDays) {
+    func configCell(with options: Schedule) {
         weekDayLabel.text = options.weekDayName
         weekDaySwitch.isOn = options.weekDayOn
     }

@@ -14,7 +14,7 @@ protocol ScheduleViewControllerDelegate: AnyObject {
 final class ScheduleViewController: UIViewController {
     
     weak var delegate: ScheduleViewControllerDelegate?
-    var weekDaysDataSource: Array<WeekDays> = []
+    var scheduleDataSource: Array<Schedule> = []
     
     
     //MARK: - Private property
@@ -75,26 +75,26 @@ private extension ScheduleViewController {
     }
     
     func configCell() {
-        weekDaysDataSource.append(contentsOf: [
-            WeekDays(weekDayName: "Понедельник", weekDayOn: false),
-            WeekDays(weekDayName: "Вторник", weekDayOn: false),
-            WeekDays(weekDayName: "Среда", weekDayOn: false),
-            WeekDays(weekDayName: "Четверг", weekDayOn: false),
-            WeekDays(weekDayName: "Пятница", weekDayOn: false),
-            WeekDays(weekDayName: "Суббота", weekDayOn: false),
-            WeekDays(weekDayName: "Воскресенье", weekDayOn: false)
+        scheduleDataSource.append(contentsOf: [
+            Schedule(weekDay: .monday, weekDayName: "Понедельник", weekDayOn: false),
+            Schedule(weekDay: .tuesday, weekDayName: "Вторник", weekDayOn: false),
+            Schedule(weekDay: .wednesday, weekDayName: "Среда", weekDayOn: false),
+            Schedule(weekDay: .thursday, weekDayName: "Четверг", weekDayOn: false),
+            Schedule(weekDay: .frieday, weekDayName: "Пятница", weekDayOn: false),
+            Schedule(weekDay: .saturday, weekDayName: "Суббота", weekDayOn: false),
+            Schedule(weekDay: .sunday, weekDayName: "Воскресенье", weekDayOn: false)
         ])
     }
 }
     
 extension ScheduleViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return weekDaysDataSource.count
+        return scheduleDataSource.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: ScheduleTabelViewCell.reuseIdentifier) as! ScheduleTabelViewCell
-        cell.configCell(with: weekDaysDataSource[indexPath.row])
+        cell.configCell(with: scheduleDataSource[indexPath.row])
         return cell
     }
     

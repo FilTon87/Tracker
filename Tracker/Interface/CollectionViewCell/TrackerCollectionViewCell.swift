@@ -51,6 +51,7 @@ private extension TrackerCollectionViewCell {
         dayLabel.font = .systemFont(ofSize: 12)
         
         doneTrackerButton.setImage(UIImage(named: "Plus"), for: .normal)
+        doneTrackerButton.tintColor = .yWhite
         doneTrackerButton.layer.cornerRadius = 17
         doneTrackerButton.layer.masksToBounds = true
         doneTrackerButton.backgroundColor = colorView.backgroundColor
