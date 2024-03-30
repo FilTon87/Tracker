@@ -24,6 +24,8 @@
 		5D5549F62B24760700136642 /* NewTrackerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D5549F52B24760700136642 /* NewTrackerViewController.swift */; };
 		5D5549FA2B24988200136642 /* NewTrackerTabelViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D5549F92B24988200136642 /* NewTrackerTabelViewCell.swift */; };
 		5D7AC0CA2BA9D2BA00D9D41E /* Schedule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D7AC0C92BA9D2BA00D9D41E /* Schedule.swift */; };
+		5D89B5322BB2BD8700EC3B6D /* CategoryTabelViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D89B5312BB2BD8700EC3B6D /* CategoryTabelViewCell.swift */; };
+		5D89B5342BB2C91800EC3B6D /* AddCategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D89B5332BB2C91700EC3B6D /* AddCategoryViewController.swift */; };
 		5D9127B92B2B1E1C001205D2 /* TextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D9127B82B2B1E1C001205D2 /* TextField.swift */; };
 		5D9127BB2B2B2A82001205D2 /* BlackButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D9127BA2B2B2A82001205D2 /* BlackButton.swift */; };
 		5D9127BF2B2B4529001205D2 /* CancelButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D9127BE2B2B4529001205D2 /* CancelButton.swift */; };
@@ -56,6 +58,8 @@
 		5D5549F52B24760700136642 /* NewTrackerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewTrackerViewController.swift; sourceTree = "<group>"; };
 		5D5549F92B24988200136642 /* NewTrackerTabelViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewTrackerTabelViewCell.swift; sourceTree = "<group>"; };
 		5D7AC0C92BA9D2BA00D9D41E /* Schedule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Schedule.swift; sourceTree = "<group>"; };
+		5D89B5312BB2BD8700EC3B6D /* CategoryTabelViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryTabelViewCell.swift; sourceTree = "<group>"; };
+		5D89B5332BB2C91700EC3B6D /* AddCategoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCategoryViewController.swift; sourceTree = "<group>"; };
 		5D9127B82B2B1E1C001205D2 /* TextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextField.swift; sourceTree = "<group>"; };
 		5D9127BA2B2B2A82001205D2 /* BlackButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlackButton.swift; sourceTree = "<group>"; };
 		5D9127BE2B2B4529001205D2 /* CancelButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CancelButton.swift; sourceTree = "<group>"; };
@@ -105,6 +109,7 @@
 				5D5549F52B24760700136642 /* NewTrackerViewController.swift */,
 				5D49FE292B6E32D0000D0FE0 /* ScheduleViewController.swift */,
 				5D49FE2D2B722473000D0FE0 /* CategoryViewController.swift */,
+				5D89B5332BB2C91700EC3B6D /* AddCategoryViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -138,6 +143,7 @@
 			children = (
 				5D5549F92B24988200136642 /* NewTrackerTabelViewCell.swift */,
 				5D49FE2F2B7236C0000D0FE0 /* ScheduleTabelViewCell.swift */,
+				5D89B5312BB2BD8700EC3B6D /* CategoryTabelViewCell.swift */,
 			);
 			path = TabelViewCell;
 			sourceTree = "<group>";
@@ -276,11 +282,13 @@
 				5D49FE2E2B722473000D0FE0 /* CategoryViewController.swift in Sources */,
 				5DE853D92B175C8D0004750C /* TabBarController.swift in Sources */,
 				5DE853DB2B175E500004750C /* StatsViewController.swift in Sources */,
+				5D89B5342BB2C91800EC3B6D /* AddCategoryViewController.swift in Sources */,
 				5DE853C22B146F400004750C /* SceneDelegate.swift in Sources */,
 				5D4061152B999EF10033DEAA /* GeometricParams.swift in Sources */,
 				5D4061172B99AB850033DEAA /* MokData.swift in Sources */,
 				5D9127BB2B2B2A82001205D2 /* BlackButton.swift in Sources */,
 				5D06ADFA2B848903007F7E76 /* TrackersPlaceholder.swift in Sources */,
+				5D89B5322BB2BD8700EC3B6D /* CategoryTabelViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -10,12 +10,14 @@ import UIKit
 final class TrackersPlaceholder: UIView {
     
     private lazy var placeholderLabel: UILabel = {
+        let placeholderLabel = UILabel()
         placeholderLabel.textColor = .yBlack
         placeholderLabel.font = .systemFont(ofSize: 12)
         return placeholderLabel
     }()
     
     private lazy var placeholderImage: UIImageView = {
+        let placeholderImage = UIImageView()
         return placeholderImage
     }()
 
@@ -27,7 +29,6 @@ final class TrackersPlaceholder: UIView {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
 }
 
 private extension TrackersPlaceholder {
@@ -40,7 +41,9 @@ private extension TrackersPlaceholder {
     }
     
     func addPlaceholderLabel(title: String) {
-        placeholderLabel.text = title        
+        placeholderLabel.text = title
+        placeholderLabel.numberOfLines = 2
+        placeholderLabel.textAlignment = .center
     }
     
     func addPlaceholderImage(image: String) {

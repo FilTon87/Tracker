@@ -12,7 +12,7 @@ final class NewTrackerTabelViewCell: UITableViewCell {
     private lazy var cellImage = UIImageView(image: UIImage(named: "Chevron"))
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        super.init(style: .subtitle, reuseIdentifier: reuseIdentifier)
         setupCell()
     }
     
@@ -30,10 +30,10 @@ private extension NewTrackerTabelViewCell {
     }
     
     func configCell() {
+        self.textLabel?.numberOfLines = 2
         self.detailTextLabel?.font = .systemFont(ofSize: 17, weight: .regular)
-        self.detailTextLabel?.textColor = UIColor(named: "yGray")
+        self.detailTextLabel?.textColor = .yGray
         self.backgroundColor = .yBackground
-        
     }
     
     func addSubView() {

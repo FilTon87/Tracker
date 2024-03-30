@@ -29,6 +29,7 @@ final class CreateButton: UIButton {
         layer.cornerRadius = 16
         heightAnchor.constraint(equalToConstant: 60).isActive = true
         widthAnchor.constraint(equalToConstant: 161).isActive = true
+        isEnabled = false
     }
     
 }

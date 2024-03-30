@@ -7,8 +7,8 @@
 
 import UIKit
 
-enum WeekDays: Int, Codable {
-    case monday = 1
+enum WeekDays: Int, CaseIterable {
+    case monday = 2
     case tuesday
     case wednesday
     case thursday
@@ -16,7 +16,19 @@ enum WeekDays: Int, Codable {
     case saturday
     case sunday
     
-    var weekDaysName: String {
+    var longWeekDaysName: String {
+        switch self {
+        case .monday: return "Понедельник"
+        case .tuesday: return "Вторник"
+        case .wednesday: return "Среда"
+        case .thursday: return "Четверг"
+        case .frieday: return "Пятница"
+        case .saturday: return "Суббота"
+        case .sunday: return "Воскресенье"
+        }
+    }
+    
+    var shortWeekDaysName: String {
         switch self {
         case .monday: return "Пн"
         case .tuesday: return "Вт"

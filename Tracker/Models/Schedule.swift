@@ -9,6 +9,5 @@ import Foundation
 
 struct Schedule {
     let weekDay: WeekDays
-    let weekDayName: String
-    let weekDayOn: Bool
+    let isOn: Bool
 }

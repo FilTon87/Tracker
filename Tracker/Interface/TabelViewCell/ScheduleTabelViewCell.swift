@@ -7,18 +7,17 @@
 
 import UIKit
 
-protocol ScheduleTabelViewCellDelegate: AnyObject {
-    
+protocol ScheduleTabelViewCellDelegate: AnyObject {    
     func selectWeekDay(isON: Bool, weekDay: WeekDays)
-    
 }
 
 final class ScheduleTabelViewCell: UITableViewCell {
     
-    weak var delegate: ScheduleViewControllerDelegate?
+    weak var delegate: ScheduleTabelViewCellDelegate?
     
     private let weekDayLabel = UILabel()
     private let weekDaySwitch = UISwitch()
+    private var weekDay: WeekDays?
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -45,7 +44,11 @@ private extension ScheduleTabelViewCell {
     }
     
     @objc func changeSwitch() {
-        
+        guard let weekDay = weekDay else {
+            assertionFailure("No weekDay")
+            return
+        }
+        delegate?.selectWeekDay(isON: weekDaySwitch.isOn, weekDay: weekDay)
     }
     
     func addSubView() {
@@ -68,8 +71,8 @@ private extension ScheduleTabelViewCell {
 }
 
 extension ScheduleTabelViewCell {
-    func configCell(with options: Schedule) {
-        weekDayLabel.text = options.weekDayName
-        weekDaySwitch.isOn = options.weekDayOn
+    func configCell(indexPath: IndexPath) {
+        weekDay = WeekDays.allCases[indexPath.row]
+        weekDayLabel.text = WeekDays.allCases[indexPath.row].longWeekDaysName
     }
 }

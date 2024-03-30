@@ -8,7 +8,7 @@
 import UIKit
 
 protocol AddTrackerViewControllerDelegate: AnyObject {
-    
+    func addTracker(categoryTitle: String, tracker: Track)
 }
 
 final class AddTrackerViewController: UIViewController {
@@ -90,6 +90,11 @@ private extension AddTrackerViewController {
 }
 
 extension AddTrackerViewController: NewTrackerViewControllerDelegate {
+    func createTracker(categoryName: String, track: Track) {
+        delegate?.addTracker(categoryTitle: categoryName, tracker: track)
+        dismiss(animated: true)
+    }
+    
     func cancelTrackerCreation() {
         dismiss(animated: true)
     }

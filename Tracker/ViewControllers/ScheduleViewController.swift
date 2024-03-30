@@ -8,23 +8,23 @@
 import UIKit
 
 protocol ScheduleViewControllerDelegate: AnyObject {
-    
+    func configSchedule(schedule: [Schedule])
 }
 
 final class ScheduleViewController: UIViewController {
     
     weak var delegate: ScheduleViewControllerDelegate?
-    var scheduleDataSource: Array<Schedule> = []
     
     
     //MARK: - Private property
     private let doneButton = BlackButton(title: "Готово")
     private let tabelView = UITableView()
+    private var schedule: [Schedule] = []
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupViewController()        
+        setupViewController()
     }
 }
 
@@ -34,9 +34,8 @@ private extension ScheduleViewController {
         addViewLabel()
         addSubView()
         addLayout()
-//        addTarget()
+        addTarget()
         addTabelView()
-        configCell()
     }
     
     func addViewLabel() {
@@ -64,6 +63,10 @@ private extension ScheduleViewController {
         ])
     }
     
+    func addTarget() {
+        doneButton.addTarget(self, action: #selector(didTapDoneButton), for: .touchUpInside)
+    }
+    
     func addTabelView() {
         tabelView.delegate = self
         tabelView.dataSource = self
@@ -74,31 +77,39 @@ private extension ScheduleViewController {
         tabelView.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMinXMinYCorner, .layerMaxXMaxYCorner, .layerMaxXMinYCorner]
     }
     
-    func configCell() {
-        scheduleDataSource.append(contentsOf: [
-            Schedule(weekDay: .monday, weekDayName: "Понедельник", weekDayOn: false),
-            Schedule(weekDay: .tuesday, weekDayName: "Вторник", weekDayOn: false),
-            Schedule(weekDay: .wednesday, weekDayName: "Среда", weekDayOn: false),
-            Schedule(weekDay: .thursday, weekDayName: "Четверг", weekDayOn: false),
-            Schedule(weekDay: .frieday, weekDayName: "Пятница", weekDayOn: false),
-            Schedule(weekDay: .saturday, weekDayName: "Суббота", weekDayOn: false),
-            Schedule(weekDay: .sunday, weekDayName: "Воскресенье", weekDayOn: false)
-        ])
+    @objc func didTapDoneButton() {
+        schedule = schedule.sorted(by: {$0.weekDay.rawValue < $1.weekDay.rawValue})
+        delegate?.configSchedule(schedule: schedule)
+        dismiss(animated: true)
     }
 }
-    
+
 extension ScheduleViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return scheduleDataSource.count
+        return WeekDays.allCases.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: ScheduleTabelViewCell.reuseIdentifier) as! ScheduleTabelViewCell
-        cell.configCell(with: scheduleDataSource[indexPath.row])
+        cell.delegate = self
+        cell.configCell(indexPath: indexPath)
         return cell
     }
     
     func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
+    }
+}
+
+extension ScheduleViewController: ScheduleTabelViewCellDelegate {
+    func selectWeekDay(isON: Bool, weekDay: WeekDays) {
+        let selectedDay = Schedule(weekDay: weekDay, isOn: isON)
+        if isON {
+            schedule.append(selectedDay)
+        } else {
+            schedule.removeAll { selectedDay in
+                selectedDay.weekDay == weekDay
+            }
+        }
     }
 }

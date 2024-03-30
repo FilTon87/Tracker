@@ -7,12 +7,14 @@
 
 import UIKit
 
-final class TrackersViewController: UIViewController, AddTrackerViewControllerDelegate, UICollectionViewDelegateFlowLayout {
+final class TrackersViewController: UIViewController, UICollectionViewDelegateFlowLayout {
     
     private var categories: [TrackerCategory] = []
     private var filteredCategories: [TrackerCategory] = []
     private var completedTrackers: [TrackerRecord] = []
     private var selectedDate = Date()
+    private let dataPlaceholder = TrackersPlaceholder(title: "Что будем отслеживать?", image: "Start")
+    private let searchPlaceholder = TrackersPlaceholder(title: "Ничего не найдено", image: "Error")
     
     private lazy var datePicker: UIDatePicker = {
         let datePicker = UIDatePicker()
@@ -70,6 +72,7 @@ private extension TrackersViewController {
         view.backgroundColor = .white
         addNavBar()
         addCollectionView()
+        addPlaceholder()
     }
     
     private func addNavBar() {
@@ -122,6 +125,23 @@ private extension TrackersViewController {
         ])
     }
     
+    private func addPlaceholder() {
+        view.addSubview(dataPlaceholder)
+        view.addSubview(searchPlaceholder)
+        
+        dataPlaceholder.translatesAutoresizingMaskIntoConstraints = false
+        searchPlaceholder.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            dataPlaceholder.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
+            dataPlaceholder.centerYAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerYAnchor),
+            
+            searchPlaceholder.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
+            searchPlaceholder.centerYAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerYAnchor),
+            
+        ])
+    }
+    
     @objc private func switchToCreateViewController() {
         let viewController = AddTrackerViewController()
         viewController.delegate = self
@@ -144,6 +164,19 @@ private extension TrackersViewController {
             collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
         ])
+    }
+    
+    private func reloadPlaceholder() {
+        searchPlaceholder.isHidden = true
+        dataPlaceholder.isHidden = true
+        
+        if !categories.isEmpty && filteredCategories.isEmpty {
+            searchPlaceholder.isHidden = false
+        }
+        
+        if categories.isEmpty {
+            dataPlaceholder.isHidden = false
+        }
     }
     
     private func reloadData() {
@@ -176,10 +209,22 @@ private extension TrackersViewController {
             )
         }
         collectionView.reloadData()
+        reloadPlaceholder()
     }
     
     @objc private func dateChanged() {
         updateFilteredCategories()
+    }
+    
+    private func isTrackerCompletedToday(id:UUID) -> Bool {
+        completedTrackers.contains { trackerRecord in
+            compareTrackerRecord(trackerRecord: trackerRecord, id: id)
+        }
+    }
+    
+    private func compareTrackerRecord(trackerRecord: TrackerRecord, id: UUID) -> Bool {
+        let isSameDay = Calendar.current.isDate(trackerRecord.trackerDoneDate, inSameDayAs: datePicker.date)
+        return trackerRecord.trackerID == id && isSameDay
     }
 }
 
@@ -198,7 +243,17 @@ extension TrackersViewController: UICollectionViewDataSource {
             preconditionFailure("Failed to cast UICollectionViewCell as TrackerCollectionViewCell")
         }
         let data = filteredCategories[indexPath.section].trackers[indexPath.item]
-        cell.fillCell(with: data, at: indexPath)
+        cell.delegate = self
+        
+        let isCompletedToday = isTrackerCompletedToday(id: data.id)
+        let completedDays = completedTrackers.filter{$0.trackerID == data.id}.count
+        
+        cell.fillCell(
+            with: data,
+            isCompletedToday: isCompletedToday,
+            completedDays: completedDays,
+            at: indexPath)
+        
         return cell
     }
     
@@ -215,5 +270,31 @@ extension TrackersViewController: UICollectionViewDataSource {
 extension TrackersViewController: UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         updateFilteredCategories()
+    }
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        updateFilteredCategories()
+    }
+}
+
+extension TrackersViewController: TrackerCellDelegate {
+    func completeTracker(id: UUID, indexPath: IndexPath) {
+        let trackerRecord = TrackerRecord(trackerID: id, trackerDoneDate: datePicker.date)
+        completedTrackers.append(trackerRecord)
+        collectionView.reloadItems(at: [indexPath])
+    }
+    
+    func uncompleteTracker(id: UUID, indexPath: IndexPath) {
+        completedTrackers.removeAll { trackerRecord in
+            compareTrackerRecord(trackerRecord: trackerRecord, id: id)
+        }
+        collectionView.reloadItems(at: [indexPath])
+    }
+}
+
+extension TrackersViewController: AddTrackerViewControllerDelegate {
+    func addTracker(categoryTitle: String, tracker: Track) {
+        mokData.testCategories.append(TrackerCategory(categoryTitle: categoryTitle, trackers: [tracker]))
+        reloadData()
     }
 }

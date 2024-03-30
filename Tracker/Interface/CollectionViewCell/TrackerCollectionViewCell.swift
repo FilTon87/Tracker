@@ -7,7 +7,18 @@
 
 import UIKit
 
+protocol TrackerCellDelegate: AnyObject {
+    func completeTracker(id: UUID, indexPath: IndexPath)
+    func uncompleteTracker(id: UUID, indexPath: IndexPath)
+}
+
 final class TrackerCollectionViewCell: UICollectionViewCell {
+    
+    weak var delegate: TrackerCellDelegate?
+    
+    private var isCompletedToday: Bool = false
+    private var trackerId: UUID?
+    private var indexPath: IndexPath?
     
     let colorView = UIView()
     let emojiView = UIView()
@@ -50,11 +61,11 @@ private extension TrackerCollectionViewCell {
         dayLabel.textColor = .yBlack
         dayLabel.font = .systemFont(ofSize: 12)
         
-        doneTrackerButton.setImage(UIImage(named: "Plus"), for: .normal)
         doneTrackerButton.tintColor = .yWhite
         doneTrackerButton.layer.cornerRadius = 17
         doneTrackerButton.layer.masksToBounds = true
         doneTrackerButton.backgroundColor = colorView.backgroundColor
+        doneTrackerButton.addTarget(self, action: #selector(trackerButtonTapped), for: .touchUpInside)
     }
     
     func addSubView() {
@@ -102,14 +113,49 @@ private extension TrackerCollectionViewCell {
             doneTrackerButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -12)
         ])
     }
+    
+    @objc private func trackerButtonTapped() {
+        guard let trackerId = trackerId, let indexPath = indexPath else {
+            assertionFailure("No tracker ID or IndexPath")
+            return
+        }
+        
+        if isCompletedToday {
+            delegate?.uncompleteTracker(id: trackerId, indexPath: indexPath)
+        } else {
+            delegate?.completeTracker(id: trackerId, indexPath: indexPath)
+        }
+        
+    }
 }
 
 extension TrackerCollectionViewCell {
-    func fillCell(with model: Track, at indexPath: IndexPath) {
+    func fillCell(with model: Track, isCompletedToday: Bool, completedDays: Int, at indexPath: IndexPath) {
+        self.isCompletedToday = isCompletedToday
+        self.indexPath = indexPath
+        self.trackerId = model.id
+        configDaysLabel(with: completedDays)
         colorView.backgroundColor = model.trackerColor
         trackerNameLabel.text = model.trackerName
         emojiLabel.text = model.trackerEmoji
         doneTrackerButton.backgroundColor = model.trackerColor
+        
+        let doneButtonImage = isCompletedToday ? UIImage(systemName: "checkmark") : UIImage(systemName: "plus")
+        doneTrackerButton.setImage(doneButtonImage, for: .normal)
+    }
+    
+    private func configDaysLabel(with: Int) {
+        let reminder = with % 100
+        
+        if (11...14).contains(reminder) {
+            dayLabel.text = "\(with) дней"
+        } else {
+            switch reminder % 10 {
+            case 1: dayLabel.text = "\(with) день"
+            case 2...4: dayLabel.text = "\(with) дня"
+            default: dayLabel.text = "\(with) дней"
+            }
+        }
     }
 }
 
