@@ -13,7 +13,8 @@ protocol NewTrackerViewControllerDelegate: AnyObject {
 }
 
 final class NewTrackerViewController: UIViewController {
-    
+   
+    // MARK: - Public Properties
     var isHabit: Bool = true
     weak var delegate: NewTrackerViewControllerDelegate?
     
@@ -30,14 +31,14 @@ final class NewTrackerViewController: UIViewController {
     private var isCategorySelected = false
     private var settings: Array<NewTracker> = []
     
-    
+    // MARK: - View Life Cycles
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViewController()
     }
 }
 
-//MARK: - Setting Views
+//MARK: - View Settings
 private extension NewTrackerViewController {
     func setupViewController() {
         view.backgroundColor = .white
@@ -58,10 +59,12 @@ private extension NewTrackerViewController {
 //MARK: - Setting
 private extension NewTrackerViewController {
     func addSubView() {
-        view.addSubview(textField)
-        view.addSubview(cancelButton)
-        view.addSubview(createButton)
-        view.addSubview(tabelView)
+        [textField,
+        cancelButton,
+        createButton,
+         tabelView].forEach {
+            view.addSubview($0)
+        }
     }
     
     func addTarget() {
@@ -105,10 +108,12 @@ private extension NewTrackerViewController {
 //MARK: - Layout
 private extension NewTrackerViewController {
     func addLayout() {
-        textField.translatesAutoresizingMaskIntoConstraints = false
-        cancelButton.translatesAutoresizingMaskIntoConstraints = false
-        createButton.translatesAutoresizingMaskIntoConstraints = false
-        tabelView.translatesAutoresizingMaskIntoConstraints = false
+        [textField,
+        cancelButton,
+        createButton,
+        tabelView].forEach {
+            $0.translatesAutoresizingMaskIntoConstraints = false
+        }
         
         NSLayoutConstraint.activate([
             textField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),

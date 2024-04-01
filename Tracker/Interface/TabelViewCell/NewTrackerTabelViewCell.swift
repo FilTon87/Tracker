@@ -30,10 +30,10 @@ private extension NewTrackerTabelViewCell {
     }
     
     func configCell() {
-        self.textLabel?.numberOfLines = 2
-        self.detailTextLabel?.font = .systemFont(ofSize: 17, weight: .regular)
-        self.detailTextLabel?.textColor = .yGray
-        self.backgroundColor = .yBackground
+        textLabel?.numberOfLines = 2
+        detailTextLabel?.font = .systemFont(ofSize: 17, weight: .regular)
+        detailTextLabel?.textColor = .yGray
+        backgroundColor = .yBackground
     }
     
     func addSubView() {

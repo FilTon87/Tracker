@@ -20,12 +20,12 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
     private var trackerId: UUID?
     private var indexPath: IndexPath?
     
-    let colorView = UIView()
-    let emojiView = UIView()
-    let emojiLabel = UILabel()
-    let trackerNameLabel = UILabel()
-    let dayLabel = UILabel()
-    let doneTrackerButton = UIButton()
+    private let colorView = UIView()
+    private let emojiView = UIView()
+    private let emojiLabel = UILabel()
+    private let trackerNameLabel = UILabel()
+    private let dayLabel = UILabel()
+    private let doneTrackerButton = UIButton()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -69,21 +69,27 @@ private extension TrackerCollectionViewCell {
     }
     
     func addSubView() {
-        contentView.addSubview(colorView)
+        [colorView,
+        dayLabel,
+        doneTrackerButton].forEach {
+            contentView.addSubview($0)
+        }
+        
         colorView.addSubview(emojiView)
         emojiView.addSubview(emojiLabel)
         colorView.addSubview(trackerNameLabel)
-        contentView.addSubview(dayLabel)
-        contentView.addSubview(doneTrackerButton)
+
     }
     
     func addLayout() {
-        colorView.translatesAutoresizingMaskIntoConstraints = false
-        emojiLabel.translatesAutoresizingMaskIntoConstraints = false
-        emojiView.translatesAutoresizingMaskIntoConstraints = false
-        trackerNameLabel.translatesAutoresizingMaskIntoConstraints = false
-        dayLabel.translatesAutoresizingMaskIntoConstraints = false
-        doneTrackerButton.translatesAutoresizingMaskIntoConstraints = false
+        [colorView,
+         emojiLabel,
+         emojiView,
+         trackerNameLabel,
+         dayLabel,
+         doneTrackerButton].forEach {
+            $0.translatesAutoresizingMaskIntoConstraints = false
+        }
         
         NSLayoutConstraint.activate([
             colorView.topAnchor.constraint(equalTo: contentView.topAnchor),
@@ -133,7 +139,7 @@ extension TrackerCollectionViewCell {
     func fillCell(with model: Track, isCompletedToday: Bool, completedDays: Int, at indexPath: IndexPath) {
         self.isCompletedToday = isCompletedToday
         self.indexPath = indexPath
-        self.trackerId = model.id
+        trackerId = model.id
         configDaysLabel(with: completedDays)
         colorView.backgroundColor = model.trackerColor
         trackerNameLabel.text = model.trackerName

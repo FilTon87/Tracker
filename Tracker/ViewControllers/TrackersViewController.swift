@@ -9,13 +9,19 @@ import UIKit
 
 final class TrackersViewController: UIViewController, UICollectionViewDelegateFlowLayout {
     
+    // MARK: - Public Properties
+    let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
+    
+    // MARK: - Private Properties
     private var categories: [TrackerCategory] = []
     private var filteredCategories: [TrackerCategory] = []
     private var completedTrackers: [TrackerRecord] = []
     private var selectedDate = Date()
+    private lazy var searchField = UISearchBar()
     private let dataPlaceholder = TrackersPlaceholder(title: "Что будем отслеживать?", image: "Start")
     private let searchPlaceholder = TrackersPlaceholder(title: "Ничего не найдено", image: "Error")
-    
+    private let params = GeometricParams(cellCount: 4, leftInset: 16, rightInset: 16, cellSpacing: 9)
+    private let mokData = MokData.shared
     private lazy var datePicker: UIDatePicker = {
         let datePicker = UIDatePicker()
         datePicker.datePickerMode = .date
@@ -26,13 +32,7 @@ final class TrackersViewController: UIViewController, UICollectionViewDelegateFl
         return datePicker
     }()
     
-    private lazy var searchField = UISearchBar()
-    
-    private let params = GeometricParams(cellCount: 4, leftInset: 16, rightInset: 16, cellSpacing: 9)
-    private let mokData = MokData.shared
-    
-    let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
-    
+    // MARK: - View Life Cycles
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViewController()
@@ -70,6 +70,7 @@ private extension TrackersViewController {
     
     private func setupViewController() {
         view.backgroundColor = .white
+        datePicker.date = Date()
         addNavBar()
         addCollectionView()
         addPlaceholder()
@@ -279,9 +280,14 @@ extension TrackersViewController: UISearchBarDelegate {
 
 extension TrackersViewController: TrackerCellDelegate {
     func completeTracker(id: UUID, indexPath: IndexPath) {
-        let trackerRecord = TrackerRecord(trackerID: id, trackerDoneDate: datePicker.date)
-        completedTrackers.append(trackerRecord)
-        collectionView.reloadItems(at: [indexPath])
+        let currentDate = Date()
+        if currentDate > datePicker.date {
+            let trackerRecord = TrackerRecord(trackerID: id, trackerDoneDate: datePicker.date)
+            completedTrackers.append(trackerRecord)
+            collectionView.reloadItems(at: [indexPath])
+        } else {
+            return
+        }
     }
     
     func uncompleteTracker(id: UUID, indexPath: IndexPath) {

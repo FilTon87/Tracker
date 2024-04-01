@@ -38,7 +38,7 @@ private extension ScheduleTabelViewCell {
     }
     
     func cellProperties() {
-        self.backgroundColor = .yBackground
+        backgroundColor = .yBackground
         weekDaySwitch.onTintColor = .yBlue
         weekDaySwitch.addTarget(self, action: #selector(changeSwitch), for: .valueChanged)
     }

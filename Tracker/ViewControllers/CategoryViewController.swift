@@ -13,8 +13,8 @@ protocol CategoryViewControllerDelegate: AnyObject {
 
 final class CategoryViewController: UIViewController {
     
+    // MARK: - Public Properties
     weak var delegate: CategoryViewControllerDelegate?
-    
     
     //MARK: - Private property
     private let addCategoryButton = BlackButton(title: "Добавить категорию")
@@ -22,7 +22,7 @@ final class CategoryViewController: UIViewController {
     private let tabelView = UITableView()
     private var category: [TrackerCategory] = []
     
-    
+    // MARK: - View Life Cycles
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViewController()
@@ -45,15 +45,19 @@ private extension CategoryViewController {
     }
     
     func addSubView() {
-        view.addSubview(placeholder)
-        view.addSubview(tabelView)
-        view.addSubview(addCategoryButton)
+        [placeholder,
+        tabelView,
+        addCategoryButton].forEach {
+            view.addSubview($0)
+        }
     }
     
     func addLayout() {
-        placeholder.translatesAutoresizingMaskIntoConstraints = false
-        tabelView.translatesAutoresizingMaskIntoConstraints = false
-        addCategoryButton.translatesAutoresizingMaskIntoConstraints = false
+        [placeholder,
+        tabelView,
+        addCategoryButton].forEach {
+            $0.translatesAutoresizingMaskIntoConstraints = false
+        }
         
         NSLayoutConstraint.activate([
             placeholder.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),

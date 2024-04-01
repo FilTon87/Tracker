@@ -13,13 +13,16 @@ protocol AddTrackerViewControllerDelegate: AnyObject {
 
 final class AddTrackerViewController: UIViewController {
     
+    // MARK: - Public Properties
+    weak var delegate: AddTrackerViewControllerDelegate?
+    
+    
     //MARK: - Private property
     private let label = UILabel()
     private let habitButton = BlackButton(title: "Привычка")
     private let eventButton = BlackButton(title: "Нерегулярное событие")
     
-    weak var delegate: AddTrackerViewControllerDelegate?
-    
+    // MARK: - View Life Cycles
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViewController()
@@ -27,7 +30,7 @@ final class AddTrackerViewController: UIViewController {
 }
 
 
-//MARK: - Setting Views
+//MARK: - View Settings
 private extension AddTrackerViewController {
     func setupViewController() {
         view.backgroundColor = .white

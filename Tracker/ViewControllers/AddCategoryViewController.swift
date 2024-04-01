@@ -13,12 +13,14 @@ protocol AddCategoryViewControllerDelegate: AnyObject {
 
 final class AddCategoryViewController: UIViewController {
     
+    // MARK: - Public Properties
     weak var delegate: AddCategoryViewControllerDelegate?
     
     //MARK: - Private property
     private let doneButton = BlackButton(title: "Готово")
     private let textField = TextField(placeholder: "Введите название категории")
     
+    // MARK: - View Life Cycles
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViewController()
@@ -77,7 +79,6 @@ private extension AddCategoryViewController {
         delegate?.addCategory(categoryName: categoryName)
         dismiss(animated: true)
     }
-    
 }
 
 extension AddCategoryViewController: UITextFieldDelegate {

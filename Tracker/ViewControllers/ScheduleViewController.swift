@@ -13,6 +13,7 @@ protocol ScheduleViewControllerDelegate: AnyObject {
 
 final class ScheduleViewController: UIViewController {
     
+    // MARK: - Public Properties
     weak var delegate: ScheduleViewControllerDelegate?
     
     
@@ -21,7 +22,7 @@ final class ScheduleViewController: UIViewController {
     private let tabelView = UITableView()
     private var schedule: [Schedule] = []
     
-    
+    // MARK: - View Life Cycles
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViewController()

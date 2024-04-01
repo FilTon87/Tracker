@@ -22,7 +22,7 @@ final class CategoryTabelViewCell: UITableViewCell {
 
 private extension CategoryTabelViewCell {
     func setupCell() {
-        self.backgroundColor = .yBackground
+        backgroundColor = .yBackground
     }
 }
 
