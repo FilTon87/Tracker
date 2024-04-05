@@ -50,6 +50,10 @@ extension TrackerHeaderCollectionView {
     func fillHeader(with model: TrackerCategory) {
         categoryLabel.text = model.categoryTitle
     }
+    
+    func fillHeader(with model: Properties) {
+        categoryLabel.text = model.name
+    }
 }
 
 extension UICollectionReusableView {

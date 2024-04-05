@@ -8,16 +8,14 @@
 import UIKit
 
 final class TrackersViewController: UIViewController, UICollectionViewDelegateFlowLayout {
-    
-    // MARK: - Public Properties
-    let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
-    
+
     // MARK: - Private Properties
     private var categories: [TrackerCategory] = []
     private var filteredCategories: [TrackerCategory] = []
     private var completedTrackers: [TrackerRecord] = []
     private var selectedDate = Date()
     private lazy var searchField = UISearchBar()
+    private let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
     private let dataPlaceholder = TrackersPlaceholder(title: "Что будем отслеживать?", image: "Start")
     private let searchPlaceholder = TrackersPlaceholder(title: "Ничего не найдено", image: "Error")
     private let params = GeometricParams(cellCount: 4, leftInset: 16, rightInset: 16, cellSpacing: 9)
