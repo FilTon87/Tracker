@@ -28,6 +28,7 @@
 		5D89B5342BB2C91800EC3B6D /* AddCategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D89B5332BB2C91700EC3B6D /* AddCategoryViewController.swift */; };
 		5D89B5362BBE871600EC3B6D /* NewTrackerCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D89B5352BBE871600EC3B6D /* NewTrackerCollectionViewCell.swift */; };
 		5D89B53A2BBEC92000EC3B6D /* TrackerProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D89B5392BBEC92000EC3B6D /* TrackerProperties.swift */; };
+		5D89B5622BC1405500EC3B6D /* Tracker.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 5D89B5602BC1405500EC3B6D /* Tracker.xcdatamodeld */; };
 		5D9127B92B2B1E1C001205D2 /* TextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D9127B82B2B1E1C001205D2 /* TextField.swift */; };
 		5D9127BB2B2B2A82001205D2 /* BlackButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D9127BA2B2B2A82001205D2 /* BlackButton.swift */; };
 		5D9127BF2B2B4529001205D2 /* CancelButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D9127BE2B2B4529001205D2 /* CancelButton.swift */; };
@@ -64,6 +65,7 @@
 		5D89B5332BB2C91700EC3B6D /* AddCategoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCategoryViewController.swift; sourceTree = "<group>"; };
 		5D89B5352BBE871600EC3B6D /* NewTrackerCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewTrackerCollectionViewCell.swift; sourceTree = "<group>"; };
 		5D89B5392BBEC92000EC3B6D /* TrackerProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerProperties.swift; sourceTree = "<group>"; };
+		5D89B5612BC1405500EC3B6D /* Tracker.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Tracker.xcdatamodel; sourceTree = "<group>"; };
 		5D9127B82B2B1E1C001205D2 /* TextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextField.swift; sourceTree = "<group>"; };
 		5D9127BA2B2B2A82001205D2 /* BlackButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlackButton.swift; sourceTree = "<group>"; };
 		5D9127BE2B2B4529001205D2 /* CancelButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CancelButton.swift; sourceTree = "<group>"; };
@@ -128,6 +130,14 @@
 			path = CollectionViewCell;
 			sourceTree = "<group>";
 		};
+		5D89B55F2BC1403A00EC3B6D /* CoreData */ = {
+			isa = PBXGroup;
+			children = (
+				5D89B5602BC1405500EC3B6D /* Tracker.xcdatamodeld */,
+			);
+			path = CoreData;
+			sourceTree = "<group>";
+		};
 		5D9127BC2B2B3343001205D2 /* Interface */ = {
 			isa = PBXGroup;
 			children = (
@@ -174,6 +184,7 @@
 			children = (
 				5D49FE282B6E28A5000D0FE0 /* ViewControllers */,
 				5D9127BC2B2B3343001205D2 /* Interface */,
+				5D89B55F2BC1403A00EC3B6D /* CoreData */,
 				5D25102F2B1F3EB200A800DF /* Models */,
 				5DE853D32B1488730004750C /* Helper */,
 				5DE853BF2B146F400004750C /* AppDelegate.swift */,
@@ -290,6 +301,7 @@
 				5D49FE2E2B722473000D0FE0 /* CategoryViewController.swift in Sources */,
 				5DE853D92B175C8D0004750C /* TabBarController.swift in Sources */,
 				5DE853DB2B175E500004750C /* StatsViewController.swift in Sources */,
+				5D89B5622BC1405500EC3B6D /* Tracker.xcdatamodeld in Sources */,
 				5D89B5342BB2C91800EC3B6D /* AddCategoryViewController.swift in Sources */,
 				5DE853C22B146F400004750C /* SceneDelegate.swift in Sources */,
 				5D4061152B999EF10033DEAA /* GeometricParams.swift in Sources */,
@@ -513,6 +525,20 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		5D89B5602BC1405500EC3B6D /* Tracker.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				5D89B5612BC1405500EC3B6D /* Tracker.xcdatamodel */,
+			);
+			currentVersion = 5D89B5612BC1405500EC3B6D /* Tracker.xcdatamodel */;
+			name = Tracker.xcdatamodeld;
+			path = "/Users/antonfilipchuk/Documents/Swift_test/14 спринт/Tracker/Tracker/CoreData/Tracker.xcdatamodeld";
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 5DE853B42B146F400004750C /* Project object */;
 }
