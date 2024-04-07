@@ -297,7 +297,7 @@ extension TrackersViewController: TrackerCellDelegate {
 }
 
 extension TrackersViewController: AddTrackerViewControllerDelegate {
-    func addTracker(categoryTitle: String, tracker: Track) {
+    func addTracker(categoryTitle: String, tracker: Tracker) {
         mokData.testCategories.append(TrackerCategory(categoryTitle: categoryTitle, trackers: [tracker]))
         reloadData()
     }

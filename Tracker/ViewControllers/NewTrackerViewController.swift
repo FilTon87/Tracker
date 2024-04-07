@@ -9,7 +9,7 @@ import UIKit
 
 protocol NewTrackerViewControllerDelegate: AnyObject {
     func cancelTrackerCreation()
-    func createTracker(categoryName: String, track: Track)
+    func createTracker(categoryName: String, track: Tracker)
 }
 
 final class NewTrackerViewController: UIViewController {
@@ -115,7 +115,7 @@ private extension NewTrackerViewController {
         
         selectedSchedule.forEach { schedule.append($0.weekDay.self) }
         
-        let track = Track(
+        let track = Tracker(
             id: UUID(),
             trackerName: trackerName,
             trackerColor: color,

@@ -136,7 +136,7 @@ private extension TrackerCollectionViewCell {
 }
 
 extension TrackerCollectionViewCell {
-    func fillCell(with model: Track, isCompletedToday: Bool, completedDays: Int, at indexPath: IndexPath) {
+    func fillCell(with model: Tracker, isCompletedToday: Bool, completedDays: Int, at indexPath: IndexPath) {
         self.isCompletedToday = isCompletedToday
         self.indexPath = indexPath
         trackerId = model.id

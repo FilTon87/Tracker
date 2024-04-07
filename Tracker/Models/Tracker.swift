@@ -7,7 +7,7 @@
 
 import UIKit
 
-struct Track {
+struct Tracker {
     let id: UUID
     let trackerName: String
     let trackerColor: UIColor
