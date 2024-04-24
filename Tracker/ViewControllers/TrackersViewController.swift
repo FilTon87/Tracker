@@ -20,6 +20,7 @@ final class TrackersViewController: UIViewController, UICollectionViewDelegateFl
     private let searchPlaceholder = TrackersPlaceholder(title: "Ничего не найдено", image: "Error")
     private let params = GeometricParams(cellCount: 4, leftInset: 16, rightInset: 16, cellSpacing: 9)
     private let mokData = MokData.shared
+    private let categoryStore = TrackerCategoryStore.shared
     private lazy var datePicker: UIDatePicker = {
         let datePicker = UIDatePicker()
         datePicker.datePickerMode = .date
@@ -179,7 +180,8 @@ private extension TrackersViewController {
     }
     
     private func reloadData() {
-        categories = mokData.testCategories
+//        categories = mokData.testCategories
+        try! categories = categoryStore.fetchCategory()
         dateChanged()
     }
     
@@ -296,9 +298,9 @@ extension TrackersViewController: TrackerCellDelegate {
     }
 }
 
-extension TrackersViewController: AddTrackerViewControllerDelegate {
-    func addTracker(categoryTitle: String, tracker: Tracker) {
-        mokData.testCategories.append(TrackerCategory(categoryTitle: categoryTitle, trackers: [tracker]))
+extension TrackersViewController: AddTrackerViewControllerDelegate {    
+    func updateTrackers() {
+        try! categories = categoryStore.fetchCategory()
         reloadData()
     }
 }

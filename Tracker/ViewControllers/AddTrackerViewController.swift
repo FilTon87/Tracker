@@ -8,7 +8,7 @@
 import UIKit
 
 protocol AddTrackerViewControllerDelegate: AnyObject {
-    func addTracker(categoryTitle: String, tracker: Tracker)
+    func updateTrackers()
 }
 
 final class AddTrackerViewController: UIViewController {
@@ -60,13 +60,13 @@ private extension AddTrackerViewController {
     @objc private func selection(_ sender: UIButton) {
         if sender.titleLabel?.text == "Привычка" {
             let viewController = NewTrackerViewController()
-            viewController.isHabit = true
+            viewController.createHabit = true
             viewController.delegate = self
             viewController.modalPresentationStyle = .automatic
             present(UINavigationController(rootViewController: viewController), animated: true)
         } else {
             let viewController = NewTrackerViewController()
-            viewController.isHabit = false
+            viewController.createHabit = false
             viewController.delegate = self
             viewController.modalPresentationStyle = .automatic
             present(UINavigationController(rootViewController: viewController), animated: true)
@@ -93,8 +93,8 @@ private extension AddTrackerViewController {
 }
 
 extension AddTrackerViewController: NewTrackerViewControllerDelegate {
-    func createTracker(categoryName: String, track: Tracker) {
-        delegate?.addTracker(categoryTitle: categoryName, tracker: track)
+    func updateTrackers() {
+        delegate?.updateTrackers()
         dismiss(animated: true)
     }
     

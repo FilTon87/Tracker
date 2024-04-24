@@ -21,10 +21,12 @@ final class CategoryViewController: UIViewController {
     private let placeholder = TrackersPlaceholder(title: "Привычки и события можно\nобъединять по смыслу", image: "Start")
     private let tabelView = UITableView()
     private var category: [TrackerCategory] = []
+    private let categoryStore = TrackerCategoryStore.shared
     
     // MARK: - View Life Cycles
     override func viewDidLoad() {
         super.viewDidLoad()
+        category = try! categoryStore.fetchCategory()
         setupViewController()
     }
 }
@@ -35,7 +37,7 @@ private extension CategoryViewController {
         addViewLabel()
         addSubView()
         addLayout()
-        addPlaceholder()
+        checkPlaceholder()
         addTarget()
         addTabelView()
     }
@@ -74,7 +76,7 @@ private extension CategoryViewController {
         ])
     }
     
-    func addPlaceholder() {
+    func checkPlaceholder() {
         if !category.isEmpty {
             tabelView.isHidden = false
             placeholder.isHidden = true
@@ -126,9 +128,9 @@ extension CategoryViewController: UITableViewDataSource, UITableViewDelegate {
 }
 
 extension CategoryViewController: AddCategoryViewControllerDelegate {
-    func addCategory(categoryName: String) {
-        category.append(TrackerCategory(categoryTitle: "\(categoryName)", trackers: []))
+    func reloadCategory() {
+        try! category = categoryStore.fetchCategory()
         tabelView.reloadData()
-        addPlaceholder()
+        checkPlaceholder()
     }
 }

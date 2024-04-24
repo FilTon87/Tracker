@@ -130,8 +130,7 @@ private extension TrackerCollectionViewCell {
             delegate?.uncompleteTracker(id: trackerId, indexPath: indexPath)
         } else {
             delegate?.completeTracker(id: trackerId, indexPath: indexPath)
-        }
-        
+        }   
     }
 }
 

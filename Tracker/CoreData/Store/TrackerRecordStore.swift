@@ -20,3 +20,13 @@ final class TrackerRecordStore {
         self.context = context
     }
 }
+
+extension TrackerRecordStore {
+    func saveTrackerRecord(_ record: TrackerRecord) throws {
+        let newRecord = TrackerRecordCoreData(context: context)
+        newRecord.trackerDoneDate = record.trackerDoneDate
+        newRecord.trackerID = record.trackerID
+        try context.save()
+    }
+    
+}

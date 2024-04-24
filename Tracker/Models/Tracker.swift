@@ -13,4 +13,5 @@ struct Tracker {
     let trackerColor: UIColor
     let trackerEmoji: String
     let schedule: [WeekDays]?
+    let isHabit: Bool
 }

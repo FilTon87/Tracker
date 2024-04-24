@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		5D06ADFA2B848903007F7E76 /* TrackersPlaceholder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D06ADF92B848903007F7E76 /* TrackersPlaceholder.swift */; };
+		5D09EC8A2BD295A20092AF86 /* ConvertSchedule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D09EC892BD295A20092AF86 /* ConvertSchedule.swift */; };
+		5D2122012BC51AB200B35D0F /* UIColorMarhalling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D2122002BC51AB200B35D0F /* UIColorMarhalling.swift */; };
 		5D2510312B1F3EC300A800DF /* Tracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D2510302B1F3EC300A800DF /* Tracker.swift */; };
 		5D2510332B1F3F6500A800DF /* TrackerCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D2510322B1F3F6400A800DF /* TrackerCategory.swift */; };
 		5D2510362B1F402D00A800DF /* TrackerRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D2510352B1F402D00A800DF /* TrackerRecord.swift */; };
@@ -48,6 +50,8 @@
 
 /* Begin PBXFileReference section */
 		5D06ADF92B848903007F7E76 /* TrackersPlaceholder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackersPlaceholder.swift; sourceTree = "<group>"; };
+		5D09EC892BD295A20092AF86 /* ConvertSchedule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConvertSchedule.swift; sourceTree = "<group>"; };
+		5D2122002BC51AB200B35D0F /* UIColorMarhalling.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColorMarhalling.swift; sourceTree = "<group>"; };
 		5D2510302B1F3EC300A800DF /* Tracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tracker.swift; sourceTree = "<group>"; };
 		5D2510322B1F3F6400A800DF /* TrackerCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerCategory.swift; sourceTree = "<group>"; };
 		5D2510352B1F402D00A800DF /* TrackerRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerRecord.swift; sourceTree = "<group>"; };
@@ -220,6 +224,8 @@
 				5D4061142B999EF10033DEAA /* GeometricParams.swift */,
 				5D4061162B99AB850033DEAA /* MokData.swift */,
 				5D89B5392BBEC92000EC3B6D /* TrackerProperties.swift */,
+				5D2122002BC51AB200B35D0F /* UIColorMarhalling.swift */,
+				5D09EC892BD295A20092AF86 /* ConvertSchedule.swift */,
 			);
 			path = Helper;
 			sourceTree = "<group>";
@@ -308,7 +314,9 @@
 				5D5549F62B24760700136642 /* NewTrackerViewController.swift in Sources */,
 				5D49FE2C2B7122A1000D0FE0 /* NewTracker.swift in Sources */,
 				5DE853C02B146F400004750C /* AppDelegate.swift in Sources */,
+				5D2122012BC51AB200B35D0F /* UIColorMarhalling.swift in Sources */,
 				5D49FE2A2B6E32D0000D0FE0 /* ScheduleViewController.swift in Sources */,
+				5D09EC8A2BD295A20092AF86 /* ConvertSchedule.swift in Sources */,
 				5D49FE322B72683D000D0FE0 /* WeekDays.swift in Sources */,
 				5D89B5362BBE871600EC3B6D /* NewTrackerCollectionViewCell.swift in Sources */,
 				5D49FE352B73AAA4000D0FE0 /* TrackerCollectionViewCell.swift in Sources */,

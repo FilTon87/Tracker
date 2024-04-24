@@ -9,13 +9,13 @@ import UIKit
 
 protocol NewTrackerViewControllerDelegate: AnyObject {
     func cancelTrackerCreation()
-    func createTracker(categoryName: String, track: Tracker)
+    func updateTrackers()
 }
 
 final class NewTrackerViewController: UIViewController {
     
     // MARK: - Public Properties
-    var isHabit: Bool = true
+    var createHabit: Bool = true
     weak var delegate: NewTrackerViewControllerDelegate?
     
     //MARK: - Private property
@@ -27,6 +27,7 @@ final class NewTrackerViewController: UIViewController {
     private let createButton = CreateButton()
     private let tabelView = UITableView()
     private let propertiesData = TrackerProperties.shared
+    private let trackerStore = TrackerStore.shared
     
     private var trackerName: String?
     private var trackerEmoji: String?
@@ -65,7 +66,7 @@ private extension NewTrackerViewController {
     }
     
     func addViewLabel() {
-        navigationItem.title = isHabit ? "Новая привычка" : "Новое нерегулярное событие"
+        navigationItem.title = createHabit ? "Новая привычка" : "Новое нерегулярное событие"
     }
 }
 
@@ -88,7 +89,7 @@ private extension NewTrackerViewController {
     }
     
     @objc func didTapCancelButton() {
-        dismiss(animated: true)
+        dismiss(animated: false)
         delegate?.cancelTrackerCreation()
     }
     
@@ -97,6 +98,7 @@ private extension NewTrackerViewController {
             assertionFailure("No categoryTitle")
             return
         }
+        
         guard let trackerName = textField.text else {
             assertionFailure("No trackerName")
             return
@@ -113,17 +115,29 @@ private extension NewTrackerViewController {
         }
         let color = UIColor(named: "\(trackerColor)")!
         
-        selectedSchedule.forEach { schedule.append($0.weekDay.self) }
+        if createHabit {
+            selectedSchedule.forEach { schedule.append($0.weekDay.self)
+            }
+        } else {
+            schedule = WeekDays.allCases.map { $0 }
+        }
         
         let track = Tracker(
             id: UUID(),
             trackerName: trackerName,
             trackerColor: color,
             trackerEmoji: trackerEmoji,
-            schedule: schedule)
+            schedule: schedule,
+            isHabit: createHabit)
         
-        dismiss(animated: true)
-        delegate?.createTracker(categoryName: categoryTitle, track: track)
+        var trackers: [Tracker] =  []
+        trackers.append(track)
+        let category = TrackerCategory(categoryTitle: categoryTitle, trackers: trackers)
+        
+        try! trackerStore.addNewTracker(track, category)
+        
+        dismiss(animated: false)
+        delegate?.updateTrackers()
     }
 }
 
@@ -183,7 +197,7 @@ extension NewTrackerViewController: UITableViewDataSource, UITableViewDelegate {
                     guard let self = self else { return }
                     self.selectСategory()
                 }))
-        if isHabit {
+        if createHabit {
             settings.append(
                 NewTracker(
                     name: "Расписание",
@@ -271,9 +285,14 @@ private extension NewTrackerViewController {
     }
     
     func checkTracker() {
-        if nameSelected && categorySelected && scheduleSelected && emojiSelected && colorSelected {
+        if (createHabit) && (nameSelected && categorySelected && scheduleSelected && emojiSelected && colorSelected) {
             createButton.isEnabled = true
             createButton.backgroundColor = .yBlack
+        } else {
+            if (!createHabit) && (nameSelected && categorySelected && emojiSelected && colorSelected) {
+                createButton.isEnabled = true
+                createButton.backgroundColor = .yBlack
+            }
         }
     }
 }
