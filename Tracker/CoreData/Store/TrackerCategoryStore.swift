@@ -13,7 +13,7 @@ private enum TrackerCategoryStoreError: Error {
     case decodingErrorInvalidCategoryTrackers
 }
 
-final class TrackerCategoryStore {
+final class TrackerCategoryStore: NSObject {
     private let context: NSManagedObjectContext
     static let shared = TrackerCategoryStore()
     
@@ -21,7 +21,7 @@ final class TrackerCategoryStore {
         TrackerStore(context: context)
     }()
     
-    convenience init() {
+    convenience override init() {
         let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
         self.init(context: context)
     }
@@ -32,10 +32,14 @@ final class TrackerCategoryStore {
 }
 
 extension TrackerCategoryStore {
-    func addNewCategory(_ category: TrackerCategory) throws {
+    func addCategory(_ category: TrackerCategory) throws {
         let categoryCoreData = TrackerCategoryCoreData(context: context)
         categoryCoreData.categoryTitle = category.categoryTitle
         try context.save()
+    }
+    
+    func delCategory(_ category: NSManagedObject) throws {
+        
     }
     
     func fetchCategory() throws -> [TrackerCategory] {
@@ -75,5 +79,4 @@ extension TrackerCategoryStore {
         
         if category.count > 0 { return category[0] } else { return nil }
     }
-    
 }

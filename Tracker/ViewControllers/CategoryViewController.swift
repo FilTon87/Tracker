@@ -20,13 +20,21 @@ final class CategoryViewController: UIViewController {
     private let addCategoryButton = BlackButton(title: "Добавить категорию")
     private let placeholder = TrackersPlaceholder(title: "Привычки и события можно\nобъединять по смыслу", image: "Start")
     private let tabelView = UITableView()
-    private var category: [TrackerCategory] = []
-    private let categoryStore = TrackerCategoryStore.shared
+    
+    private lazy var dataProvider: TrackerCategoryProtocol? = {
+        let trackerCategoryStore = TrackerCategoryStore.shared
+        do {
+            try dataProvider = CategoryDataProvider(trackerCategoryStore, delegate: self)
+            return dataProvider
+        } catch {
+            //            showError("Данные недоступны")
+            return nil
+        }
+    }()
     
     // MARK: - View Life Cycles
     override func viewDidLoad() {
         super.viewDidLoad()
-        category = try! categoryStore.fetchCategory()
         setupViewController()
     }
 }
@@ -48,16 +56,16 @@ private extension CategoryViewController {
     
     func addSubView() {
         [placeholder,
-        tabelView,
-        addCategoryButton].forEach {
+         tabelView,
+         addCategoryButton].forEach {
             view.addSubview($0)
         }
     }
     
     func addLayout() {
         [placeholder,
-        tabelView,
-        addCategoryButton].forEach {
+         tabelView,
+         addCategoryButton].forEach {
             $0.translatesAutoresizingMaskIntoConstraints = false
         }
         
@@ -77,7 +85,7 @@ private extension CategoryViewController {
     }
     
     func checkPlaceholder() {
-        if !category.isEmpty {
+        if dataProvider?.numbersOfRowsInSection(0) != 0 {
             tabelView.isHidden = false
             placeholder.isHidden = true
         } else {
@@ -105,32 +113,42 @@ private extension CategoryViewController {
         viewController.delegate = self
         present(UINavigationController(rootViewController: viewController), animated: true)
     }
-    
 }
 
 extension CategoryViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return category.count
+        return dataProvider?.numbersOfRowsInSection(section) ?? 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let record = dataProvider?.object(at: indexPath) else { return UITableViewCell() }
         let cell = tableView.dequeueReusableCell(withIdentifier: CategoryTabelViewCell.reuseIdentifier) as! CategoryTabelViewCell
- //       cell.delegate = self
-        cell.textLabel?.text = category[indexPath.row].categoryTitle
+        cell.textLabel?.text = record.categoryTitle
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let selectedCategory = category[indexPath.row].categoryTitle
+        let record  = dataProvider?.object(at: indexPath)
+        guard let selectedCategory = record?.categoryTitle else { return }
         delegate?.configCategory(selectedCategory: selectedCategory)
         dismiss(animated: true)
     }
 }
 
 extension CategoryViewController: AddCategoryViewControllerDelegate {
-    func reloadCategory() {
-        try! category = categoryStore.fetchCategory()
-        tabelView.reloadData()
+    func addCategory(_ newCategory: TrackerCategory) {
+        try? dataProvider?.addCategory(newCategory)
         checkPlaceholder()
+    }
+}
+
+extension CategoryViewController: DataProviderDelegate {
+    func update(_ update: CategoryUpdate) {
+        tabelView.performBatchUpdates {
+            let insertIndexPath = update.insertedIndexes.map { IndexPath(item: $0, section: 0) }
+            let deletedIndexPath = update.deleteIndexes.map { IndexPath(item: $0, section: 0) }
+            tabelView.insertRows(at: insertIndexPath, with: .automatic)
+            tabelView.deleteRows(at: deletedIndexPath, with: .fade)
+        }
     }
 }

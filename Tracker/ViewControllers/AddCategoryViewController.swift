@@ -8,8 +8,7 @@
 import UIKit
 
 protocol AddCategoryViewControllerDelegate: AnyObject {
-//    func addCategory(categoryName: String)
-    func reloadCategory()
+    func addCategory(_ newCategory: TrackerCategory)
 }
 
 final class AddCategoryViewController: UIViewController {
@@ -79,8 +78,7 @@ private extension AddCategoryViewController {
             return
         }
         let newCategory = TrackerCategory(categoryTitle: categoryName, trackers: [])
-        try! categoryStore.addNewCategory(newCategory)
-        delegate?.reloadCategory()
+        delegate?.addCategory(newCategory)
         dismiss(animated: true)
     }
 }
