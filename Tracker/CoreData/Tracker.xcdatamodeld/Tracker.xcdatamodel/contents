@@ -15,6 +15,6 @@
     </entity>
     <entity name="TrackerRecordCoreData" representedClassName="TrackerRecordCoreData" syncable="YES" codeGenerationType="class">
         <attribute name="trackerDoneDate" attributeType="Date" usesScalarValueType="NO"/>
-        <attribute name="trackerID" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="trackerID" attributeType="UUID" usesScalarValueType="NO"/>
     </entity>
 </model>

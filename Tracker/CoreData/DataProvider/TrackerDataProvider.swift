@@ -8,14 +8,11 @@
 import UIKit
 import CoreData
 
-protocol TrackerDataProviderDelegate: AnyObject {
-    
-}
+protocol TrackerDataProviderDelegate: AnyObject { }
 
 protocol TrackerProtocol {
-    
+    func addTracker(_ tracker: Tracker, _ category: String) throws
 }
-
 
 final class TrackerDataProvider: NSObject {
     
@@ -50,10 +47,10 @@ final class TrackerDataProvider: NSObject {
 }
 
 extension TrackerDataProvider: TrackerProtocol {
-    
+    func addTracker(_ tracker: Tracker, _ category: String) throws {
+        try? dataStore.addNewTracker(tracker, category)
+    }
 }
 
 
-extension TrackerDataProvider: NSFetchedResultsControllerDelegate {
-    
-}
+extension TrackerDataProvider: NSFetchedResultsControllerDelegate { }

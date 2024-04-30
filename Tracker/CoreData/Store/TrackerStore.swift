@@ -32,9 +32,9 @@ final class TrackerStore {
 }
 
 extension TrackerStore {
-    func addNewTracker(_ tracker: Tracker,_ category: TrackerCategory) throws {
+    func addNewTracker(_ tracker: Tracker,_ category: String) throws {
         let trackerCoreData = TrackerCoreData(context: context)
-        let trackerCategory = categoryStore.fetchCategoryName(category.categoryTitle)
+        let trackerCategory = categoryStore.fetchCategoryName(category)
         
         trackerCoreData.id = tracker.id
         trackerCoreData.trackerName = tracker.trackerName

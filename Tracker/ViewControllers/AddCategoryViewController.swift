@@ -86,7 +86,11 @@ private extension AddCategoryViewController {
 extension AddCategoryViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
-        if let categoryName = textField.text, !categoryName.isEmpty {
+        return true
+    }
+    
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        if let categoryName = textField.text, !categoryName.isEmpty, categoryName != " "  {
             doneButton.isEnabled = true
             doneButton.backgroundColor = .yBlack
         } else {

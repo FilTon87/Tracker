@@ -23,7 +23,7 @@ protocol TrackerCategoryProtocol {
     func object(at indexPath: IndexPath) -> TrackerCategory?
     func addCategory(_ category: TrackerCategory) throws
     func delCategory(at indexPath: IndexPath) throws
-//    func fetchCategory() throws
+    func fetchCategory() -> [TrackerCategory]
 }
 
 final class CategoryDataProvider: NSObject {
@@ -81,9 +81,15 @@ extension CategoryDataProvider: TrackerCategoryProtocol {
         try? dataStore.delCategory(category)
     }
     
-//    func fetchCategory() throws {
-//        try? dataStore.fetchCategory()
-//    }
+    func fetchCategory() -> [TrackerCategory] {
+        do {
+            let categories = try dataStore.fetchCategory()
+            return categories
+        } catch {
+            assertionFailure("No tracker categories")
+            return []
+        }
+    }
 }
 
 extension CategoryDataProvider: NSFetchedResultsControllerDelegate {

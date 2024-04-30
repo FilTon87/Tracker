@@ -20,7 +20,7 @@ final class TrackersViewController: UIViewController, UICollectionViewDelegateFl
     private let searchPlaceholder = TrackersPlaceholder(title: "Ничего не найдено", image: "Error")
     private let params = GeometricParams(cellCount: 4, leftInset: 16, rightInset: 16, cellSpacing: 9)
     private let mokData = MokData.shared
-    private let categoryStore = TrackerCategoryStore.shared
+
     private lazy var datePicker: UIDatePicker = {
         let datePicker = UIDatePicker()
         datePicker.datePickerMode = .date
@@ -29,6 +29,28 @@ final class TrackersViewController: UIViewController, UICollectionViewDelegateFl
         datePicker.translatesAutoresizingMaskIntoConstraints = false
         datePicker.addTarget(self, action: #selector(dateChanged), for: .valueChanged)
         return datePicker
+    }()
+    
+    private lazy var categoryDataProvider: TrackerCategoryProtocol? = {
+        let trackerCategoryStore = TrackerCategoryStore.shared
+        do {
+            try categoryDataProvider = CategoryDataProvider(trackerCategoryStore, delegate: self)
+            return categoryDataProvider
+        } catch {
+            //            showError("Данные недоступны")
+            return nil
+        }
+    }()
+
+    private lazy var recordDataProvider: RecordProtocol? = {
+        let trackerRecordStore = TrackerRecordStore.shared
+        do {
+            try recordDataProvider = RecordDataProvider(trackerRecordStore, delegate: self)
+            return recordDataProvider
+        } catch {
+            //            showError("Данные недоступны")
+            return nil
+        }
     }()
     
     // MARK: - View Life Cycles
@@ -138,7 +160,6 @@ private extension TrackersViewController {
             
             searchPlaceholder.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
             searchPlaceholder.centerYAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerYAnchor),
-            
         ])
     }
     
@@ -180,8 +201,7 @@ private extension TrackersViewController {
     }
     
     private func reloadData() {
-//        categories = mokData.testCategories
-        try! categories = categoryStore.fetchCategory()
+        categories = categoryDataProvider?.fetchCategory() ?? []
         dateChanged()
     }
     
@@ -218,14 +238,8 @@ private extension TrackersViewController {
     }
     
     private func isTrackerCompletedToday(id:UUID) -> Bool {
-        completedTrackers.contains { trackerRecord in
-            compareTrackerRecord(trackerRecord: trackerRecord, id: id)
-        }
-    }
-    
-    private func compareTrackerRecord(trackerRecord: TrackerRecord, id: UUID) -> Bool {
-        let isSameDay = Calendar.current.isDate(trackerRecord.trackerDoneDate, inSameDayAs: datePicker.date)
-        return trackerRecord.trackerID == id && isSameDay
+        let isSameDay = datePicker.date
+        return recordDataProvider?.isTrackerCompletedToday(id, isSameDay) ?? false
     }
 }
 
@@ -247,12 +261,12 @@ extension TrackersViewController: UICollectionViewDataSource {
         cell.delegate = self
         
         let isCompletedToday = isTrackerCompletedToday(id: data.id)
-        let completedDays = completedTrackers.filter{$0.trackerID == data.id}.count
+        let completedDays = try? recordDataProvider?.fetchTrackerRecord().filter { $0.trackerID == data.id }.count
         
         cell.fillCell(
             with: data,
             isCompletedToday: isCompletedToday,
-            completedDays: completedDays,
+            completedDays: completedDays!,
             at: indexPath)
         
         return cell
@@ -283,7 +297,7 @@ extension TrackersViewController: TrackerCellDelegate {
         let currentDate = Date()
         if currentDate > datePicker.date {
             let trackerRecord = TrackerRecord(trackerID: id, trackerDoneDate: datePicker.date)
-            completedTrackers.append(trackerRecord)
+            try? recordDataProvider?.addRecord(trackerRecord)
             collectionView.reloadItems(at: [indexPath])
         } else {
             return
@@ -291,16 +305,32 @@ extension TrackersViewController: TrackerCellDelegate {
     }
     
     func uncompleteTracker(id: UUID, indexPath: IndexPath) {
-        completedTrackers.removeAll { trackerRecord in
-            compareTrackerRecord(trackerRecord: trackerRecord, id: id)
-        }
+        let delRecord = TrackerRecord(trackerID: id, trackerDoneDate: datePicker.date)
+        try! recordDataProvider?.delRecord(delRecord)
         collectionView.reloadItems(at: [indexPath])
     }
 }
 
 extension TrackersViewController: AddTrackerViewControllerDelegate {    
     func updateTrackers() {
-        try! categories = categoryStore.fetchCategory()
         reloadData()
+    }
+}
+
+extension TrackersViewController: DataProviderDelegate {
+    func update(_ update: CategoryUpdate) { }
+}
+
+extension TrackersViewController: RecordDataProviderDelegate {
+    func update(_ update: RecordUpdate) {
+        collectionView.performBatchUpdates {
+            
+            let insertIndexPath = update.insertedIndexes.map { IndexPath(item: $0, section: 0) }
+            let deletedIndexPath = update.deleteIndexes.map { IndexPath(item: $0, section: 0) }
+            collectionView.insertItems(at: insertIndexPath)
+            collectionView.deleteItems(at: deletedIndexPath)
+//            collectionView.insertRows(at: insertIndexPath, with: .fade)
+//            collectionView.deleteRows(at: deletedIndexPath, with: .fade)
+        }
     }
 }

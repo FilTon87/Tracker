@@ -43,6 +43,17 @@ final class NewTrackerViewController: UIViewController {
     private var schedule: [WeekDays] = []
     private var settings: Array<NewTracker> = []
     
+    private lazy var dataProvider: TrackerProtocol? = {
+        let trackerStore = TrackerStore.shared
+        do {
+            try dataProvider = TrackerDataProvider(trackerStore, delegate: self)
+            return dataProvider
+        } catch {
+            //            showError("Данные недоступны")
+            return nil
+        }
+    }()
+    
     
     // MARK: - View Life Cycles
     override func viewDidLoad() {
@@ -130,11 +141,12 @@ private extension NewTrackerViewController {
             schedule: schedule,
             isHabit: createHabit)
         
-        var trackers: [Tracker] =  []
-        trackers.append(track)
-        let category = TrackerCategory(categoryTitle: categoryTitle, trackers: trackers)
+//        var trackers: [Tracker] =  []
+//        trackers.append(track)
+//        let category = TrackerCategory(categoryTitle: categoryTitle, trackers: trackers)
         
-        try! trackerStore.addNewTracker(track, category)
+//        try! trackerStore.addNewTracker(track, category)
+        try? dataProvider?.addTracker(track, categoryTitle)
         
         dismiss(animated: false)
         delegate?.updateTrackers()
@@ -401,4 +413,8 @@ extension NewTrackerViewController: UICollectionViewDelegate {
             colorSelected = true
         }
     }
+}
+
+extension NewTrackerViewController: TrackerDataProviderDelegate {
+
 }
