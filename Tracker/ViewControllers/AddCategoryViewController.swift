@@ -8,7 +8,7 @@
 import UIKit
 
 protocol AddCategoryViewControllerDelegate: AnyObject {
-    func addCategory(categoryName: String)
+    func addCategory(_ newCategory: TrackerCategory)
 }
 
 final class AddCategoryViewController: UIViewController {
@@ -19,6 +19,7 @@ final class AddCategoryViewController: UIViewController {
     //MARK: - Private property
     private let doneButton = BlackButton(title: "Готово")
     private let textField = TextField(placeholder: "Введите название категории")
+    private let categoryStore = TrackerCategoryStore.shared
     
     // MARK: - View Life Cycles
     override func viewDidLoad() {
@@ -76,7 +77,8 @@ private extension AddCategoryViewController {
             assertionFailure("No text in textField")
             return
         }
-        delegate?.addCategory(categoryName: categoryName)
+        let newCategory = TrackerCategory(categoryTitle: categoryName, trackers: [])
+        delegate?.addCategory(newCategory)
         dismiss(animated: true)
     }
 }
@@ -84,7 +86,11 @@ private extension AddCategoryViewController {
 extension AddCategoryViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
-        if let categoryName = textField.text, !categoryName.isEmpty {
+        return true
+    }
+    
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        if let categoryName = textField.text, !categoryName.isEmpty, categoryName != " "  {
             doneButton.isEnabled = true
             doneButton.backgroundColor = .yBlack
         } else {
