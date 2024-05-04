@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		5D06ADFA2B848903007F7E76 /* TrackersPlaceholder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D06ADF92B848903007F7E76 /* TrackersPlaceholder.swift */; };
 		5D09EC8A2BD295A20092AF86 /* ConvertSchedule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D09EC892BD295A20092AF86 /* ConvertSchedule.swift */; };
+		5D2110582BE4FAD1000CA701 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D2110572BE4FAD1000CA701 /* OnboardingView.swift */; };
+		5D21105A2BE50349000CA701 /* OnboardingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D2110592BE50349000CA701 /* OnboardingViewController.swift */; };
 		5D2122012BC51AB200B35D0F /* UIColorMarhalling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D2122002BC51AB200B35D0F /* UIColorMarhalling.swift */; };
 		5D2510312B1F3EC300A800DF /* Tracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D2510302B1F3EC300A800DF /* Tracker.swift */; };
 		5D2510332B1F3F6500A800DF /* TrackerCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D2510322B1F3F6400A800DF /* TrackerCategory.swift */; };
@@ -54,6 +56,8 @@
 /* Begin PBXFileReference section */
 		5D06ADF92B848903007F7E76 /* TrackersPlaceholder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackersPlaceholder.swift; sourceTree = "<group>"; };
 		5D09EC892BD295A20092AF86 /* ConvertSchedule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConvertSchedule.swift; sourceTree = "<group>"; };
+		5D2110572BE4FAD1000CA701 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
+		5D2110592BE50349000CA701 /* OnboardingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewController.swift; sourceTree = "<group>"; };
 		5D2122002BC51AB200B35D0F /* UIColorMarhalling.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColorMarhalling.swift; sourceTree = "<group>"; };
 		5D2510302B1F3EC300A800DF /* Tracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tracker.swift; sourceTree = "<group>"; };
 		5D2510322B1F3F6400A800DF /* TrackerCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerCategory.swift; sourceTree = "<group>"; };
@@ -135,6 +139,7 @@
 		5D49FE282B6E28A5000D0FE0 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				5D2110592BE50349000CA701 /* OnboardingViewController.swift */,
 				5DE853D62B14D3C40004750C /* TrackersViewController.swift */,
 				5DE853DA2B175E500004750C /* StatsViewController.swift */,
 				5D5549F32B2447B100136642 /* AddTrackerViewController.swift */,
@@ -187,6 +192,7 @@
 				5D9127BE2B2B4529001205D2 /* CancelButton.swift */,
 				5DC615B62B2C550A00F86E27 /* CreateButton.swift */,
 				5D06ADF92B848903007F7E76 /* TrackersPlaceholder.swift */,
+				5D2110572BE4FAD1000CA701 /* OnboardingView.swift */,
 			);
 			path = Interface;
 			sourceTree = "<group>";
@@ -324,6 +330,7 @@
 				5D54B2332BC2DDFB0073AC20 /* TrackerCategoryStore.swift in Sources */,
 				5D9127B92B2B1E1C001205D2 /* TextField.swift in Sources */,
 				5D2510362B1F402D00A800DF /* TrackerRecord.swift in Sources */,
+				5D2110582BE4FAD1000CA701 /* OnboardingView.swift in Sources */,
 				5D2510312B1F3EC300A800DF /* Tracker.swift in Sources */,
 				5D5549FA2B24988200136642 /* NewTrackerTabelViewCell.swift in Sources */,
 				5D49FE372B750DC5000D0FE0 /* TrackerHeaderCollectionView.swift in Sources */,
@@ -341,6 +348,7 @@
 				5DC615B72B2C550A00F86E27 /* CreateButton.swift in Sources */,
 				5D9127BF2B2B4529001205D2 /* CancelButton.swift in Sources */,
 				5D33AD4B2BDCEBFF00C175F9 /* RecordDataProvider.swift in Sources */,
+				5D21105A2BE50349000CA701 /* OnboardingViewController.swift in Sources */,
 				5D5549F42B2447B100136642 /* AddTrackerViewController.swift in Sources */,
 				5D49FE302B7236C0000D0FE0 /* ScheduleTabelViewCell.swift in Sources */,
 				5D49FE2E2B722473000D0FE0 /* CategoryViewController.swift in Sources */,
