@@ -23,6 +23,7 @@ final class OnboardingViewController: UIPageViewController {
         pc.translatesAutoresizingMaskIntoConstraints = false
         return pc
     }()
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -36,7 +37,7 @@ final class OnboardingViewController: UIPageViewController {
 private extension OnboardingViewController {
     func setup() {
         if let first = pages.first {
-            setViewControllers([first], direction: .forward, animated: false)
+            setViewControllers([first], direction: .forward, animated: true)
         }
     }
     

@@ -24,6 +24,8 @@ final class OnboardingView: UIViewController {
     
     private lazy var onboardingButton = BlackButton(title: "Вот это технологии!")
     
+    private let defaults = UserDefaults.standard
+    
     init(_ image: String,_ text: String) {
         super.init(nibName: nil, bundle: nil)
         setupOnboarding(image, text)
@@ -85,6 +87,7 @@ private extension OnboardingView {
     }
     
     @objc func didTapButton() {
+        defaults.setValue(true, forKey: "isSecondStart")
         let viewController = TabBarController()
         viewController.modalPresentationStyle = .fullScreen
         present(viewController, animated: true)

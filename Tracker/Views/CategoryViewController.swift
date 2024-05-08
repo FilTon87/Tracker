@@ -15,24 +15,20 @@ final class CategoryViewController: UIViewController {
     
     // MARK: - Public Properties
     weak var delegate: CategoryViewControllerDelegate?
+    var viewModel = CategoryViewModel()
     
     //MARK: - Private property
     private let addCategoryButton = BlackButton(title: "Добавить категорию")
     private let placeholder = TrackersPlaceholder(title: "Привычки и события можно\nобъединять по смыслу", image: "Start")
     private let tabelView = UITableView()
-    
-    private lazy var dataProvider: TrackerCategoryProtocol? = {
-        let trackerCategoryStore = TrackerCategoryStore.shared
-        do {
-            try dataProvider = CategoryDataProvider(trackerCategoryStore, delegate: self)
-            return dataProvider
-        } catch {
-            //            showError("Данные недоступны")
-            return nil
-        }
-    }()
+
     
     // MARK: - View Life Cycles
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        viewModel.getCategories()
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViewController()
@@ -45,9 +41,9 @@ private extension CategoryViewController {
         addViewLabel()
         addSubView()
         addLayout()
-        checkPlaceholder()
         addTarget()
         addTabelView()
+        bindViewModel()
     }
     
     func addViewLabel() {
@@ -84,14 +80,21 @@ private extension CategoryViewController {
         ])
     }
     
-    func checkPlaceholder() {
-        if dataProvider?.numbersOfRowsInSection(0) != 0 {
-            tabelView.isHidden = false
-            placeholder.isHidden = true
-        } else {
-            tabelView.isHidden = true
-            placeholder.isHidden = false
-        }
+    func bindViewModel() {
+        viewModel.isData.bind { [weak self] isData in
+            guard let self, let isData else { return }
+            isData ? hidePlaceholder() : showPlaceholder()
+        }   
+    }
+    
+    func showPlaceholder() {
+        tabelView.isHidden = true
+        placeholder.isHidden = false
+    }
+    
+    func hidePlaceholder() {
+        tabelView.isHidden = false
+        placeholder.isHidden = true
     }
     
     func addTarget() {
@@ -117,19 +120,20 @@ private extension CategoryViewController {
 
 extension CategoryViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return dataProvider?.numbersOfRowsInSection(section) ?? 0
+        viewModel.numbersOfRowsInSection(section)
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let record = dataProvider?.object(at: indexPath) else { return UITableViewCell() }
+        guard let record = viewModel.object(at: indexPath) else { return UITableViewCell() }
         let cell = tableView.dequeueReusableCell(withIdentifier: CategoryTabelViewCell.reuseIdentifier) as! CategoryTabelViewCell
         cell.textLabel?.text = record.categoryTitle
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let record  = dataProvider?.object(at: indexPath)
+        let record  = viewModel.object(at: indexPath)
         guard let selectedCategory = record?.categoryTitle else { return }
+        tableView.cellForRow(at: indexPath)?.accessoryType = .checkmark
         delegate?.configCategory(selectedCategory: selectedCategory)
         dismiss(animated: true)
     }
@@ -137,18 +141,7 @@ extension CategoryViewController: UITableViewDataSource, UITableViewDelegate {
 
 extension CategoryViewController: AddCategoryViewControllerDelegate {
     func addCategory(_ newCategory: TrackerCategory) {
-        try? dataProvider?.addCategory(newCategory)
-        checkPlaceholder()
-    }
-}
-
-extension CategoryViewController: DataProviderDelegate {
-    func update(_ update: CategoryUpdate) {
-        tabelView.performBatchUpdates {
-            let insertIndexPath = update.insertedIndexes.map { IndexPath(item: $0, section: 0) }
-            let deletedIndexPath = update.deleteIndexes.map { IndexPath(item: $0, section: 0) }
-            tabelView.insertRows(at: insertIndexPath, with: .automatic)
-            tabelView.deleteRows(at: deletedIndexPath, with: .fade)
-        }
+        try? viewModel.addCategory(newCategory)
+        tabelView.reloadData()
     }
 }

@@ -32,6 +32,13 @@ final class TrackerCategoryStore: NSObject {
 }
 
 extension TrackerCategoryStore {
+    func countCategories() -> Int {
+        let request = NSFetchRequest<TrackerCategoryCoreData>(entityName: "TrackerCategoryCoreData")
+        request.resultType = .countResultType
+        let categories = try! context.fetch(request)
+        return categories.count
+    }
+    
     func addCategory(_ category: TrackerCategory) throws {
         let categoryCoreData = TrackerCategoryCoreData(context: context)
         categoryCoreData.categoryTitle = category.categoryTitle

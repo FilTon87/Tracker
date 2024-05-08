@@ -18,6 +18,8 @@
 		5D33AD462BD9666A00C175F9 /* CategoryDataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D33AD452BD9666A00C175F9 /* CategoryDataProvider.swift */; };
 		5D33AD492BDB773000C175F9 /* TrackerDataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D33AD482BDB773000C175F9 /* TrackerDataProvider.swift */; };
 		5D33AD4B2BDCEBFF00C175F9 /* RecordDataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D33AD4A2BDCEBFF00C175F9 /* RecordDataProvider.swift */; };
+		5D33B10B2BEB42E100D709E9 /* CategoryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D33B10A2BEB42E100D709E9 /* CategoryViewModel.swift */; };
+		5D33B10D2BEB442200D709E9 /* Observable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D33B10C2BEB442200D709E9 /* Observable.swift */; };
 		5D4061152B999EF10033DEAA /* GeometricParams.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D4061142B999EF10033DEAA /* GeometricParams.swift */; };
 		5D4061172B99AB850033DEAA /* MokData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D4061162B99AB850033DEAA /* MokData.swift */; };
 		5D49FE2A2B6E32D0000D0FE0 /* ScheduleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D49FE292B6E32D0000D0FE0 /* ScheduleViewController.swift */; };
@@ -65,6 +67,8 @@
 		5D33AD452BD9666A00C175F9 /* CategoryDataProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryDataProvider.swift; sourceTree = "<group>"; };
 		5D33AD482BDB773000C175F9 /* TrackerDataProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerDataProvider.swift; sourceTree = "<group>"; };
 		5D33AD4A2BDCEBFF00C175F9 /* RecordDataProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordDataProvider.swift; sourceTree = "<group>"; };
+		5D33B10A2BEB42E100D709E9 /* CategoryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryViewModel.swift; sourceTree = "<group>"; };
+		5D33B10C2BEB442200D709E9 /* Observable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Observable.swift; sourceTree = "<group>"; };
 		5D4061142B999EF10033DEAA /* GeometricParams.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeometricParams.swift; sourceTree = "<group>"; };
 		5D4061162B99AB850033DEAA /* MokData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MokData.swift; sourceTree = "<group>"; };
 		5D49FE292B6E32D0000D0FE0 /* ScheduleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleViewController.swift; sourceTree = "<group>"; };
@@ -136,7 +140,15 @@
 			path = DataProvider;
 			sourceTree = "<group>";
 		};
-		5D49FE282B6E28A5000D0FE0 /* ViewControllers */ = {
+		5D33B1092BEB42AD00D709E9 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				5D33B10A2BEB42E100D709E9 /* CategoryViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		5D49FE282B6E28A5000D0FE0 /* Views */ = {
 			isa = PBXGroup;
 			children = (
 				5D2110592BE50349000CA701 /* OnboardingViewController.swift */,
@@ -148,7 +160,7 @@
 				5D49FE2D2B722473000D0FE0 /* CategoryViewController.swift */,
 				5D89B5332BB2C91700EC3B6D /* AddCategoryViewController.swift */,
 			);
-			path = ViewControllers;
+			path = Views;
 			sourceTree = "<group>";
 		};
 		5D49FE332B738438000D0FE0 /* CollectionViewCell */ = {
@@ -226,10 +238,11 @@
 		5DE853BE2B146F400004750C /* Tracker */ = {
 			isa = PBXGroup;
 			children = (
-				5D49FE282B6E28A5000D0FE0 /* ViewControllers */,
+				5D25102F2B1F3EB200A800DF /* Models */,
+				5D49FE282B6E28A5000D0FE0 /* Views */,
+				5D33B1092BEB42AD00D709E9 /* ViewModels */,
 				5D9127BC2B2B3343001205D2 /* Interface */,
 				5D89B55F2BC1403A00EC3B6D /* CoreData */,
-				5D25102F2B1F3EB200A800DF /* Models */,
 				5DE853D32B1488730004750C /* Helper */,
 				5DE853BF2B146F400004750C /* AppDelegate.swift */,
 				5DE853C12B146F400004750C /* SceneDelegate.swift */,
@@ -249,6 +262,7 @@
 				5D89B5392BBEC92000EC3B6D /* TrackerProperties.swift */,
 				5D2122002BC51AB200B35D0F /* UIColorMarhalling.swift */,
 				5D09EC892BD295A20092AF86 /* ConvertSchedule.swift */,
+				5D33B10C2BEB442200D709E9 /* Observable.swift */,
 			);
 			path = Helper;
 			sourceTree = "<group>";
@@ -323,6 +337,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5D33B10D2BEB442200D709E9 /* Observable.swift in Sources */,
 				5D7AC0CA2BA9D2BA00D9D41E /* Schedule.swift in Sources */,
 				5D89B53A2BBEC92000EC3B6D /* TrackerProperties.swift in Sources */,
 				5DE853D72B14D3C40004750C /* TrackersViewController.swift in Sources */,
@@ -347,6 +362,7 @@
 				5D54B2312BC2DDCD0073AC20 /* TrackerStore.swift in Sources */,
 				5DC615B72B2C550A00F86E27 /* CreateButton.swift in Sources */,
 				5D9127BF2B2B4529001205D2 /* CancelButton.swift in Sources */,
+				5D33B10B2BEB42E100D709E9 /* CategoryViewModel.swift in Sources */,
 				5D33AD4B2BDCEBFF00C175F9 /* RecordDataProvider.swift in Sources */,
 				5D21105A2BE50349000CA701 /* OnboardingViewController.swift in Sources */,
 				5D5549F42B2447B100136642 /* AddTrackerViewController.swift in Sources */,

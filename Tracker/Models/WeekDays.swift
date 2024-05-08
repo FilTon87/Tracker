@@ -14,7 +14,7 @@ enum WeekDays: Int, CaseIterable {
     case thursday
     case frieday
     case saturday
-    case sunday
+    case sunday = 1
     
     var longWeekDaysName: String {
         switch self {
