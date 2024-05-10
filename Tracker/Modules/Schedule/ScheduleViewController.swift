@@ -18,7 +18,7 @@ final class ScheduleViewController: UIViewController {
     
     
     //MARK: - Private property
-    private let doneButton = BlackButton(title: "Готово")
+    private let doneButton = Constants.doneButton
     private let tabelView = UITableView()
     private var schedule: [Schedule] = []
     
@@ -40,7 +40,7 @@ private extension ScheduleViewController {
     }
     
     func addViewLabel() {
-        navigationItem.title = "Расписание"
+        navigationItem.title = Constants.scheduleViewControllerName
     }
     
     func addSubView() {

@@ -17,8 +17,8 @@ final class AddCategoryViewController: UIViewController {
     weak var delegate: AddCategoryViewControllerDelegate?
     
     //MARK: - Private property
-    private let doneButton = BlackButton(title: "Готово")
-    private let textField = TextField(placeholder: "Введите название категории")
+    private let doneButton = Constants.doneButton
+    private let textField = Constants.categoryName
     private let categoryStore = TrackerCategoryStore.shared
     
     // MARK: - View Life Cycles
@@ -45,7 +45,7 @@ private extension AddCategoryViewController {
     }
     
     func addViewLabel() {
-        navigationItem.title = "Новая категория"
+        navigationItem.title = Constants.addCategoryViewControllerName
     }
     
     func addSubView() {

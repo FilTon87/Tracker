@@ -18,8 +18,8 @@ final class CategoryViewController: UIViewController {
     var viewModel = CategoryViewModel()
     
     //MARK: - Private property
-    private let addCategoryButton = BlackButton(title: "Добавить категорию")
-    private let placeholder = TrackersPlaceholder(title: "Привычки и события можно\nобъединять по смыслу", image: "Start")
+    private let addCategoryButton = Constants.addCategoryButton
+    private let placeholder = Constants.categoryPlaceholder
     private let tabelView = UITableView()
 
     
@@ -47,7 +47,7 @@ private extension CategoryViewController {
     }
     
     func addViewLabel() {
-        navigationItem.title = "Категория"
+        navigationItem.title = Constants.categoryViewControllerName
     }
     
     func addSubView() {

@@ -19,8 +19,8 @@ final class AddTrackerViewController: UIViewController {
     
     //MARK: - Private property
     private let label = UILabel()
-    private let habitButton = BlackButton(title: "Привычка")
-    private let eventButton = BlackButton(title: "Нерегулярное событие")
+    private let habitButton = Constants.habitButton
+    private let eventButton = Constants.eventButton
     
     // MARK: - View Life Cycles
     override func viewDidLoad() {
@@ -41,7 +41,7 @@ private extension AddTrackerViewController {
     }
     
     func addViewLabel() {
-        navigationItem.title = "Создание трекера"
+        navigationItem.title = Constants.addTrackerViewControllerName
     }
 }
 
