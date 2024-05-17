@@ -14,7 +14,7 @@ enum Constants {
     static let onboardingRed = OnboardingView("red", "Даже если это \n не литры воды и йога")
     
     //MARK: - OnboardingView
-    static let onboardingButton = BlackButton(title: "Вот это технологии!")
+    static let onboardingButton = "Вот это технологии!"
     
     // MARK: - TrackersViewController
     static let dataPlaceholder = TrackersPlaceholder(title: "Что будем отслеживать?", image: "Start")

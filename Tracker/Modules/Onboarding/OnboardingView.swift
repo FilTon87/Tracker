@@ -22,7 +22,7 @@ final class OnboardingView: UIViewController {
         return label
     }()
     
-    private let onboardingButton = Constants.onboardingButton
+    private lazy var onboardingButton = BlackButton(title: Constants.onboardingButton)
     
     private let defaults = UserDefaults.standard
     
