@@ -11,8 +11,8 @@ final class NewTrackerCollectionViewCell: UICollectionViewCell {
     
     private var indexPath: IndexPath?
     
-    private let cellView = UIView()
-    private let cellLabel = UILabel()
+    private lazy var cellView = UIView()
+    private lazy var cellLabel = UILabel()
     
     override init(frame: CGRect) {
         super.init(frame: frame)

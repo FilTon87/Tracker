@@ -34,7 +34,7 @@
 		5D54B2352BC2DE0C0073AC20 /* TrackerRecordStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D54B2342BC2DE0C0073AC20 /* TrackerRecordStore.swift */; };
 		5D5549F42B2447B100136642 /* AddTrackerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D5549F32B2447B100136642 /* AddTrackerViewController.swift */; };
 		5D5549F62B24760700136642 /* NewTrackerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D5549F52B24760700136642 /* NewTrackerViewController.swift */; };
-		5D5549FA2B24988200136642 /* NewTrackerTabelViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D5549F92B24988200136642 /* NewTrackerTabelViewCell.swift */; };
+		5D5549FA2B24988200136642 /* NewTrackerTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D5549F92B24988200136642 /* NewTrackerTableViewCell.swift */; };
 		5D7AC0CA2BA9D2BA00D9D41E /* Schedule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D7AC0C92BA9D2BA00D9D41E /* Schedule.swift */; };
 		5D89B5322BB2BD8700EC3B6D /* CategoryTabelViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D89B5312BB2BD8700EC3B6D /* CategoryTabelViewCell.swift */; };
 		5D89B5342BB2C91800EC3B6D /* AddCategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D89B5332BB2C91700EC3B6D /* AddCategoryViewController.swift */; };
@@ -45,6 +45,7 @@
 		5D9127BB2B2B2A82001205D2 /* BlackButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D9127BA2B2B2A82001205D2 /* BlackButton.swift */; };
 		5D9127BF2B2B4529001205D2 /* CancelButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D9127BE2B2B4529001205D2 /* CancelButton.swift */; };
 		5DBED5F92BEE04A100FAB07A /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DBED5F82BEE04A100FAB07A /* Constants.swift */; };
+		5DBED6412BF0AE2000FAB07A /* TableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DBED6402BF0AE2000FAB07A /* TableView.swift */; };
 		5DC615B72B2C550A00F86E27 /* CreateButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC615B62B2C550A00F86E27 /* CreateButton.swift */; };
 		5DE853C02B146F400004750C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DE853BF2B146F400004750C /* AppDelegate.swift */; };
 		5DE853C22B146F400004750C /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DE853C12B146F400004750C /* SceneDelegate.swift */; };
@@ -84,7 +85,7 @@
 		5D54B2342BC2DE0C0073AC20 /* TrackerRecordStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerRecordStore.swift; sourceTree = "<group>"; };
 		5D5549F32B2447B100136642 /* AddTrackerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTrackerViewController.swift; sourceTree = "<group>"; };
 		5D5549F52B24760700136642 /* NewTrackerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewTrackerViewController.swift; sourceTree = "<group>"; };
-		5D5549F92B24988200136642 /* NewTrackerTabelViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewTrackerTabelViewCell.swift; sourceTree = "<group>"; };
+		5D5549F92B24988200136642 /* NewTrackerTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewTrackerTableViewCell.swift; sourceTree = "<group>"; };
 		5D7AC0C92BA9D2BA00D9D41E /* Schedule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Schedule.swift; sourceTree = "<group>"; };
 		5D89B5312BB2BD8700EC3B6D /* CategoryTabelViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryTabelViewCell.swift; sourceTree = "<group>"; };
 		5D89B5332BB2C91700EC3B6D /* AddCategoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCategoryViewController.swift; sourceTree = "<group>"; };
@@ -95,6 +96,7 @@
 		5D9127BA2B2B2A82001205D2 /* BlackButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlackButton.swift; sourceTree = "<group>"; };
 		5D9127BE2B2B4529001205D2 /* CancelButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CancelButton.swift; sourceTree = "<group>"; };
 		5DBED5F82BEE04A100FAB07A /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		5DBED6402BF0AE2000FAB07A /* TableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableView.swift; sourceTree = "<group>"; };
 		5DC615B62B2C550A00F86E27 /* CreateButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateButton.swift; sourceTree = "<group>"; };
 		5DE853BC2B146F400004750C /* Tracker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tracker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5DE853BF2B146F400004750C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -199,7 +201,7 @@
 			children = (
 				5D5549F32B2447B100136642 /* AddTrackerViewController.swift */,
 				5D5549F52B24760700136642 /* NewTrackerViewController.swift */,
-				5D5549F92B24988200136642 /* NewTrackerTabelViewCell.swift */,
+				5D5549F92B24988200136642 /* NewTrackerTableViewCell.swift */,
 				5D89B5352BBE871600EC3B6D /* NewTrackerCollectionViewCell.swift */,
 			);
 			path = CreateNewTracker;
@@ -261,6 +263,7 @@
 				5D9127BE2B2B4529001205D2 /* CancelButton.swift */,
 				5DC615B62B2C550A00F86E27 /* CreateButton.swift */,
 				5D06ADF92B848903007F7E76 /* TrackersPlaceholder.swift */,
+				5DBED6402BF0AE2000FAB07A /* TableView.swift */,
 			);
 			path = Interface;
 			sourceTree = "<group>";
@@ -390,7 +393,7 @@
 				5D2510362B1F402D00A800DF /* TrackerRecord.swift in Sources */,
 				5D2110582BE4FAD1000CA701 /* OnboardingView.swift in Sources */,
 				5D2510312B1F3EC300A800DF /* Tracker.swift in Sources */,
-				5D5549FA2B24988200136642 /* NewTrackerTabelViewCell.swift in Sources */,
+				5D5549FA2B24988200136642 /* NewTrackerTableViewCell.swift in Sources */,
 				5D49FE372B750DC5000D0FE0 /* TrackerHeaderCollectionView.swift in Sources */,
 				5D2510332B1F3F6500A800DF /* TrackerCategory.swift in Sources */,
 				5D5549F62B24760700136642 /* NewTrackerViewController.swift in Sources */,
@@ -415,6 +418,7 @@
 				5DE853D92B175C8D0004750C /* TabBarController.swift in Sources */,
 				5DE853DB2B175E500004750C /* StatsViewController.swift in Sources */,
 				5D89B5622BC1405500EC3B6D /* Tracker.xcdatamodeld in Sources */,
+				5DBED6412BF0AE2000FAB07A /* TableView.swift in Sources */,
 				5DBED5F92BEE04A100FAB07A /* Constants.swift in Sources */,
 				5D89B5342BB2C91800EC3B6D /* AddCategoryViewController.swift in Sources */,
 				5DE853C22B146F400004750C /* SceneDelegate.swift in Sources */,

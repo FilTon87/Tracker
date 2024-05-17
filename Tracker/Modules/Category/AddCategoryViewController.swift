@@ -17,8 +17,8 @@ final class AddCategoryViewController: UIViewController {
     weak var delegate: AddCategoryViewControllerDelegate?
     
     //MARK: - Private property
-    private let doneButton = Constants.doneButton
-    private let textField = Constants.categoryName
+    private lazy var doneButton = Constants.doneButton
+    private lazy var textField = Constants.categoryName
     private let categoryStore = TrackerCategoryStore.shared
     
     // MARK: - View Life Cycles

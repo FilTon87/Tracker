@@ -15,8 +15,8 @@ final class ScheduleTabelViewCell: UITableViewCell {
     
     weak var delegate: ScheduleTabelViewCellDelegate?
     
-    private let weekDayLabel = UILabel()
-    private let weekDaySwitch = UISwitch()
+    private lazy var weekDayLabel = UILabel()
+    private lazy var weekDaySwitch = UISwitch()
     private var weekDay: WeekDays?
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {

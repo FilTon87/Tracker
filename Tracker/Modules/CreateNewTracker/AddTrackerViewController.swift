@@ -18,9 +18,9 @@ final class AddTrackerViewController: UIViewController {
     
     
     //MARK: - Private property
-    private let label = UILabel()
-    private let habitButton = Constants.habitButton
-    private let eventButton = Constants.eventButton
+    private lazy var label = UILabel()
+    private lazy var habitButton = Constants.habitButton
+    private lazy var eventButton = Constants.eventButton
     
     // MARK: - View Life Cycles
     override func viewDidLoad() {

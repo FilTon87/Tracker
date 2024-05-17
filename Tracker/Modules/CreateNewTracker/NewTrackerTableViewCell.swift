@@ -7,9 +7,7 @@
 
 import UIKit
 
-final class NewTrackerTabelViewCell: UITableViewCell {
-    
-    private lazy var cellImage = UIImageView(image: UIImage(named: "Chevron"))
+final class NewTrackerTableViewCell: UITableViewCell {
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: .subtitle, reuseIdentifier: reuseIdentifier)
@@ -22,11 +20,9 @@ final class NewTrackerTabelViewCell: UITableViewCell {
     }
 }
 
-private extension NewTrackerTabelViewCell {
+private extension NewTrackerTableViewCell {
     func setupCell() {
         configCell()
-        addSubView()
-        addLayout()
     }
     
     func configCell() {
@@ -34,19 +30,7 @@ private extension NewTrackerTabelViewCell {
         detailTextLabel?.font = .systemFont(ofSize: 17, weight: .regular)
         detailTextLabel?.textColor = .yGray
         backgroundColor = .yBackground
-    }
-    
-    func addSubView() {
-        contentView.addSubview(cellImage)
-    }
-    
-    func addLayout() {
-        cellImage.translatesAutoresizingMaskIntoConstraints = false
-        
-        NSLayoutConstraint.activate([
-            cellImage.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
-            cellImage.centerYAnchor.constraint(equalTo: contentView.centerYAnchor)
-        ])
+        accessoryType = .disclosureIndicator
     }
 }
 

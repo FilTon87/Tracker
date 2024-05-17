@@ -18,11 +18,10 @@ final class CategoryViewController: UIViewController {
     var viewModel = CategoryViewModel()
     
     //MARK: - Private property
-    private let addCategoryButton = Constants.addCategoryButton
-    private let placeholder = Constants.categoryPlaceholder
-    private let tabelView = UITableView()
-
-    
+    private lazy var addCategoryButton = Constants.addCategoryButton
+    private lazy var placeholder = Constants.categoryPlaceholder
+    private lazy var tableView = TableView(frame: .zero, style: .plain)
+        
     // MARK: - View Life Cycles
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -52,7 +51,7 @@ private extension CategoryViewController {
     
     func addSubView() {
         [placeholder,
-         tabelView,
+         tableView,
          addCategoryButton].forEach {
             view.addSubview($0)
         }
@@ -60,7 +59,7 @@ private extension CategoryViewController {
     
     func addLayout() {
         [placeholder,
-         tabelView,
+         tableView,
          addCategoryButton].forEach {
             $0.translatesAutoresizingMaskIntoConstraints = false
         }
@@ -69,10 +68,10 @@ private extension CategoryViewController {
             placeholder.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
             placeholder.centerYAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerYAnchor),
             
-            tabelView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 16),
-            tabelView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: 16),
-            tabelView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            tabelView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 16),
+            tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: 16),
+            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
             
             addCategoryButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             addCategoryButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
@@ -88,12 +87,12 @@ private extension CategoryViewController {
     }
     
     func showPlaceholder() {
-        tabelView.isHidden = true
+        tableView.isHidden = true
         placeholder.isHidden = false
     }
     
     func hidePlaceholder() {
-        tabelView.isHidden = false
+        tableView.isHidden = false
         placeholder.isHidden = true
     }
     
@@ -102,13 +101,9 @@ private extension CategoryViewController {
     }
     
     func addTabelView() {
-        tabelView.delegate = self
-        tabelView.dataSource = self
-        tabelView.rowHeight = 75
-        tabelView.register(CategoryTabelViewCell.self, forCellReuseIdentifier: CategoryTabelViewCell.reuseIdentifier)
-        tabelView.layer.masksToBounds = true
-        tabelView.layer.cornerRadius = 16
-        tabelView.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMinXMinYCorner, .layerMaxXMaxYCorner, .layerMaxXMinYCorner]
+        tableView.delegate = self
+        tableView.dataSource = self
+        tableView.register(CategoryTabelViewCell.self, forCellReuseIdentifier: CategoryTabelViewCell.reuseIdentifier)
     }
     
     @objc func didTapAddButton() {
@@ -120,7 +115,7 @@ private extension CategoryViewController {
 
 extension CategoryViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        viewModel.numbersOfRowsInSection(section)
+        viewModel.numbersOfRows
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -137,11 +132,22 @@ extension CategoryViewController: UITableViewDataSource, UITableViewDelegate {
         delegate?.configCategory(selectedCategory: selectedCategory)
         dismiss(animated: true)
     }
+    
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        let isLastCell = indexPath.row == viewModel.numbersOfRows - 1
+        let defaultInset = tableView.separatorInset
+        
+        if isLastCell {
+            cell.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: cell.bounds.width)
+        } else {
+            cell.separatorInset = defaultInset
+        }
+    }
 }
 
 extension CategoryViewController: AddCategoryViewControllerDelegate {
     func addCategory(_ newCategory: TrackerCategory) {
         try? viewModel.addCategory(newCategory)
-        tabelView.reloadData()
+        tableView.reloadData()
     }
 }

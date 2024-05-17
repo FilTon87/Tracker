@@ -10,6 +10,7 @@ import Foundation
 final class CategoryViewModel {
 
     var isData: Observable<Bool> = Observable(false)
+    var numbersOfRows: Int = 0
     
     var categories: [TrackerCategory]?
     
@@ -27,11 +28,8 @@ final class CategoryViewModel {
     func checkData() {
         if categories?.count ?? 0 > 0 {
             isData.value = true
+            numbersOfRows = categories?.count ?? 0
         }
-    }
-
-    func numbersOfRowsInSection(_ section: Int) -> Int {
-        categories?.count ?? 0
     }
     
     func object(at indexPath: IndexPath) -> TrackerCategory? {
