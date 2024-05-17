@@ -18,8 +18,8 @@ final class ScheduleViewController: UIViewController {
     
     
     //MARK: - Private property
-    private let doneButton = BlackButton(title: "Готово")
-    private let tabelView = UITableView()
+    private lazy var doneButton = Constants.doneButton
+    private lazy var tableView = TableView(frame: .zero, style: .plain)
     private var schedule: [Schedule] = []
     
     // MARK: - View Life Cycles
@@ -40,23 +40,23 @@ private extension ScheduleViewController {
     }
     
     func addViewLabel() {
-        navigationItem.title = "Расписание"
+        navigationItem.title = Constants.scheduleViewControllerName
     }
     
     func addSubView() {
-        view.addSubview(tabelView)
+        view.addSubview(tableView)
         view.addSubview(doneButton)
     }
     
     func addLayout() {
-        tabelView.translatesAutoresizingMaskIntoConstraints = false
+        tableView.translatesAutoresizingMaskIntoConstraints = false
         doneButton.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-            tabelView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 16),
-            tabelView.heightAnchor.constraint(equalToConstant: 525),
-            tabelView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            tabelView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 16),
+            tableView.heightAnchor.constraint(equalToConstant: 525),
+            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
             
             doneButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             doneButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
@@ -69,18 +69,15 @@ private extension ScheduleViewController {
     }
     
     func addTabelView() {
-        tabelView.delegate = self
-        tabelView.dataSource = self
-        tabelView.rowHeight = 75
-        tabelView.register(ScheduleTabelViewCell.self, forCellReuseIdentifier: ScheduleTabelViewCell.reuseIdentifier)
-        tabelView.layer.masksToBounds = true
-        tabelView.layer.cornerRadius = 16
-        tabelView.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMinXMinYCorner, .layerMaxXMaxYCorner, .layerMaxXMinYCorner]
+        tableView.delegate = self
+        tableView.dataSource = self
+        tableView.register(ScheduleTabelViewCell.self, forCellReuseIdentifier: ScheduleTabelViewCell.reuseIdentifier)
     }
     
     @objc func didTapDoneButton() {
         schedule = schedule.sorted(by: {$0.weekDay.rawValue < $1.weekDay.rawValue})
         delegate?.configSchedule(schedule: schedule)
+        NewTrackerViewController().callback = self
         dismiss(animated: true)
     }
 }
@@ -100,6 +97,17 @@ extension ScheduleViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
     }
+    
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        let isLastCell = indexPath.row == WeekDays.allCases.count - 1
+        let defaultInset = tableView.separatorInset
+        
+        if isLastCell {
+            cell.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: cell.bounds.width)
+        } else {
+            cell.separatorInset = defaultInset
+        }
+    }
 }
 
 extension ScheduleViewController: ScheduleTabelViewCellDelegate {
@@ -113,4 +121,12 @@ extension ScheduleViewController: ScheduleTabelViewCellDelegate {
             }
         }
     }
+}
+
+extension ScheduleViewController: NewTrackerViewControllerCallback {
+    func returnSchedule(_ schedule: [Schedule]) {
+        print(schedule)
+    }
+    
+    
 }

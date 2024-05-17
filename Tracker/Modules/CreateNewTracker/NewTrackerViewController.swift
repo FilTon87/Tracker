@@ -12,20 +12,53 @@ protocol NewTrackerViewControllerDelegate: AnyObject {
     func updateTrackers()
 }
 
+protocol NewTrackerViewControllerCallback: AnyObject {
+    func returnSchedule(_ schedule: [Schedule])
+}
+
 final class NewTrackerViewController: UIViewController {
     
     // MARK: - Public Properties
     var createHabit: Bool = true
     weak var delegate: NewTrackerViewControllerDelegate?
+    weak var callback: NewTrackerViewControllerCallback?
     
     //MARK: - Private property
-    private let textField = TextField(placeholder: "Введите название трекера")
-    private let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
+    private lazy var textField = Constants.textField
+    private lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
     private let params = GeometricParams(cellCount: 18, leftInset: 19, rightInset: 18, cellSpacing: 5)
-    private let label = UILabel()
-    private let cancelButton = CancelButton()
-    private let createButton = CreateButton()
-    private let tabelView = UITableView()
+    private lazy var cancelButton = CancelButton()
+    private lazy var createButton = CreateButton()
+    private lazy var tableView = TableView(frame: .zero, style: .plain)
+    private lazy var scrollView: UIScrollView = {
+        let scrollView = UIScrollView()
+        scrollView.showsHorizontalScrollIndicator = false
+        return scrollView
+    }()
+    private lazy var mainStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .vertical
+        stackView.alignment = .center
+        stackView.spacing = 24
+        return stackView
+    }()
+    
+    private lazy var textFieldStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .vertical
+        stackView.alignment = .center
+        stackView.spacing = 8
+        return stackView
+    }()
+    
+    private lazy var label: UILabel = {
+        let label = UILabel()
+        label.text = Constants.limitMessage
+        label.textColor = .yRed
+        label.isHidden = true
+        return label
+    }()
+    
     private let propertiesData = TrackerProperties.shared
     private let trackerStore = TrackerStore.shared
     
@@ -68,16 +101,16 @@ private extension NewTrackerViewController {
         view.backgroundColor = .white
         textField.delegate = self
         addViewLabel()
+        configCell()
         addSubView()
         addLayout()
         addTarget()
-        addTabelView()
+        addTableView()
         addCollectionView()
-        configCell()
     }
     
     func addViewLabel() {
-        navigationItem.title = createHabit ? "Новая привычка" : "Новое нерегулярное событие"
+        navigationItem.title = createHabit ? Constants.newHabbit : Constants.newEvent
     }
 }
 
@@ -85,12 +118,23 @@ private extension NewTrackerViewController {
 //MARK: - Setting
 private extension NewTrackerViewController {
     func addSubView() {
-        [textField,
-         cancelButton,
-         createButton,
-         tabelView,
-         collectionView].forEach {
+        [scrollView,
+        cancelButton,
+         createButton].forEach {
             view.addSubview($0)
+        }
+        
+        scrollView.addSubview(mainStackView)
+
+        [textField,
+         label].forEach {
+            textFieldStackView.addArrangedSubview($0)
+        }
+
+        [textFieldStackView,
+         tableView,
+         collectionView].forEach {
+            mainStackView.addArrangedSubview($0)
         }
     }
     
@@ -99,13 +143,25 @@ private extension NewTrackerViewController {
         createButton.addTarget(self, action: #selector(didTapCreateButton), for: .touchUpInside)
     }
     
+    func showLabel() {
+        UIView.animate(withDuration: 0.25) {
+            self.label.isHidden = false
+        }
+    }
+    
+    func hideLabel() {
+        UIView.animate(withDuration: 0.25) {
+            self.label.isHidden = true
+        }
+    }
+    
     @objc func didTapCancelButton() {
         dismiss(animated: false)
         delegate?.cancelTrackerCreation()
     }
     
     @objc func didTapCreateButton() {
-        guard let categoryTitle = tabelView.cellForRow(at: IndexPath(row: 0, section: 0))?.detailTextLabel?.text else {
+        guard let categoryTitle = tableView.cellForRow(at: IndexPath(row: 0, section: 0))?.detailTextLabel?.text else {
             assertionFailure("No categoryTitle")
             return
         }
@@ -152,27 +208,43 @@ private extension NewTrackerViewController {
 //MARK: - Layout
 private extension NewTrackerViewController {
     func addLayout() {
-        [textField,
+        [scrollView,
+         mainStackView,
+         textFieldStackView,
+            textField,
          cancelButton,
          createButton,
-         tabelView,
+         tableView,
          collectionView].forEach {
             $0.translatesAutoresizingMaskIntoConstraints = false
         }
         
         NSLayoutConstraint.activate([
+            scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            scrollView.bottomAnchor.constraint(equalTo: createButton.topAnchor),
+            
+            mainStackView.topAnchor.constraint(equalTo: scrollView.topAnchor),
+            mainStackView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
+            mainStackView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
+            mainStackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
+            
+            textFieldStackView.topAnchor.constraint(equalTo: mainStackView.topAnchor),
+            textFieldStackView.leadingAnchor.constraint(equalTo: mainStackView.leadingAnchor),
+            textFieldStackView.trailingAnchor.constraint(equalTo: mainStackView.trailingAnchor),
+            
             textField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             textField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-            textField.topAnchor.constraint(equalTo: view.topAnchor, constant: 73),
+
+            tableView.topAnchor.constraint(equalTo: textFieldStackView.bottomAnchor, constant: 24),
+            tableView.heightAnchor.constraint(equalToConstant: heightOfTableView()),
+            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
             
-            tabelView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: 24),
-            tabelView.heightAnchor.constraint(equalToConstant: 150),
-            tabelView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            tabelView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-            
-            collectionView.topAnchor.constraint(equalTo: tabelView.bottomAnchor, constant: 32),
-            collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            collectionView.topAnchor.constraint(equalTo: tableView.bottomAnchor, constant: 32),
+            collectionView.leadingAnchor.constraint(equalTo: mainStackView.leadingAnchor),
+            collectionView.trailingAnchor.constraint(equalTo: mainStackView.trailingAnchor),
             collectionView.bottomAnchor.constraint(equalTo: createButton.topAnchor, constant: -16),
             
             cancelButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
@@ -186,42 +258,51 @@ private extension NewTrackerViewController {
 
 //MARK: - TabelView Settings
 extension NewTrackerViewController: UITableViewDataSource, UITableViewDelegate {
-    private func addTabelView() {
-        tabelView.delegate = self
-        tabelView.dataSource = self
-        tabelView.rowHeight = 75
-        tabelView.register(NewTrackerTabelViewCell.self, forCellReuseIdentifier: NewTrackerTabelViewCell.reuseIdentifier)
-        tabelView.layer.masksToBounds = true
-        tabelView.layer.cornerRadius = 16
-        tabelView.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMinXMinYCorner, .layerMaxXMaxYCorner, .layerMaxXMinYCorner]
+    private func addTableView() {
+        tableView.delegate = self
+        tableView.dataSource = self
+        tableView.register(NewTrackerTableViewCell.self, forCellReuseIdentifier: NewTrackerTableViewCell.reuseIdentifier)
     }
     
     private func configCell() {
-        settings.append(
-            NewTracker(
-                name: "Категория",
-                handler: { [weak self] in
-                    guard let self = self else { return }
-                    self.selectСategory()
-                }))
         if createHabit {
-            settings.append(
-                NewTracker(
-                    name: "Расписание",
-                    handler: { [weak self] in
-                        guard let self = self else { return }
-                        self.selectShedule()
-                    }))
+            addCategory()
+            addShedule()
+        } else {
+            addCategory()
         }
     }
     
+    private func addCategory() {
+        settings.append( NewTracker(
+            name: "Категория",
+            handler: { [weak self] in
+                guard let self = self else { return }
+                self.selectСategory()
+            }))
+    }
+    
+    private func addShedule() {
+        settings.append(
+            NewTracker(
+                name: "Расписание",
+                handler: { [weak self] in
+                    guard let self = self else { return }
+                    self.selectShedule()
+                }))
+    }
+    
+    private func heightOfTableView() -> CGFloat {
+        if settings.count == 2 { return CGFloat(150) } else { return CGFloat(75) }
+    }
+    
     private func updateCell(subText: String, indexPath: IndexPath) {
-        guard let cell = tabelView.cellForRow(at: indexPath) as? NewTrackerTabelViewCell else {
-            assertionFailure("No cell as NewTrackerTabelViewCell")
+        guard let cell = tableView.cellForRow(at: indexPath) as? NewTrackerTableViewCell else {
+            assertionFailure("No cell as NewTrackerTableViewCell")
             return
         }
         cell.detailTextLabel?.text = subText
-        tabelView.reloadData()
+        tableView.reloadData()
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -229,7 +310,7 @@ extension NewTrackerViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: NewTrackerTabelViewCell.reuseIdentifier) as! NewTrackerTabelViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: NewTrackerTableViewCell.reuseIdentifier) as! NewTrackerTableViewCell
         cell.textLabel?.text = settings[indexPath.row].name
         return cell
     }
@@ -237,6 +318,17 @@ extension NewTrackerViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         settings[indexPath.row].handler()
+    }
+    
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        let isLastCell = indexPath.row == settings.count - 1
+        let defaultInset = tableView.separatorInset
+        
+        if isLastCell {
+            cell.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: cell.bounds.width)
+        } else {
+            cell.separatorInset = defaultInset
+        }
     }
 }
 
@@ -288,6 +380,7 @@ private extension NewTrackerViewController {
         let scheduleViewController = ScheduleViewController()
         scheduleViewController.delegate = self
         scheduleViewController.modalPresentationStyle = .automatic
+        callback?.returnSchedule(selectedSchedule)
         present(UINavigationController(rootViewController: scheduleViewController), animated: true)
     }
     
@@ -305,7 +398,6 @@ private extension NewTrackerViewController {
 }
 
 extension NewTrackerViewController: ScheduleViewControllerDelegate {
-    
     func configSchedule(schedule: [Schedule]) {
         selectedSchedule = schedule
         let subText: String
@@ -338,6 +430,17 @@ extension NewTrackerViewController: UITextFieldDelegate {
         }
         return true
     }
+    
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        let text = textField.text!.count
+        if range.length + range.location > text {
+            return false
+        }
+        let newLimit = text + string.count - range.length
+        if newLimit >= Constants.limit { showLabel() } else { hideLabel() }
+        return newLimit <= Constants.limit
+    }
+
 }
 
 extension NewTrackerViewController: UICollectionViewDataSource {
@@ -410,6 +513,4 @@ extension NewTrackerViewController: UICollectionViewDelegate {
     }
 }
 
-extension NewTrackerViewController: TrackerDataProviderDelegate {
-
-}
+extension NewTrackerViewController: TrackerDataProviderDelegate { }

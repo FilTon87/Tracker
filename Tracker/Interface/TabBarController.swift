@@ -21,15 +21,15 @@ private extension TabBarController {
         
         var title: String {
             switch self {
-            case .trackers: return "Трекеры"
-            case .stats: return "Статистика"
+            case .trackers: return Constants.trackers
+            case .stats: return Constants.statistics
             }
         }
         
         var iconName: String {
             switch self {
-            case .trackers: return "trackers"
-            case .stats: return "stats"
+            case .trackers: return Constants.trackersIcon
+            case .stats: return Constants.statisticsIcon
             }
         }
     }

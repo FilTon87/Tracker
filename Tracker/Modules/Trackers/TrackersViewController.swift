@@ -16,10 +16,9 @@ final class TrackersViewController: UIViewController, UICollectionViewDelegateFl
     private var selectedDate = Date()
     private lazy var searchField = UISearchBar()
     private let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
-    private let dataPlaceholder = TrackersPlaceholder(title: "Что будем отслеживать?", image: "Start")
-    private let searchPlaceholder = TrackersPlaceholder(title: "Ничего не найдено", image: "Error")
+    private let dataPlaceholder = Constants.dataPlaceholder
+    private let searchPlaceholder = Constants.searchPlaceholder
     private let params = GeometricParams(cellCount: 4, leftInset: 16, rightInset: 16, cellSpacing: 9)
-    private let mokData = MokData.shared
 
     private lazy var datePicker: UIDatePicker = {
         let datePicker = UIDatePicker()
@@ -101,7 +100,7 @@ private extension TrackersViewController {
         navigationItem.leftBarButtonItem = addTrackerButton()
         navigationItem.rightBarButtonItem = addDateButton()
         navigationController?.navigationBar.prefersLargeTitles = true
-        navigationItem.title = "Трекеры"
+        navigationItem.title = Constants.trackersViewControllerName
         addSearchField()
     }
     
@@ -135,7 +134,7 @@ private extension TrackersViewController {
     private func addSearchField() {
         view.addSubview(searchField)
         searchField.delegate = self
-        searchField.placeholder = "Поиск"
+        searchField.placeholder = Constants.searchFieldPlaceholder
         searchField.translatesAutoresizingMaskIntoConstraints = false
         searchField.searchBarStyle = .minimal
         
@@ -192,9 +191,8 @@ private extension TrackersViewController {
         dataPlaceholder.isHidden = true
         
         if !categories.isEmpty && filteredCategories.isEmpty {
-            searchPlaceholder.isHidden = false
+            dataPlaceholder.isHidden = false
         }
-        
         if categories.isEmpty {
             dataPlaceholder.isHidden = false
         }

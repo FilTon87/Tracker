@@ -15,24 +15,19 @@ final class CategoryViewController: UIViewController {
     
     // MARK: - Public Properties
     weak var delegate: CategoryViewControllerDelegate?
+    var viewModel = CategoryViewModel()
     
     //MARK: - Private property
-    private let addCategoryButton = BlackButton(title: "Добавить категорию")
-    private let placeholder = TrackersPlaceholder(title: "Привычки и события можно\nобъединять по смыслу", image: "Start")
-    private let tabelView = UITableView()
-    
-    private lazy var dataProvider: TrackerCategoryProtocol? = {
-        let trackerCategoryStore = TrackerCategoryStore.shared
-        do {
-            try dataProvider = CategoryDataProvider(trackerCategoryStore, delegate: self)
-            return dataProvider
-        } catch {
-            //            showError("Данные недоступны")
-            return nil
-        }
-    }()
-    
+    private lazy var addCategoryButton = Constants.addCategoryButton
+    private lazy var placeholder = Constants.categoryPlaceholder
+    private lazy var tableView = TableView(frame: .zero, style: .plain)
+        
     // MARK: - View Life Cycles
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        viewModel.getCategories()
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViewController()
@@ -45,18 +40,18 @@ private extension CategoryViewController {
         addViewLabel()
         addSubView()
         addLayout()
-        checkPlaceholder()
         addTarget()
         addTabelView()
+        bindViewModel()
     }
     
     func addViewLabel() {
-        navigationItem.title = "Категория"
+        navigationItem.title = Constants.categoryViewControllerName
     }
     
     func addSubView() {
         [placeholder,
-         tabelView,
+         tableView,
          addCategoryButton].forEach {
             view.addSubview($0)
         }
@@ -64,7 +59,7 @@ private extension CategoryViewController {
     
     func addLayout() {
         [placeholder,
-         tabelView,
+         tableView,
          addCategoryButton].forEach {
             $0.translatesAutoresizingMaskIntoConstraints = false
         }
@@ -73,10 +68,10 @@ private extension CategoryViewController {
             placeholder.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
             placeholder.centerYAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerYAnchor),
             
-            tabelView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 16),
-            tabelView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: 16),
-            tabelView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            tabelView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 16),
+            tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: 16),
+            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
             
             addCategoryButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             addCategoryButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
@@ -84,14 +79,21 @@ private extension CategoryViewController {
         ])
     }
     
-    func checkPlaceholder() {
-        if dataProvider?.numbersOfRowsInSection(0) != 0 {
-            tabelView.isHidden = false
-            placeholder.isHidden = true
-        } else {
-            tabelView.isHidden = true
-            placeholder.isHidden = false
-        }
+    func bindViewModel() {
+        viewModel.isData.bind { [weak self] isData in
+            guard let self, let isData else { return }
+            isData ? hidePlaceholder() : showPlaceholder()
+        }   
+    }
+    
+    func showPlaceholder() {
+        tableView.isHidden = true
+        placeholder.isHidden = false
+    }
+    
+    func hidePlaceholder() {
+        tableView.isHidden = false
+        placeholder.isHidden = true
     }
     
     func addTarget() {
@@ -99,13 +101,9 @@ private extension CategoryViewController {
     }
     
     func addTabelView() {
-        tabelView.delegate = self
-        tabelView.dataSource = self
-        tabelView.rowHeight = 75
-        tabelView.register(CategoryTabelViewCell.self, forCellReuseIdentifier: CategoryTabelViewCell.reuseIdentifier)
-        tabelView.layer.masksToBounds = true
-        tabelView.layer.cornerRadius = 16
-        tabelView.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMinXMinYCorner, .layerMaxXMaxYCorner, .layerMaxXMinYCorner]
+        tableView.delegate = self
+        tableView.dataSource = self
+        tableView.register(CategoryTabelViewCell.self, forCellReuseIdentifier: CategoryTabelViewCell.reuseIdentifier)
     }
     
     @objc func didTapAddButton() {
@@ -117,38 +115,39 @@ private extension CategoryViewController {
 
 extension CategoryViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return dataProvider?.numbersOfRowsInSection(section) ?? 0
+        viewModel.numbersOfRows
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let record = dataProvider?.object(at: indexPath) else { return UITableViewCell() }
+        guard let record = viewModel.object(at: indexPath) else { return UITableViewCell() }
         let cell = tableView.dequeueReusableCell(withIdentifier: CategoryTabelViewCell.reuseIdentifier) as! CategoryTabelViewCell
         cell.textLabel?.text = record.categoryTitle
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let record  = dataProvider?.object(at: indexPath)
+        let record  = viewModel.object(at: indexPath)
         guard let selectedCategory = record?.categoryTitle else { return }
+        tableView.cellForRow(at: indexPath)?.accessoryType = .checkmark
         delegate?.configCategory(selectedCategory: selectedCategory)
         dismiss(animated: true)
+    }
+    
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        let isLastCell = indexPath.row == viewModel.numbersOfRows - 1
+        let defaultInset = tableView.separatorInset
+        
+        if isLastCell {
+            cell.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: cell.bounds.width)
+        } else {
+            cell.separatorInset = defaultInset
+        }
     }
 }
 
 extension CategoryViewController: AddCategoryViewControllerDelegate {
     func addCategory(_ newCategory: TrackerCategory) {
-        try? dataProvider?.addCategory(newCategory)
-        checkPlaceholder()
-    }
-}
-
-extension CategoryViewController: DataProviderDelegate {
-    func update(_ update: CategoryUpdate) {
-        tabelView.performBatchUpdates {
-            let insertIndexPath = update.insertedIndexes.map { IndexPath(item: $0, section: 0) }
-            let deletedIndexPath = update.deleteIndexes.map { IndexPath(item: $0, section: 0) }
-            tabelView.insertRows(at: insertIndexPath, with: .automatic)
-            tabelView.deleteRows(at: deletedIndexPath, with: .fade)
-        }
+        try? viewModel.addCategory(newCategory)
+        tableView.reloadData()
     }
 }
