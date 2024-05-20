@@ -13,7 +13,7 @@ protocol NewTrackerViewControllerDelegate: AnyObject {
 }
 
 protocol NewTrackerViewControllerCallback: AnyObject {
-    func returnSchedule(_ schedule: [Schedule])
+    func updateTableView(_ schedule: [Schedule])
 }
 
 final class NewTrackerViewController: UIViewController {
@@ -24,7 +24,7 @@ final class NewTrackerViewController: UIViewController {
     weak var callback: NewTrackerViewControllerCallback?
     
     //MARK: - Private property
-    private lazy var textField = Constants.textField
+    private lazy var textField = TextField(placeholder: Constants.textFieldLabel)
     private lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
     private let params = GeometricParams(cellCount: 18, leftInset: 19, rightInset: 18, cellSpacing: 5)
     private lazy var cancelButton = CancelButton()
@@ -275,7 +275,7 @@ extension NewTrackerViewController: UITableViewDataSource, UITableViewDelegate {
     
     private func addCategory() {
         settings.append( NewTracker(
-            name: "Категория",
+            name: Constants.categoryLabel,
             handler: { [weak self] in
                 guard let self = self else { return }
                 self.selectСategory()
@@ -285,7 +285,7 @@ extension NewTrackerViewController: UITableViewDataSource, UITableViewDelegate {
     private func addShedule() {
         settings.append(
             NewTracker(
-                name: "Расписание",
+                name: Constants.scheduleLabel,
                 handler: { [weak self] in
                     guard let self = self else { return }
                     self.selectShedule()
@@ -380,7 +380,8 @@ private extension NewTrackerViewController {
         let scheduleViewController = ScheduleViewController()
         scheduleViewController.delegate = self
         scheduleViewController.modalPresentationStyle = .automatic
-        callback?.returnSchedule(selectedSchedule)
+        callback?.updateTableView(selectedSchedule)
+        print(selectedSchedule)
         present(UINavigationController(rootViewController: scheduleViewController), animated: true)
     }
     
@@ -402,7 +403,7 @@ extension NewTrackerViewController: ScheduleViewControllerDelegate {
         selectedSchedule = schedule
         let subText: String
         if schedule.count == WeekDays.allCases.count {
-            subText = "Каждый день"
+            subText = Constants.everyDaySubtext
         } else {
             subText = schedule.map { $0.weekDay.shortWeekDaysName}.joined(separator: ", ")
         }

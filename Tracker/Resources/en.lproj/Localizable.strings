@@ -1,0 +1,78 @@
+/* 
+  Localizable.strings
+  Tracker
+
+  Created by Anton Filipchuk on 18.05.2024.
+  
+*/
+
+//MARK: - OnboardingViewController
+"onboardingBlueLabel" = "Track only \n what you want";
+"onboardingRedLabel" = "Even if it's \n not liters of water and yoga";
+
+//MARK: - OnboardingView
+"onboardingButton" = "These are technologies!";
+
+// MARK: - TrackersViewController
+"dataPlaceholderLabel" = "What are we going to track?";
+"searchPlaceholderLabel" = "Nothing was found";
+"trackersViewControllerName" = "Trackers";
+"searchFieldPlaceholder" = "Search";
+
+//MARK: - AddTrackerViewController
+"habitButtonLabel" = "Habit";
+"eventButtonLabel" = "Irregular event";
+"addTrackerViewControllerName" = "Creating a tracker";
+
+//MARK: - NewTrackerViewController
+"newHabbit" = "A new habit";
+"newEvent" = "A new irregular event";
+"textFieldLabel" = "Enter the name of the tracker";
+"everyDaySubtext" = "Every day";
+"categoryLabel" = "Category";
+"scheduleLabel" = "Schedule";
+"limitMessage" = "The limit is %d characters";
+
+//MARK: - CategoryViewController
+"addCategoryButtonLabel" = "Add a category";
+"categoryPlaceholderLabel" = "Habits and events \n can be combined in meaning";
+"categoryViewControllerName" = "Category";
+
+//MARK: - AddCategoryViewController
+"doneButtonLabel" = "Done";
+"categoryNamePlaceholderLabel" = "Enter the name of the category";
+"addCategoryViewControllerName" = "New category";
+
+//MARK: - ScheduleViewController
+"scheduleViewControllerName" = "Schedule";
+
+//MARK: - TabBarController
+"trackersLabel" = "Trackers";
+"statisticsLabel" = "Statistics";
+
+//MARK: - CancelButton
+"cancelButton" = "Cancel";
+
+//MARK: - CreateButton
+"createButton" = "Create";
+
+//MARK: - TrackerProperties
+"emojiLabel" = "Emoji";
+"colorLabel" = "Color";
+
+//MARK: - WeekDays
+"mondayLong" = "Monday";
+"tuesdayLong" = "Tuesday";
+"wednesdayLong" = "Wednesday";
+"thursdayLong" = "Thursday";
+"friedayLong" = "Frieday";
+"saturdayLong" = "Saturday";
+"sundayLong" = "Sunday";
+
+"mondayShort" = "Mo";
+"tuesdayShort" = "Tu";
+"wednesdayShort" = "We";
+"thursdayShort" = "Th";
+"friedayShort" = "Fr";
+"saturdayShort" = "Sa";
+"sundayShort" = "Su";

@@ -150,17 +150,11 @@ extension TrackerCollectionViewCell {
     }
     
     private func configDaysLabel(with: Int) {
-        let reminder = with % 100
-        
-        if (11...14).contains(reminder) {
-            dayLabel.text = "\(with) дней"
-        } else {
-            switch reminder % 10 {
-            case 1: dayLabel.text = "\(with) день"
-            case 2...4: dayLabel.text = "\(with) дня"
-            default: dayLabel.text = "\(with) дней"
-            }
-        }
+        let key = Constants.numberOfDays
+        let localizedFormat = String.localizedStringWithFormat(
+            NSLocalizedString(key, tableName: key, comment: ""),
+            with)
+        dayLabel.text = localizedFormat
     }
 }
 

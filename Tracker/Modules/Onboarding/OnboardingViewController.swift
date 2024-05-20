@@ -9,8 +9,8 @@ import UIKit
 
 final class OnboardingViewController: UIPageViewController {
     private lazy var pages: [UIViewController] = {
-        let blue = Constants.onboardingBlue
-        let red = Constants.onboardingRed
+        let blue = OnboardingView(Constants.onboardingBlueImage, Constants.onboardingBlueLabel)
+        let red = OnboardingView(Constants.onboardingRedImage, Constants.onboardingRedLabel)
         return [blue, red]
     }()
     

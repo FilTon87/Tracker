@@ -18,8 +18,8 @@ final class CategoryViewController: UIViewController {
     var viewModel = CategoryViewModel()
     
     //MARK: - Private property
-    private lazy var addCategoryButton = Constants.addCategoryButton
-    private lazy var placeholder = Constants.categoryPlaceholder
+    private lazy var addCategoryButton = BlackButton(title: Constants.addCategoryButtonLabel)
+    private lazy var placeholder = TrackersPlaceholder(title: Constants.categoryPlaceholderLabel, image: Constants.categoryPlaceholderImage)
     private lazy var tableView = TableView(frame: .zero, style: .plain)
         
     // MARK: - View Life Cycles

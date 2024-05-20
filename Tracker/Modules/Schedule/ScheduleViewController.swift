@@ -18,7 +18,7 @@ final class ScheduleViewController: UIViewController {
     
     
     //MARK: - Private property
-    private lazy var doneButton = Constants.doneButton
+    private lazy var doneButton = BlackButton(title: Constants.doneButtonLabel)
     private lazy var tableView = TableView(frame: .zero, style: .plain)
     private var schedule: [Schedule] = []
     
@@ -77,7 +77,6 @@ private extension ScheduleViewController {
     @objc func didTapDoneButton() {
         schedule = schedule.sorted(by: {$0.weekDay.rawValue < $1.weekDay.rawValue})
         delegate?.configSchedule(schedule: schedule)
-        NewTrackerViewController().callback = self
         dismiss(animated: true)
     }
 }
@@ -124,9 +123,7 @@ extension ScheduleViewController: ScheduleTabelViewCellDelegate {
 }
 
 extension ScheduleViewController: NewTrackerViewControllerCallback {
-    func returnSchedule(_ schedule: [Schedule]) {
-        print(schedule)
+    func updateTableView(_ schedule: [Schedule]) {
     }
-    
-    
+
 }

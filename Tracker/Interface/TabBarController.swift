@@ -21,8 +21,8 @@ private extension TabBarController {
         
         var title: String {
             switch self {
-            case .trackers: return Constants.trackers
-            case .stats: return Constants.statistics
+            case .trackers: return Constants.trackersLabel
+            case .stats: return Constants.statisticsLabel
             }
         }
         

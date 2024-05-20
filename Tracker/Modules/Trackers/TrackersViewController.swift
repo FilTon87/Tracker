@@ -16,15 +16,15 @@ final class TrackersViewController: UIViewController, UICollectionViewDelegateFl
     private var selectedDate = Date()
     private lazy var searchField = UISearchBar()
     private let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
-    private let dataPlaceholder = Constants.dataPlaceholder
-    private let searchPlaceholder = Constants.searchPlaceholder
+    private let dataPlaceholder = TrackersPlaceholder(title: Constants.dataPlaceholderLabel, image: Constants.dataPlaceholderImage)
+    private let searchPlaceholder = TrackersPlaceholder(title: Constants.searchPlaceholderLabel, image: Constants.searchPlaceholderImage)
     private let params = GeometricParams(cellCount: 4, leftInset: 16, rightInset: 16, cellSpacing: 9)
 
     private lazy var datePicker: UIDatePicker = {
         let datePicker = UIDatePicker()
         datePicker.datePickerMode = .date
         datePicker.preferredDatePickerStyle = .compact
-        datePicker.locale = Locale(identifier: "ru_RU")
+        datePicker.locale = Locale.current
         datePicker.translatesAutoresizingMaskIntoConstraints = false
         datePicker.addTarget(self, action: #selector(dateChanged), for: .valueChanged)
         return datePicker

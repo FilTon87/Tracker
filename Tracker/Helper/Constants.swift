@@ -10,56 +10,85 @@ import Foundation
 enum Constants {
     
     //MARK: - OnboardingViewController
-    static let onboardingBlue = OnboardingView("blue", "Отслеживайте только \n то, что хотите")
-    static let onboardingRed = OnboardingView("red", "Даже если это \n не литры воды и йога")
+    static let onboardingBlueImage = "blue"
+    static let onboardingBlueLabel = "Отслеживайте только \n то, что хотите"
+    static let onboardingRedImage = "red"
+    static let onboardingRedLabel = "Даже если это \n не литры воды и йога"
     
     //MARK: - OnboardingView
-    static let onboardingButton = "Вот это технологии!"
+    static let onboardingButton = NSLocalizedString("onboardingButton", comment:"")
     
     // MARK: - TrackersViewController
-    static let dataPlaceholder = TrackersPlaceholder(title: "Что будем отслеживать?", image: "Start")
-    static let searchPlaceholder = TrackersPlaceholder(title: "Ничего не найдено", image: "Error")
-    static let trackersViewControllerName = "Трекеры"
-    static let searchFieldPlaceholder = "Поиск"
+    static let dataPlaceholderLabel = NSLocalizedString("dataPlaceholderLabel", comment: "")
+    static let dataPlaceholderImage = "Start"
+    static let searchPlaceholderLabel = NSLocalizedString("searchPlaceholderLabel", comment: "")
+    static let searchPlaceholderImage = "Error"
+    static let trackersViewControllerName = NSLocalizedString("trackersViewControllerName", comment: "")
+    static let searchFieldPlaceholder = NSLocalizedString("searchFieldPlaceholder", comment: "")
+    
+    //MARK: - TrackerCollectionViewCell
+    static let numberOfDays = "numberOfDays"
     
     //MARK: - AddTrackerViewController
-    static let habitButton = BlackButton(title: "Привычка")
-    static let eventButton = BlackButton(title: "Нерегулярное событие")
-    static let addTrackerViewControllerName = "Создание трекера"
+    static let habitButtonLabel = NSLocalizedString("habitButtonLabel", comment: "")
+    static let eventButtonLabel = NSLocalizedString("eventButtonLabel", comment: "")
+    static let addTrackerViewControllerName = NSLocalizedString("addTrackerViewControllerName", comment: "")
     
     //MARK: - NewTrackerViewController
-    static let newHabbit = "Новая привычка"
-    static let newEvent = "Новое нерегулярное событие"
-    static let textField = TextField(placeholder: "Введите название трекера")
-    static let limitMessage = "Ограничение \(limit) символов"
-    static let limit = 38
+    static let newHabbit = NSLocalizedString("newHabbit", comment: "")
+    static let newEvent = NSLocalizedString("newEvent", comment: "")
+    static let textFieldLabel = NSLocalizedString("textFieldLabel", comment: "")
+    static let everyDaySubtext = NSLocalizedString("everyDaySubtext", comment: "")
+    static let categoryLabel = NSLocalizedString("categoryLabel", comment: "")
+    static let scheduleLabel = NSLocalizedString("scheduleLabel", comment: "")
+    static let localizedMessage = NSLocalizedString("limitMessage", comment: "")
+    static let limit = 5
+    static let limitMessage = String(format: localizedMessage, limit)
     
     //MARK: - CategoryViewController
-    static let addCategoryButton = BlackButton(title: "Добавить категорию")
-    static let categoryPlaceholder = TrackersPlaceholder(title: "Привычки и события можно\nобъединять по смыслу", image: "Start")
-    static let categoryViewControllerName = "Категория"
+    static let addCategoryButtonLabel = NSLocalizedString("addCategoryButtonLabel", comment: "")
+    static let categoryPlaceholderLabel = NSLocalizedString("categoryPlaceholderLabel", comment: "")
+    static let categoryPlaceholderImage =  "Start"
+    static let categoryViewControllerName = NSLocalizedString("categoryViewControllerName", comment: "")
     
     //MARK: - AddCategoryViewController
-    static let doneButton = BlackButton(title: "Готово")
-    static let categoryName = TextField(placeholder: "Введите название категории")
-    static let addCategoryViewControllerName = "Новая категория"
+    static let doneButtonLabel = NSLocalizedString("doneButtonLabel", comment: "")
+    static let categoryNamePlaceholderLabel = NSLocalizedString("categoryNamePlaceholderLabel", comment: "")
+    static let addCategoryViewControllerName = NSLocalizedString("addCategoryViewControllerName", comment: "")
     
     //MARK: - ScheduleViewController
-    static let scheduleViewControllerName = "Расписание"
+    static let scheduleViewControllerName = NSLocalizedString("scheduleViewControllerName", comment: "")
     
     //MARK: - TabBarController
-    static let trackers = "Трекеры"
+    static let trackersLabel = NSLocalizedString("trackersLabel", comment: "")
     static let trackersIcon = "trackers"
-    static let statistics = "Статистика"
+    static let statisticsLabel = NSLocalizedString("statisticsLabel", comment: "")
     static let statisticsIcon = "stats"
     
     //MARK: - CancelButton
-    static let cancelButton = "Отменить"
+    static let cancelButton = NSLocalizedString("cancelButton", comment: "")
     
     //MARK: - CreateButton
-    static let createButton = "Создать"
+    static let createButton = NSLocalizedString("createButton", comment: "")
     
+    //MARK: - TrackerProperties
+    static let emojiLabel = NSLocalizedString("emojiLabel", comment: "")
+    static let colorLabel = NSLocalizedString("colorLabel", comment: "")
     
+    //MARK: - WeekDays
+    static let mondayLong = NSLocalizedString("mondayLong", comment: "")
+    static let tuesdayLong = NSLocalizedString("tuesdayLong", comment: "")
+    static let wednesdayLong = NSLocalizedString("wednesdayLong", comment: "")
+    static let thursdayLong = NSLocalizedString("thursdayLong", comment: "")
+    static let friedayLong = NSLocalizedString("friedayLong", comment: "")
+    static let saturdayLong = NSLocalizedString("saturdayLong", comment: "")
+    static let sundayLong = NSLocalizedString("sundayLong", comment: "")
     
-    
+    static let mondayShort = NSLocalizedString("mondayShort", comment: "")
+    static let tuesdayShort = NSLocalizedString("tuesdayShort", comment: "")
+    static let wednesdayShort = NSLocalizedString("wednesdayShort", comment: "")
+    static let thursdayShort = NSLocalizedString("thursdayShort", comment: "")
+    static let friedayShort = NSLocalizedString("friedayShort", comment: "")
+    static let saturdayShort = NSLocalizedString("saturdayShort", comment: "")
+    static let sundayShort = NSLocalizedString("sundayShort", comment: "")
 }

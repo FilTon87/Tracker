@@ -19,8 +19,8 @@ final class AddTrackerViewController: UIViewController {
     
     //MARK: - Private property
     private lazy var label = UILabel()
-    private lazy var habitButton = Constants.habitButton
-    private lazy var eventButton = Constants.eventButton
+    private lazy var habitButton = BlackButton(title: Constants.habitButtonLabel)
+    private lazy var eventButton = BlackButton(title: Constants.eventButtonLabel)
     
     // MARK: - View Life Cycles
     override func viewDidLoad() {
@@ -58,7 +58,7 @@ private extension AddTrackerViewController {
     }
     
     @objc private func selection(_ sender: UIButton) {
-        if sender.titleLabel?.text == "Привычка" {
+        if sender.titleLabel?.text == Constants.habitButtonLabel {
             let viewController = NewTrackerViewController()
             viewController.createHabit = true
             viewController.delegate = self
