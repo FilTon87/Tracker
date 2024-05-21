@@ -11,9 +11,9 @@ enum Constants {
     
     //MARK: - OnboardingViewController
     static let onboardingBlueImage = "blue"
-    static let onboardingBlueLabel = "Отслеживайте только \n то, что хотите"
+    static let onboardingBlueLabel = NSLocalizedString("onboardingBlueLabel", comment:"")
     static let onboardingRedImage = "red"
-    static let onboardingRedLabel = "Даже если это \n не литры воды и йога"
+    static let onboardingRedLabel = NSLocalizedString("onboardingRedLabel", comment:"")
     
     //MARK: - OnboardingView
     static let onboardingButton = NSLocalizedString("onboardingButton", comment:"")
@@ -25,6 +25,12 @@ enum Constants {
     static let searchPlaceholderImage = "Error"
     static let trackersViewControllerName = NSLocalizedString("trackersViewControllerName", comment: "")
     static let searchFieldPlaceholder = NSLocalizedString("searchFieldPlaceholder", comment: "")
+    
+    static let contextMenuPinLabel = NSLocalizedString("contextMenuPinLabel", comment: "")
+    static let contextMenuEditLabel = NSLocalizedString("contextMenuEditLabel", comment: "")
+    static let contextMenuDelLabel = NSLocalizedString("contextMenuDelLabel", comment: "")
+    
+    static let deleteAlertMessage = NSLocalizedString("deleteAlertMessage", comment: "")
     
     //MARK: - TrackerCollectionViewCell
     static let numberOfDays = "numberOfDays"
@@ -42,7 +48,7 @@ enum Constants {
     static let categoryLabel = NSLocalizedString("categoryLabel", comment: "")
     static let scheduleLabel = NSLocalizedString("scheduleLabel", comment: "")
     static let localizedMessage = NSLocalizedString("limitMessage", comment: "")
-    static let limit = 5
+    static let limit = 38
     static let limitMessage = String(format: localizedMessage, limit)
     
     //MARK: - CategoryViewController

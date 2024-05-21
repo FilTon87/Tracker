@@ -17,7 +17,6 @@
 		5D2510312B1F3EC300A800DF /* Tracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D2510302B1F3EC300A800DF /* Tracker.swift */; };
 		5D2510332B1F3F6500A800DF /* TrackerCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D2510322B1F3F6400A800DF /* TrackerCategory.swift */; };
 		5D2510362B1F402D00A800DF /* TrackerRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D2510352B1F402D00A800DF /* TrackerRecord.swift */; };
-		5D33AD462BD9666A00C175F9 /* CategoryDataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D33AD452BD9666A00C175F9 /* CategoryDataProvider.swift */; };
 		5D33AD492BDB773000C175F9 /* TrackerDataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D33AD482BDB773000C175F9 /* TrackerDataProvider.swift */; };
 		5D33AD4B2BDCEBFF00C175F9 /* RecordDataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D33AD4A2BDCEBFF00C175F9 /* RecordDataProvider.swift */; };
 		5D33B10B2BEB42E100D709E9 /* CategoryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D33B10A2BEB42E100D709E9 /* CategoryViewModel.swift */; };
@@ -72,7 +71,6 @@
 		5D2510302B1F3EC300A800DF /* Tracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tracker.swift; sourceTree = "<group>"; };
 		5D2510322B1F3F6400A800DF /* TrackerCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerCategory.swift; sourceTree = "<group>"; };
 		5D2510352B1F402D00A800DF /* TrackerRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerRecord.swift; sourceTree = "<group>"; };
-		5D33AD452BD9666A00C175F9 /* CategoryDataProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryDataProvider.swift; sourceTree = "<group>"; };
 		5D33AD482BDB773000C175F9 /* TrackerDataProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerDataProvider.swift; sourceTree = "<group>"; };
 		5D33AD4A2BDCEBFF00C175F9 /* RecordDataProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordDataProvider.swift; sourceTree = "<group>"; };
 		5D33B10A2BEB42E100D709E9 /* CategoryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryViewModel.swift; sourceTree = "<group>"; };
@@ -152,7 +150,6 @@
 		5D33AD472BDB770E00C175F9 /* DataProvider */ = {
 			isa = PBXGroup;
 			children = (
-				5D33AD452BD9666A00C175F9 /* CategoryDataProvider.swift */,
 				5D33AD482BDB773000C175F9 /* TrackerDataProvider.swift */,
 				5D33AD4A2BDCEBFF00C175F9 /* RecordDataProvider.swift */,
 			);
@@ -433,7 +430,6 @@
 				5D5549F42B2447B100136642 /* AddTrackerViewController.swift in Sources */,
 				5D49FE302B7236C0000D0FE0 /* ScheduleTabelViewCell.swift in Sources */,
 				5D49FE2E2B722473000D0FE0 /* CategoryViewController.swift in Sources */,
-				5D33AD462BD9666A00C175F9 /* CategoryDataProvider.swift in Sources */,
 				5DE853D92B175C8D0004750C /* TabBarController.swift in Sources */,
 				5DE853DB2B175E500004750C /* StatsViewController.swift in Sources */,
 				5D89B5622BC1405500EC3B6D /* Tracker.xcdatamodeld in Sources */,

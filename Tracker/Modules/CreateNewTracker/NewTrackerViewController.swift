@@ -12,16 +12,11 @@ protocol NewTrackerViewControllerDelegate: AnyObject {
     func updateTrackers()
 }
 
-protocol NewTrackerViewControllerCallback: AnyObject {
-    func updateTableView(_ schedule: [Schedule])
-}
-
 final class NewTrackerViewController: UIViewController {
     
     // MARK: - Public Properties
     var createHabit: Bool = true
     weak var delegate: NewTrackerViewControllerDelegate?
-    weak var callback: NewTrackerViewControllerCallback?
     
     //MARK: - Private property
     private lazy var textField = TextField(placeholder: Constants.textFieldLabel)
@@ -79,7 +74,7 @@ final class NewTrackerViewController: UIViewController {
     private lazy var dataProvider: TrackerProtocol? = {
         let trackerStore = TrackerStore.shared
         do {
-            try dataProvider = TrackerDataProvider(trackerStore, delegate: self)
+            try dataProvider = TrackerDataProvider(trackerStore)
             return dataProvider
         } catch {
             //            showError("Данные недоступны")
@@ -380,7 +375,6 @@ private extension NewTrackerViewController {
         let scheduleViewController = ScheduleViewController()
         scheduleViewController.delegate = self
         scheduleViewController.modalPresentationStyle = .automatic
-        callback?.updateTableView(selectedSchedule)
         print(selectedSchedule)
         present(UINavigationController(rootViewController: scheduleViewController), animated: true)
     }
@@ -513,5 +507,3 @@ extension NewTrackerViewController: UICollectionViewDelegate {
         }
     }
 }
-
-extension NewTrackerViewController: TrackerDataProviderDelegate { }

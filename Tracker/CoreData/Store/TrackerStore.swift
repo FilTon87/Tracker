@@ -10,6 +10,7 @@ import CoreData
 
 private enum TrackerStoreError: Error {
     case decodingErrorInvalidTracker
+    case decodingErrorInvalidTrackerID
 }
 
 final class TrackerStore {
@@ -70,4 +71,23 @@ extension TrackerStore {
             schedule: trackerSchedule,
             isHabit: isHabit)
     }
+    
+    func delTracker(_ id: UUID) throws {
+        let request = NSFetchRequest<TrackerCoreData>(entityName: "TrackerCoreData")
+        request.returnsObjectsAsFaults = false
+        request.predicate = NSPredicate(
+            format: "%K == %@", (\TrackerCoreData.id)._kvcKeyPathString!, id as CVarArg)
+        
+        if let result = try? context.fetch(request) {
+            for object in result {
+                context.delete(object)
+            }
+            do {
+                try context.save()
+            } catch {
+                throw TrackerStoreError.decodingErrorInvalidTrackerID
+            }
+        }
+    }
+    
 }

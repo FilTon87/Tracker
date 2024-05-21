@@ -19,6 +19,12 @@
 "trackersViewControllerName" = "Trackers";
 "searchFieldPlaceholder" = "Search";
 
+"contextMenuPinLabel" = "Pin";
+"contextMenuEditLabel" = "Edit";
+"contextMenuDelLabel" = "Delete";
+
+"deleteAlertMessage" = "Are you sure you want to delete the tracker?";
+
 //MARK: - AddTrackerViewController
 "habitButtonLabel" = "Habit";
 "eventButtonLabel" = "Irregular event";

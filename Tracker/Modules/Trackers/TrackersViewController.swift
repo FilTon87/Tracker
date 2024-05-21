@@ -30,11 +30,24 @@ final class TrackersViewController: UIViewController, UICollectionViewDelegateFl
         return datePicker
     }()
     
-    private lazy var categoryDataProvider: TrackerCategoryProtocol? = {
-        let trackerCategoryStore = TrackerCategoryStore.shared
+//    private lazy var categoryDataProvider: TrackerCategoryProtocol? = {
+//        let trackerCategoryStore = TrackerCategoryStore.shared
+//        do {
+//            try categoryDataProvider = CategoryDataProvider(trackerCategoryStore, delegate: self)
+//            return categoryDataProvider
+//        } catch {
+//            //            showError("Данные недоступны")
+//            return nil
+//        }
+//    }()
+    
+    private lazy var categoryViewModel = CategoryViewModel()
+    
+    private lazy var trackerDataProvider: TrackerProtocol? = {
+        let trackerStore = TrackerStore.shared
         do {
-            try categoryDataProvider = CategoryDataProvider(trackerCategoryStore, delegate: self)
-            return categoryDataProvider
+            try trackerDataProvider = TrackerDataProvider(trackerStore)
+            return trackerDataProvider
         } catch {
             //            showError("Данные недоступны")
             return nil
@@ -172,6 +185,7 @@ private extension TrackersViewController {
         view.addSubview(collectionView)
         collectionView.dataSource = self
         collectionView.delegate = self
+        collectionView.allowsMultipleSelection = false
         
         collectionView.register(TrackerCollectionViewCell.self, forCellWithReuseIdentifier: TrackerCollectionViewCell.cellReuseIdentifier)
         collectionView.register(TrackerHeaderCollectionView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: TrackerHeaderCollectionView.headerReuseIdentifier)
@@ -199,7 +213,7 @@ private extension TrackersViewController {
     }
     
     private func reloadData() {
-        categories = categoryDataProvider?.fetchCategory() ?? []
+        categories = categoryViewModel.getCategories()
         dateChanged()
     }
     
@@ -238,6 +252,36 @@ private extension TrackersViewController {
     private func isTrackerCompletedToday(id:UUID) -> Bool {
         let isSameDay = datePicker.date
         return recordDataProvider?.isTrackerCompletedToday(id, isSameDay) ?? false
+    }
+    
+    private func editTracker(at: IndexPath) {
+        let viewController = NewTrackerViewController()
+//        viewController.createHabit = true
+//        viewController.delegate = self
+        viewController.modalPresentationStyle = .automatic
+        present(UINavigationController(rootViewController: viewController), animated: true)
+        
+    }
+    
+    private func pinTracker(at: IndexPath) {
+        
+    }
+    
+    private func delTracker(_ indexPath: IndexPath) {
+        let delTracker = filteredCategories[indexPath.section].trackers[indexPath.item].id
+        let alert = UIAlertController(
+            title: "",
+            message: Constants.deleteAlertMessage,
+            preferredStyle: .actionSheet)
+        
+        alert.addAction(UIAlertAction(title: Constants.contextMenuDelLabel, style: .destructive, handler: { [weak self] action in
+            guard let self = self else { return }
+            self.trackerDataProvider?.delTracker(delTracker)
+            reloadData()
+        }))
+        alert.addAction(UIAlertAction(title: Constants.cancelButton, style: .cancel))
+        
+        self.present(alert, animated: true)
     }
 }
 
@@ -278,7 +322,32 @@ extension TrackersViewController: UICollectionViewDataSource {
         header.fillHeader(with: filteredCategories[indexPath.section])
         return header
     }
+    
+    func collectionView(_ collectionView: UICollectionView, contextMenuConfigurationForItemsAt indexPaths: [IndexPath], point: CGPoint) -> UIContextMenuConfiguration? {
+        guard indexPaths.count > 0 else { return nil }
+        
+        guard let indexPath = indexPaths.first else { return nil }
+        
+        return UIContextMenuConfiguration(actionProvider: { action in
+            return UIMenu(children: [
+                UIAction(title: Constants.contextMenuPinLabel) { [weak self] _ in
+                    guard let self = self else { return }
+                    self.pinTracker(at: indexPath)
+                },
+                UIAction(title: Constants.contextMenuEditLabel) { [weak self] _ in
+                    guard let self = self else { return }
+                    self.editTracker(at: indexPath)
+                },
+                UIAction(title: Constants.contextMenuDelLabel, attributes: .destructive) { [weak self] _ in
+                    guard let self = self else { return }
+                    self.delTracker(indexPath)
+                },
+            ])
+        })
+    }
+    
 }
+
 
 extension TrackersViewController: UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
@@ -313,10 +382,6 @@ extension TrackersViewController: AddTrackerViewControllerDelegate {
     func updateTrackers() {
         reloadData()
     }
-}
-
-extension TrackersViewController: DataProviderDelegate {
-    func update(_ update: CategoryUpdate) { }
 }
 
 extension TrackersViewController: RecordDataProviderDelegate {

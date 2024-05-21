@@ -19,6 +19,12 @@
 "trackersViewControllerName" = "Трекеры";
 "searchFieldPlaceholder" = "Поиск";
 
+"contextMenuPinLabel" = "Закрепить";
+"contextMenuEditLabel" = "Редактировать";
+"contextMenuDelLabel" = "Удалить";
+
+"deleteAlertMessage" = "Уверены, что хотите удалить трекер?";
+
 //MARK: - AddTrackerViewController
 "habitButtonLabel" = "Привычка";
 "eventButtonLabel" = "Нерегулярное событие";

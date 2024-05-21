@@ -121,9 +121,3 @@ extension ScheduleViewController: ScheduleTabelViewCellDelegate {
         }
     }
 }
-
-extension ScheduleViewController: NewTrackerViewControllerCallback {
-    func updateTableView(_ schedule: [Schedule]) {
-    }
-
-}
