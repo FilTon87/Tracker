@@ -33,7 +33,7 @@ final class AddTrackerViewController: UIViewController {
 //MARK: - View Settings
 private extension AddTrackerViewController {
     func setupViewController() {
-        view.backgroundColor = .white
+        view.backgroundColor = .yWhite
         addViewLabel()
         addSubView()
         addLayout()

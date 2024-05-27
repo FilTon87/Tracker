@@ -11,6 +11,7 @@ import CoreData
 protocol TrackerProtocol {
     func addTracker(_ tracker: Tracker, _ category: String) throws
     func delTracker(_ id: UUID)
+    func pinTracker(_ id: UUID)
 }
 
 final class TrackerDataProvider: NSObject {
@@ -47,5 +48,9 @@ extension TrackerDataProvider: TrackerProtocol {
     
     func delTracker(_ id: UUID) {
         try? dataStore.delTracker(id)
+    }
+    
+    func pinTracker(_ id: UUID) {
+        try? dataStore.pinTracker(id)
     }
 }

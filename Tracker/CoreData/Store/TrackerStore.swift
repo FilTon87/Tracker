@@ -42,6 +42,7 @@ extension TrackerStore {
         trackerCoreData.trackerColor = colorMarshalling.hexString(tracker.trackerColor)
         trackerCoreData.trackerEmoji = tracker.trackerEmoji
         trackerCoreData.isHabit = tracker.isHabit
+        trackerCoreData.isPinned = tracker.isPinned
         
         if let schedule = tracker.schedule {
             trackerCoreData.schedule = converSchedule.toInt32(schedule)
@@ -60,6 +61,7 @@ extension TrackerStore {
             throw TrackerStoreError.decodingErrorInvalidTracker
         }
         let isHabit = trackerCoreData.isHabit
+        let isPinned = trackerCoreData.isPinned
         let trackerColor = colorMarshalling.color(color)
         let trackerSchedule = converSchedule.toWeekDays(trackerCoreData.schedule)
         
@@ -69,7 +71,8 @@ extension TrackerStore {
             trackerColor: trackerColor,
             trackerEmoji: trackerEmoji,
             schedule: trackerSchedule,
-            isHabit: isHabit)
+            isHabit: isHabit,
+            isPinned: isPinned)
     }
     
     func delTracker(_ id: UUID) throws {
@@ -81,6 +84,24 @@ extension TrackerStore {
         if let result = try? context.fetch(request) {
             for object in result {
                 context.delete(object)
+            }
+            do {
+                try context.save()
+            } catch {
+                throw TrackerStoreError.decodingErrorInvalidTrackerID
+            }
+        }
+    }
+    
+    func pinTracker(_ id: UUID) throws {
+        let request = NSFetchRequest<TrackerCoreData>(entityName: "TrackerCoreData")
+        request.returnsObjectsAsFaults = false
+        request.predicate = NSPredicate(
+            format: "%K == %@", (\TrackerCoreData.id)._kvcKeyPathString!, id as CVarArg)
+        
+        if let result = try? context.fetch(request) {
+            for object in result {
+                object.isPinned = !object.isPinned
             }
             do {
                 try context.save()

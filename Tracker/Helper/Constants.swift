@@ -51,6 +51,8 @@ enum Constants {
     static let limit = 38
     static let limitMessage = String(format: localizedMessage, limit)
     
+    static let editingLabel = NSLocalizedString("editingLabel", comment: "")
+    
     //MARK: - CategoryViewController
     static let addCategoryButtonLabel = NSLocalizedString("addCategoryButtonLabel", comment: "")
     static let categoryPlaceholderLabel = NSLocalizedString("categoryPlaceholderLabel", comment: "")

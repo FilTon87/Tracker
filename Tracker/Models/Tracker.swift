@@ -14,4 +14,5 @@ struct Tracker {
     let trackerEmoji: String
     let schedule: [WeekDays]?
     let isHabit: Bool
+    let isPinned: Bool
 }

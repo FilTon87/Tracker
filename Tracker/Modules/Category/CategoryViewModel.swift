@@ -43,4 +43,12 @@ final class CategoryViewModel {
         try? dataStore.addCategory(category)
         getCategories()
     }
+    
+    func getIndexPath(_ selectedCategory: String) -> Int {
+        getCategories()
+        let searchingCategory = TrackerCategory(categoryTitle: selectedCategory, trackers: [])
+        guard let index = categories.firstIndex(of: searchingCategory) else { return 0 }
+        return index
+    }
+
 }

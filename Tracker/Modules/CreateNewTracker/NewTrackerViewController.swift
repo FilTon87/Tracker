@@ -15,7 +15,10 @@ protocol NewTrackerViewControllerDelegate: AnyObject {
 final class NewTrackerViewController: UIViewController {
     
     // MARK: - Public Properties
-    var createHabit: Bool = true
+    var createHabit: Bool = false
+    var isEdit: Bool = false
+    var editingTracker: Tracker?
+    
     weak var delegate: NewTrackerViewControllerDelegate?
     
     //MARK: - Private property
@@ -93,7 +96,7 @@ final class NewTrackerViewController: UIViewController {
 //MARK: - View Settings
 private extension NewTrackerViewController {
     func setupViewController() {
-        view.backgroundColor = .white
+        view.backgroundColor = .yWhite
         textField.delegate = self
         addViewLabel()
         configCell()
@@ -102,11 +105,20 @@ private extension NewTrackerViewController {
         addTarget()
         addTableView()
         addCollectionView()
+        if isEdit { editTracker() }
     }
     
     func addViewLabel() {
-        navigationItem.title = createHabit ? Constants.newHabbit : Constants.newEvent
+        let textLabel = switch isEdit {
+        case true: Constants.editingLabel
+        case false: switch createHabit {
+        case true: Constants.newHabbit
+        case false: Constants.newEvent
+           }
+        }
+        navigationItem.title = textLabel
     }
+    
 }
 
 
@@ -114,18 +126,18 @@ private extension NewTrackerViewController {
 private extension NewTrackerViewController {
     func addSubView() {
         [scrollView,
-        cancelButton,
+         cancelButton,
          createButton].forEach {
             view.addSubview($0)
         }
         
         scrollView.addSubview(mainStackView)
-
+        
         [textField,
          label].forEach {
             textFieldStackView.addArrangedSubview($0)
         }
-
+        
         [textFieldStackView,
          tableView,
          collectionView].forEach {
@@ -134,8 +146,8 @@ private extension NewTrackerViewController {
     }
     
     func addTarget() {
-        cancelButton.addTarget(self, action: #selector(didTapCancelButton), for: .touchUpInside)
         createButton.addTarget(self, action: #selector(didTapCreateButton), for: .touchUpInside)
+        cancelButton.addTarget(self, action: #selector(didTapCancelButton), for: .touchUpInside)
     }
     
     func showLabel() {
@@ -177,6 +189,7 @@ private extension NewTrackerViewController {
         }
         let color = UIColor(named: "\(trackerColor)")!
         
+        
         if createHabit {
             selectedSchedule.forEach { schedule.append($0.weekDay.self)
             }
@@ -190,7 +203,8 @@ private extension NewTrackerViewController {
             trackerColor: color,
             trackerEmoji: trackerEmoji,
             schedule: schedule,
-            isHabit: createHabit)
+            isHabit: createHabit,
+            isPinned: false)
         
         try? dataProvider?.addTracker(track, categoryTitle)
         
@@ -206,7 +220,7 @@ private extension NewTrackerViewController {
         [scrollView,
          mainStackView,
          textFieldStackView,
-            textField,
+         textField,
          cancelButton,
          createButton,
          tableView,
@@ -231,7 +245,7 @@ private extension NewTrackerViewController {
             
             textField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             textField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-
+            
             tableView.topAnchor.constraint(equalTo: textFieldStackView.bottomAnchor, constant: 24),
             tableView.heightAnchor.constraint(equalToConstant: heightOfTableView()),
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
@@ -361,83 +375,7 @@ extension NewTrackerViewController: UICollectionViewDelegateFlowLayout {
     }
 }
 
-
-private extension NewTrackerViewController {
-    
-    func selectСategory() {
-        let categoryViewController = CategoryViewController()
-        categoryViewController.delegate = self
-        categoryViewController.modalPresentationStyle = .automatic
-        present(UINavigationController(rootViewController: categoryViewController), animated: true)
-    }
-    
-    func selectShedule() {
-        let scheduleViewController = ScheduleViewController()
-        scheduleViewController.delegate = self
-        scheduleViewController.modalPresentationStyle = .automatic
-        print(selectedSchedule)
-        present(UINavigationController(rootViewController: scheduleViewController), animated: true)
-    }
-    
-    func checkTracker() {
-        if (createHabit) && (nameSelected && categorySelected && scheduleSelected && emojiSelected && colorSelected) {
-            createButton.isEnabled = true
-            createButton.backgroundColor = .yBlack
-        } else {
-            if (!createHabit) && (nameSelected && categorySelected && emojiSelected && colorSelected) {
-                createButton.isEnabled = true
-                createButton.backgroundColor = .yBlack
-            }
-        }
-    }
-}
-
-extension NewTrackerViewController: ScheduleViewControllerDelegate {
-    func configSchedule(schedule: [Schedule]) {
-        selectedSchedule = schedule
-        let subText: String
-        if schedule.count == WeekDays.allCases.count {
-            subText = Constants.everyDaySubtext
-        } else {
-            subText = schedule.map { $0.weekDay.shortWeekDaysName}.joined(separator: ", ")
-        }
-        updateCell(subText: subText, indexPath: IndexPath(row: 1, section: 0))
-        scheduleSelected = true
-        checkTracker()
-    }
-}
-
-extension NewTrackerViewController: CategoryViewControllerDelegate {
-    func configCategory(selectedCategory: String) {
-        let subText = selectedCategory
-        updateCell(subText: subText, indexPath: IndexPath(row: 0, section: 0))
-        categorySelected = true
-        checkTracker()
-    }
-}
-
-extension NewTrackerViewController: UITextFieldDelegate {
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        textField.resignFirstResponder()
-        if let enteredName = textField.text, !enteredName.isEmpty {
-            nameSelected = true
-            checkTracker()
-        }
-        return true
-    }
-    
-    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        let text = textField.text!.count
-        if range.length + range.location > text {
-            return false
-        }
-        let newLimit = text + string.count - range.length
-        if newLimit >= Constants.limit { showLabel() } else { hideLabel() }
-        return newLimit <= Constants.limit
-    }
-
-}
-
+//MARK: - UICollectionViewDataSource
 extension NewTrackerViewController: UICollectionViewDataSource {
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return propertiesData.trackerProperties.count
@@ -466,6 +404,7 @@ extension NewTrackerViewController: UICollectionViewDataSource {
     }
 }
 
+//MARK: - UICollectionViewDelegate
 extension NewTrackerViewController: UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
@@ -506,4 +445,106 @@ extension NewTrackerViewController: UICollectionViewDelegate {
             colorSelected = true
         }
     }
+}
+
+private extension NewTrackerViewController {
+    func selectСategory() {
+        let categoryViewController = CategoryViewController()
+        categoryViewController.delegate = self
+        
+        guard let cell = tableView.cellForRow(at: [0, 0]) as? NewTrackerTableViewCell else {
+            assertionFailure("No cell as NewTrackerTableViewCell")
+            return
+        }
+        if let searchigText = cell.detailTextLabel?.text {
+            categoryViewController.selectCategory(searchigText)
+        }
+        
+        
+        categoryViewController.modalPresentationStyle = .automatic
+        present(UINavigationController(rootViewController: categoryViewController), animated: true)
+    }
+    
+    func selectShedule() {
+        let scheduleViewController = ScheduleViewController()
+        scheduleViewController.delegate = self
+        scheduleViewController.modalPresentationStyle = .automatic
+        print(selectedSchedule)
+        present(UINavigationController(rootViewController: scheduleViewController), animated: true)
+    }
+    
+    func checkTracker() {
+        if (createHabit) && (nameSelected && categorySelected && scheduleSelected && emojiSelected && colorSelected) {
+            createButton.isEnabled = true
+            createButton.backgroundColor = .yBlack
+        } else {
+            if (!createHabit) && (nameSelected && categorySelected && emojiSelected && colorSelected) {
+                createButton.isEnabled = true
+                createButton.backgroundColor = .yBlack
+            }
+        }
+    }
+}
+
+//MARK: - ScheduleViewControllerDelegate
+extension NewTrackerViewController: ScheduleViewControllerDelegate {
+    func configSchedule(schedule: [Schedule]) {
+        selectedSchedule = schedule
+        let subText: String
+        if schedule.count == WeekDays.allCases.count {
+            subText = Constants.everyDaySubtext
+        } else {
+            subText = schedule.map { $0.weekDay.shortWeekDaysName}.joined(separator: ", ")
+        }
+        updateCell(subText: subText, indexPath: IndexPath(row: 1, section: 0))
+        scheduleSelected = true
+        checkTracker()
+    }
+}
+
+//MARK: - CategoryViewControllerDelegate
+extension NewTrackerViewController: CategoryViewControllerDelegate {
+    func configCategory(selectedCategory: String) {
+        let subText = selectedCategory
+        updateCell(subText: subText, indexPath: IndexPath(row: 0, section: 0))
+        categorySelected = true
+        checkTracker()
+    }
+}
+
+//MARK: - UITextFieldDelegate
+extension NewTrackerViewController: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        if let enteredName = textField.text, !enteredName.isEmpty {
+            nameSelected = true
+            checkTracker()
+        }
+        return true
+    }
+    
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        let text = textField.text!.count
+        if range.length + range.location > text {
+            return false
+        }
+        let newLimit = text + string.count - range.length
+        if newLimit >= Constants.limit { showLabel() } else { hideLabel() }
+        return newLimit <= Constants.limit
+    }
+}
+
+//MARK: - Editing Tracker
+private extension NewTrackerViewController {
+    func editTracker() {
+        textField.text = editingTracker?.trackerName
+        updateCell(subText: "Привет категория", indexPath: [0, 0])
+   }
+    
+    
+    
+//    func selectEmoji() {
+//        guard let editingEmoji = editingTracker?.trackerEmoji else { return }
+//        
+//    }
 }

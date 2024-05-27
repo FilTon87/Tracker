@@ -38,6 +38,8 @@
 "categoryLabel" = "Категория";
 "scheduleLabel" = "Расписание";
 "limitMessage" = "Ограничение %d символов";
+"editingLabel" = "Редактирование привычки";
+
 
 //MARK: - CategoryViewController
 "addCategoryButtonLabel" = "Добавить категорию";

@@ -7,7 +7,11 @@
 
 import UIKit
 
-final class TrackersViewController: UIViewController, UICollectionViewDelegateFlowLayout {
+final class TrackersViewController: UIViewController, UICollectionViewDelegateFlowLayout, NewTrackerViewControllerDelegate {
+    func cancelTrackerCreation() {
+        dismiss(animated: true)
+    }
+    
 
     // MARK: - Private Properties
     private var categories: [TrackerCategory] = []
@@ -29,17 +33,6 @@ final class TrackersViewController: UIViewController, UICollectionViewDelegateFl
         datePicker.addTarget(self, action: #selector(dateChanged), for: .valueChanged)
         return datePicker
     }()
-    
-//    private lazy var categoryDataProvider: TrackerCategoryProtocol? = {
-//        let trackerCategoryStore = TrackerCategoryStore.shared
-//        do {
-//            try categoryDataProvider = CategoryDataProvider(trackerCategoryStore, delegate: self)
-//            return categoryDataProvider
-//        } catch {
-//            //            showError("Данные недоступны")
-//            return nil
-//        }
-//    }()
     
     private lazy var categoryViewModel = CategoryViewModel()
     
@@ -102,7 +95,7 @@ final class TrackersViewController: UIViewController, UICollectionViewDelegateFl
 private extension TrackersViewController {
     
     private func setupViewController() {
-        view.backgroundColor = .white
+        view.backgroundColor = .yWhite
         datePicker.date = Date()
         addNavBar()
         addCollectionView()
@@ -112,6 +105,7 @@ private extension TrackersViewController {
     private func addNavBar() {
         navigationItem.leftBarButtonItem = addTrackerButton()
         navigationItem.rightBarButtonItem = addDateButton()
+        navigationController?.navigationBar.backgroundColor = .yWhite
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationItem.title = Constants.trackersViewControllerName
         addSearchField()
@@ -218,6 +212,8 @@ private extension TrackersViewController {
     }
     
     private func updateFilteredCategories() {
+        var pinnedTrackers: [Tracker] = []
+        
         let calendar = Calendar.current
         let selectedWeekDay = calendar.component(.weekday, from: datePicker.date)
         let searchText = (searchField.text ?? "").lowercased()
@@ -229,9 +225,13 @@ private extension TrackersViewController {
                 let dateCondition = tracker.schedule?.contains { weekDay in
                     weekDay.rawValue == selectedWeekDay
                 } == true
+                if tracker.isPinned == true {
+                    pinnedTrackers.append(tracker)
+                }
+                
                 return textCondition && dateCondition
             }
-            
+
             if  trackers.isEmpty {
                 return nil
             }
@@ -241,6 +241,12 @@ private extension TrackersViewController {
                 trackers: trackers
             )
         }
+        
+        if !pinnedTrackers.isEmpty {
+            let pinnedCategory = TrackerCategory(categoryTitle: "Pin", trackers: pinnedTrackers)
+            filteredCategories.insert(pinnedCategory, at: 0)
+        }
+
         collectionView.reloadData()
         reloadPlaceholder()
     }
@@ -254,17 +260,30 @@ private extension TrackersViewController {
         return recordDataProvider?.isTrackerCompletedToday(id, isSameDay) ?? false
     }
     
-    private func editTracker(at: IndexPath) {
+    private func editTracker(_ indexPath: IndexPath) {
         let viewController = NewTrackerViewController()
-//        viewController.createHabit = true
-//        viewController.delegate = self
+        viewController.delegate = self
+        viewController.isEdit = true
+        viewController.createHabit = filteredCategories[indexPath.section].trackers[indexPath.row].isHabit
+        viewController.editingTracker = Tracker(
+            id: filteredCategories[indexPath.section].trackers[indexPath.row].id,
+            trackerName: filteredCategories[indexPath.section].trackers[indexPath.row].trackerName,
+            trackerColor: filteredCategories[indexPath.section].trackers[indexPath.row].trackerColor,
+            trackerEmoji: filteredCategories[indexPath.section].trackers[indexPath.row].trackerEmoji,
+            schedule: filteredCategories[indexPath.section].trackers[indexPath.row].schedule,
+            isHabit: filteredCategories[indexPath.section].trackers[indexPath.row].isHabit,
+            isPinned: filteredCategories[indexPath.section].trackers[indexPath.row].isPinned)
         viewController.modalPresentationStyle = .automatic
         present(UINavigationController(rootViewController: viewController), animated: true)
         
     }
     
-    private func pinTracker(at: IndexPath) {
-        
+    private func pinTracker(_ indexPath: IndexPath) {
+        let pinedTracker = filteredCategories[indexPath.section].trackers[indexPath.item].id
+        trackerDataProvider?.pinTracker(pinedTracker)
+        reloadData()
+        updateFilteredCategories()
+
     }
     
     private func delTracker(_ indexPath: IndexPath) {
@@ -285,6 +304,7 @@ private extension TrackersViewController {
     }
 }
 
+// MARK: - UICollectionViewDataSource
 extension TrackersViewController: UICollectionViewDataSource {
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return filteredCategories.count
@@ -332,11 +352,11 @@ extension TrackersViewController: UICollectionViewDataSource {
             return UIMenu(children: [
                 UIAction(title: Constants.contextMenuPinLabel) { [weak self] _ in
                     guard let self = self else { return }
-                    self.pinTracker(at: indexPath)
+                    self.pinTracker(indexPath)
                 },
                 UIAction(title: Constants.contextMenuEditLabel) { [weak self] _ in
                     guard let self = self else { return }
-                    self.editTracker(at: indexPath)
+                    self.editTracker(indexPath)
                 },
                 UIAction(title: Constants.contextMenuDelLabel, attributes: .destructive) { [weak self] _ in
                     guard let self = self else { return }
@@ -345,10 +365,9 @@ extension TrackersViewController: UICollectionViewDataSource {
             ])
         })
     }
-    
 }
 
-
+// MARK: - UISearchBarDelegate
 extension TrackersViewController: UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         updateFilteredCategories()
@@ -359,6 +378,7 @@ extension TrackersViewController: UISearchBarDelegate {
     }
 }
 
+// MARK: - TrackerCellDelegate
 extension TrackersViewController: TrackerCellDelegate {
     func completeTracker(id: UUID, indexPath: IndexPath) {
         let currentDate = Date()
@@ -378,12 +398,14 @@ extension TrackersViewController: TrackerCellDelegate {
     }
 }
 
-extension TrackersViewController: AddTrackerViewControllerDelegate {    
+// MARK: - AddTrackerViewControllerDelegate
+extension TrackersViewController: AddTrackerViewControllerDelegate {
     func updateTrackers() {
         reloadData()
     }
 }
 
+// MARK: - RecordDataProviderDelegate
 extension TrackersViewController: RecordDataProviderDelegate {
     func update(_ update: RecordUpdate) {
         collectionView.performBatchUpdates {
@@ -392,8 +414,6 @@ extension TrackersViewController: RecordDataProviderDelegate {
             let deletedIndexPath = update.deleteIndexes.map { IndexPath(item: $0, section: 0) }
             collectionView.insertItems(at: insertIndexPath)
             collectionView.deleteItems(at: deletedIndexPath)
-//            collectionView.insertRows(at: insertIndexPath, with: .fade)
-//            collectionView.deleteRows(at: deletedIndexPath, with: .fade)
         }
     }
 }

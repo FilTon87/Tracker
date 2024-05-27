@@ -38,6 +38,7 @@
 "categoryLabel" = "Category";
 "scheduleLabel" = "Schedule";
 "limitMessage" = "The limit is %d characters";
+"editingLabel" = "Editing a habit";
 
 //MARK: - CategoryViewController
 "addCategoryButtonLabel" = "Add a category";

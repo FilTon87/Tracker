@@ -129,6 +129,7 @@ extension CategoryViewController: UITableViewDataSource, UITableViewDelegate {
         let record  = viewModel.object(at: indexPath)
         guard let selectedCategory = record?.categoryTitle else { return }
         tableView.cellForRow(at: indexPath)?.accessoryType = .checkmark
+        print("indexParh -> \(indexPath)")
         delegate?.configCategory(selectedCategory: selectedCategory)
         dismiss(animated: true)
     }
@@ -149,5 +150,14 @@ extension CategoryViewController: AddCategoryViewControllerDelegate {
     func addCategory(_ newCategory: TrackerCategory) {
         try? viewModel.addCategory(newCategory)
         tableView.reloadData()
+    }
+}
+
+extension CategoryViewController {
+    func selectCategory(_ selectedCategory: String) {
+        let index = viewModel.getIndexPath(selectedCategory)
+        let indexPath: IndexPath = [0, index]
+        print("indexPath после поиска -> \(indexPath)")
+        tableView.cellForRow(at: indexPath)?.accessoryType = .checkmark
     }
 }

@@ -17,6 +17,7 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
     weak var delegate: TrackerCellDelegate?
     
     private var isCompletedToday: Bool = false
+    private var isPinned: Bool = false
     private var trackerId: UUID?
     private var indexPath: IndexPath?
     
@@ -26,6 +27,7 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
     private let trackerNameLabel = UILabel()
     private let dayLabel = UILabel()
     private let doneTrackerButton = UIButton()
+    private let pinIcon = UIImageView()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -66,19 +68,24 @@ private extension TrackerCollectionViewCell {
         doneTrackerButton.layer.masksToBounds = true
         doneTrackerButton.backgroundColor = colorView.backgroundColor
         doneTrackerButton.addTarget(self, action: #selector(trackerButtonTapped), for: .touchUpInside)
+        
+        pinIcon.isHidden = true
+        pinIcon.image = UIImage(named: "pinIcon")
+        
     }
     
     func addSubView() {
         [colorView,
-        dayLabel,
-        doneTrackerButton].forEach {
+         dayLabel,
+         pinIcon,
+         doneTrackerButton].forEach {
             contentView.addSubview($0)
         }
         
         colorView.addSubview(emojiView)
         emojiView.addSubview(emojiLabel)
         colorView.addSubview(trackerNameLabel)
-
+        
     }
     
     func addLayout() {
@@ -87,6 +94,7 @@ private extension TrackerCollectionViewCell {
          emojiView,
          trackerNameLabel,
          dayLabel,
+         pinIcon,
          doneTrackerButton].forEach {
             $0.translatesAutoresizingMaskIntoConstraints = false
         }
@@ -116,7 +124,10 @@ private extension TrackerCollectionViewCell {
             doneTrackerButton.heightAnchor.constraint(equalToConstant: 34),
             doneTrackerButton.widthAnchor.constraint(equalToConstant: 34),
             doneTrackerButton.topAnchor.constraint(equalTo: colorView.bottomAnchor, constant: 8),
-            doneTrackerButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -12)
+            doneTrackerButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -12),
+            
+            pinIcon.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 12),
+            pinIcon.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -4)
         ])
     }
     
@@ -130,13 +141,14 @@ private extension TrackerCollectionViewCell {
             delegate?.uncompleteTracker(id: trackerId, indexPath: indexPath)
         } else {
             delegate?.completeTracker(id: trackerId, indexPath: indexPath)
-        }   
+        }
     }
 }
 
 extension TrackerCollectionViewCell {
     func fillCell(with model: Tracker, isCompletedToday: Bool, completedDays: Int, at indexPath: IndexPath) {
         self.isCompletedToday = isCompletedToday
+        self.isPinned = model.isPinned
         self.indexPath = indexPath
         trackerId = model.id
         configDaysLabel(with: completedDays)
@@ -147,6 +159,8 @@ extension TrackerCollectionViewCell {
         
         let doneButtonImage = isCompletedToday ? UIImage(systemName: "checkmark") : UIImage(systemName: "plus")
         doneTrackerButton.setImage(doneButtonImage, for: .normal)
+        
+        showPin()
     }
     
     private func configDaysLabel(with: Int) {
@@ -155,6 +169,14 @@ extension TrackerCollectionViewCell {
             NSLocalizedString(key, tableName: key, comment: ""),
             with)
         dayLabel.text = localizedFormat
+    }
+    
+    private func showPin() {
+        if isPinned {
+            pinIcon.isHidden = false
+        } else {
+            pinIcon.isHidden = true
+        }
     }
 }
 
