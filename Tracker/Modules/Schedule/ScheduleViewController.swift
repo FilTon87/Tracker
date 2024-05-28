@@ -31,7 +31,7 @@ final class ScheduleViewController: UIViewController {
 
 private extension ScheduleViewController {
     func setupViewController() {
-        view.backgroundColor = .white
+        view.backgroundColor = .yWhite
         addViewLabel()
         addSubView()
         addLayout()

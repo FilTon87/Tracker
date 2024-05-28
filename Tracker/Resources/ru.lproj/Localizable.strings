@@ -25,6 +25,8 @@
 
 "deleteAlertMessage" = "Уверены, что хотите удалить трекер?";
 
+"filtersButton" = "Фильтры";
+
 //MARK: - AddTrackerViewController
 "habitButtonLabel" = "Привычка";
 "eventButtonLabel" = "Нерегулярное событие";
@@ -84,3 +86,10 @@
 "friedayShort" = "Пт";
 "saturdayShort" = "Сб";
 "sundayShort" = "Вс";
+
+//MARK: - FiltersViewController
+"filtersViewControllerName" = "Фильтры";
+"filterAllTrackers" = "Все трекеры";
+"filterTodayTrackers" = "Трекеры на сегодня";
+"filterCompletedTrackers" = "Завершенные";
+"filterNotCompletedTrackers" = "Не завершенные";

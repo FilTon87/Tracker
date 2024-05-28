@@ -30,7 +30,7 @@ final class AddCategoryViewController: UIViewController {
 
 private extension AddCategoryViewController {
     func setupViewController() {
-        view.backgroundColor = .white
+        view.backgroundColor = .yWhite
         textField.delegate = self
         turnOffDoneButton()
         addViewLabel()

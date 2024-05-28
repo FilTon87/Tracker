@@ -34,6 +34,18 @@ final class TrackersViewController: UIViewController, UICollectionViewDelegateFl
         return datePicker
     }()
     
+    private lazy var filtersButton: UIButton = {
+        let button = UIButton()
+        button.setTitle(Constants.filtersButton, for: .normal)
+        button.titleLabel?.font = .systemFont(ofSize: 17)
+        button.backgroundColor = .yBlue
+        button.layer.cornerRadius = 16
+        button.layer.masksToBounds = true
+        button.addTarget(self, action: #selector(didTapFiltersButton), for: .touchUpInside)
+        
+        return button
+    }()
+    
     private lazy var categoryViewModel = CategoryViewModel()
     
     private lazy var trackerDataProvider: TrackerProtocol? = {
@@ -100,6 +112,7 @@ private extension TrackersViewController {
         addNavBar()
         addCollectionView()
         addPlaceholder()
+        addFiltersButton()
     }
     
     private func addNavBar() {
@@ -169,6 +182,18 @@ private extension TrackersViewController {
         ])
     }
     
+    private func addFiltersButton() {
+        view.addSubview(filtersButton)
+        filtersButton.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            filtersButton.heightAnchor.constraint(equalToConstant: 50),
+            filtersButton.widthAnchor.constraint(equalToConstant: 114),
+            filtersButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -25),
+            filtersButton.centerXAnchor.constraint(equalTo: view.centerXAnchor)
+        ])
+    }
+    
     @objc private func switchToCreateViewController() {
         let viewController = AddTrackerViewController()
         viewController.delegate = self
@@ -217,6 +242,7 @@ private extension TrackersViewController {
         let calendar = Calendar.current
         let selectedWeekDay = calendar.component(.weekday, from: datePicker.date)
         let searchText = (searchField.text ?? "").lowercased()
+        
         
         filteredCategories = categories.compactMap { category in
             let trackers = category.trackers.filter { tracker in
@@ -301,6 +327,12 @@ private extension TrackersViewController {
         alert.addAction(UIAlertAction(title: Constants.cancelButton, style: .cancel))
         
         self.present(alert, animated: true)
+    }
+    
+    @objc private func didTapFiltersButton() {
+        let viewController = FiltersViewController()
+//        viewController.delegate = self
+        present(UINavigationController(rootViewController: viewController), animated: true)        
     }
 }
 

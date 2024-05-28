@@ -18,7 +18,7 @@ final class StatsViewController: UIViewController {
 private extension StatsViewController {
     
     private func setupViewController() {
-        view.backgroundColor = .white
+        view.backgroundColor = .yWhite
         
     }
 }

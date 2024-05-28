@@ -25,6 +25,8 @@
 
 "deleteAlertMessage" = "Are you sure you want to delete the tracker?";
 
+"filtersButton" = "Filters";
+
 //MARK: - AddTrackerViewController
 "habitButtonLabel" = "Habit";
 "eventButtonLabel" = "Irregular event";
@@ -83,3 +85,11 @@
 "friedayShort" = "Fr";
 "saturdayShort" = "Sa";
 "sundayShort" = "Su";
+
+//MARK: - FiltersViewController
+"filtersViewControllerName" = "Filters";
+"filterAllTrackers" = "All trackers";
+"filterTodayTrackers" = "Today trackers";
+"filterCompletedTrackers" = "Completed";
+"filterNotCompletedTrackers" = "Not completed";
+

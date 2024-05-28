@@ -32,6 +32,8 @@ enum Constants {
     
     static let deleteAlertMessage = NSLocalizedString("deleteAlertMessage", comment: "")
     
+    static let filtersButton = NSLocalizedString("filtersButton", comment: "")
+    
     //MARK: - TrackerCollectionViewCell
     static let numberOfDays = "numberOfDays"
     
@@ -99,4 +101,12 @@ enum Constants {
     static let friedayShort = NSLocalizedString("friedayShort", comment: "")
     static let saturdayShort = NSLocalizedString("saturdayShort", comment: "")
     static let sundayShort = NSLocalizedString("sundayShort", comment: "")
+    
+    //MARK: - FiltersViewController
+    static let filtersViewControllerName = NSLocalizedString("filtersViewControllerName", comment: "")
+    static let filterAllTrackers = NSLocalizedString("filterAllTrackers", comment: "")
+    static let filterTodayTrackers = NSLocalizedString("filterTodayTrackers", comment: "")
+    static let filterCompletedTrackers = NSLocalizedString("filterCompletedTrackers", comment: "")
+    static let filterNotCompletedTrackers = NSLocalizedString("filterNotCompletedTrackers", comment: "")
+    
 }

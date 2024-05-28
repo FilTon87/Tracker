@@ -34,14 +34,15 @@ final class CategoryViewController: UIViewController {
     }
 }
 
+// MARK: - setupViewController
 private extension CategoryViewController {
     func setupViewController() {
-        view.backgroundColor = .white
+        view.backgroundColor = .yWhite
         addViewLabel()
         addSubView()
         addLayout()
         addTarget()
-        addTabelView()
+        addTableView()
         bindViewModel()
     }
     
@@ -100,7 +101,7 @@ private extension CategoryViewController {
         addCategoryButton.addTarget(self, action: #selector(didTapAddButton), for: .touchUpInside)
     }
     
-    func addTabelView() {
+    func addTableView() {
         tableView.delegate = self
         tableView.dataSource = self
         tableView.register(CategoryTabelViewCell.self, forCellReuseIdentifier: CategoryTabelViewCell.reuseIdentifier)
@@ -113,6 +114,7 @@ private extension CategoryViewController {
     }
 }
 
+// MARK: - UITableViewDataSource, UITableViewDelegate
 extension CategoryViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         viewModel.numbersOfRows
@@ -129,7 +131,6 @@ extension CategoryViewController: UITableViewDataSource, UITableViewDelegate {
         let record  = viewModel.object(at: indexPath)
         guard let selectedCategory = record?.categoryTitle else { return }
         tableView.cellForRow(at: indexPath)?.accessoryType = .checkmark
-        print("indexParh -> \(indexPath)")
         delegate?.configCategory(selectedCategory: selectedCategory)
         dismiss(animated: true)
     }
@@ -146,6 +147,7 @@ extension CategoryViewController: UITableViewDataSource, UITableViewDelegate {
     }
 }
 
+// MARK: - AddCategoryViewControllerDelegate
 extension CategoryViewController: AddCategoryViewControllerDelegate {
     func addCategory(_ newCategory: TrackerCategory) {
         try? viewModel.addCategory(newCategory)
@@ -157,7 +159,6 @@ extension CategoryViewController {
     func selectCategory(_ selectedCategory: String) {
         let index = viewModel.getIndexPath(selectedCategory)
         let indexPath: IndexPath = [0, index]
-        print("indexPath после поиска -> \(indexPath)")
         tableView.cellForRow(at: indexPath)?.accessoryType = .checkmark
     }
 }

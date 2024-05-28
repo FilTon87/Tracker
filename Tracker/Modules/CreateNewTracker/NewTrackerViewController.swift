@@ -469,7 +469,6 @@ private extension NewTrackerViewController {
         let scheduleViewController = ScheduleViewController()
         scheduleViewController.delegate = self
         scheduleViewController.modalPresentationStyle = .automatic
-        print(selectedSchedule)
         present(UINavigationController(rootViewController: scheduleViewController), animated: true)
     }
     
@@ -538,13 +537,6 @@ extension NewTrackerViewController: UITextFieldDelegate {
 private extension NewTrackerViewController {
     func editTracker() {
         textField.text = editingTracker?.trackerName
-        updateCell(subText: "Привет категория", indexPath: [0, 0])
+        self.updateCell(subText: "Привет категория", indexPath: [0, 0])
    }
-    
-    
-    
-//    func selectEmoji() {
-//        guard let editingEmoji = editingTracker?.trackerEmoji else { return }
-//        
-//    }
 }
