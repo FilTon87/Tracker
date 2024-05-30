@@ -93,3 +93,11 @@
 "filterCompletedTrackers" = "Completed";
 "filterNotCompletedTrackers" = "Not completed";
 
+//MARK: - StatsViewController
+"statsViewControllerName" = "Statistics";
+"statsPlaceholderLabel" = "There is nothing to analyze yet";
+"statsBestPeriod" = "Best period";
+"statsPerfectDays" = "Perfect days";
+"statsTrackersСompleted" = "Trackers completed";
+"statsAverageValue" = "Average value";
+

@@ -104,6 +104,7 @@ final class TrackersViewController: UIViewController, UICollectionViewDelegateFl
     }
 }
 
+// MARK: - Setup View
 private extension TrackersViewController {
     
     private func setupViewController() {
@@ -322,6 +323,7 @@ private extension TrackersViewController {
         alert.addAction(UIAlertAction(title: Constants.contextMenuDelLabel, style: .destructive, handler: { [weak self] action in
             guard let self = self else { return }
             self.trackerDataProvider?.delTracker(delTracker)
+            self.recordDataProvider?.delTrackerRecords(delTracker)
             reloadData()
         }))
         alert.addAction(UIAlertAction(title: Constants.cancelButton, style: .cancel))
@@ -425,7 +427,7 @@ extension TrackersViewController: TrackerCellDelegate {
     
     func uncompleteTracker(id: UUID, indexPath: IndexPath) {
         let delRecord = TrackerRecord(trackerID: id, trackerDoneDate: datePicker.date)
-        try! recordDataProvider?.delRecord(delRecord)
+        recordDataProvider?.delRecord(delRecord)
         collectionView.reloadItems(at: [indexPath])
     }
 }

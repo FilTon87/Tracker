@@ -22,16 +22,13 @@ final class NewTrackerTableViewCell: UITableViewCell {
 
 private extension NewTrackerTableViewCell {
     func setupCell() {
-        configCell()
-    }
-    
-    func configCell() {
         textLabel?.numberOfLines = 2
         detailTextLabel?.font = .systemFont(ofSize: 17, weight: .regular)
         detailTextLabel?.textColor = .yGray
         backgroundColor = .yBackground
         accessoryType = .disclosureIndicator
     }
+
 }
 
 extension UITableViewCell {

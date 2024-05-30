@@ -10,6 +10,8 @@
 		5D041DD92BF8A8EE009B8905 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 5D041DD72BF8A8EE009B8905 /* Localizable.strings */; };
 		5D041DE52BFB32F4009B8905 /* numberOfDays.stringsdict in Resources */ = {isa = PBXBuildFile; fileRef = 5D041DE32BFB32F4009B8905 /* numberOfDays.stringsdict */; };
 		5D041E8A2C04A95F009B8905 /* FiltersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D041E892C04A95F009B8905 /* FiltersViewController.swift */; };
+		5D041E8C2C05C97F009B8905 /* Statistic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D041E8B2C05C97E009B8905 /* Statistic.swift */; };
+		5D041E8E2C05CDCC009B8905 /* StatsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D041E8D2C05CDCC009B8905 /* StatsTableViewCell.swift */; };
 		5D06ADFA2B848903007F7E76 /* TrackersPlaceholder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D06ADF92B848903007F7E76 /* TrackersPlaceholder.swift */; };
 		5D09EC8A2BD295A20092AF86 /* ConvertSchedule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D09EC892BD295A20092AF86 /* ConvertSchedule.swift */; };
 		5D2110582BE4FAD1000CA701 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D2110572BE4FAD1000CA701 /* OnboardingView.swift */; };
@@ -65,6 +67,8 @@
 		5D041DF02BFB374F009B8905 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
 		5D041DF12BFB374F009B8905 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = ru; path = ru.lproj/numberOfDays.stringsdict; sourceTree = "<group>"; };
 		5D041E892C04A95F009B8905 /* FiltersViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FiltersViewController.swift; sourceTree = "<group>"; };
+		5D041E8B2C05C97E009B8905 /* Statistic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Statistic.swift; sourceTree = "<group>"; };
+		5D041E8D2C05CDCC009B8905 /* StatsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsTableViewCell.swift; sourceTree = "<group>"; };
 		5D06ADF92B848903007F7E76 /* TrackersPlaceholder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackersPlaceholder.swift; sourceTree = "<group>"; };
 		5D09EC892BD295A20092AF86 /* ConvertSchedule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConvertSchedule.swift; sourceTree = "<group>"; };
 		5D2110572BE4FAD1000CA701 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
@@ -153,6 +157,7 @@
 				5D49FE2B2B7122A1000D0FE0 /* NewTracker.swift */,
 				5D49FE312B72683D000D0FE0 /* WeekDays.swift */,
 				5D7AC0C92BA9D2BA00D9D41E /* Schedule.swift */,
+				5D041E8B2C05C97E009B8905 /* Statistic.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -244,6 +249,7 @@
 			isa = PBXGroup;
 			children = (
 				5DE853DA2B175E500004750C /* StatsViewController.swift */,
+				5D041E8D2C05CDCC009B8905 /* StatsTableViewCell.swift */,
 			);
 			path = Statistics;
 			sourceTree = "<group>";
@@ -428,6 +434,7 @@
 				5DE853C02B146F400004750C /* AppDelegate.swift in Sources */,
 				5D2122012BC51AB200B35D0F /* UIColorMarhalling.swift in Sources */,
 				5D49FE2A2B6E32D0000D0FE0 /* ScheduleViewController.swift in Sources */,
+				5D041E8C2C05C97F009B8905 /* Statistic.swift in Sources */,
 				5D09EC8A2BD295A20092AF86 /* ConvertSchedule.swift in Sources */,
 				5D49FE322B72683D000D0FE0 /* WeekDays.swift in Sources */,
 				5D041E8A2C04A95F009B8905 /* FiltersViewController.swift in Sources */,
@@ -446,6 +453,7 @@
 				5DE853DB2B175E500004750C /* StatsViewController.swift in Sources */,
 				5D89B5622BC1405500EC3B6D /* Tracker.xcdatamodeld in Sources */,
 				5DBED6412BF0AE2000FAB07A /* TableView.swift in Sources */,
+				5D041E8E2C05CDCC009B8905 /* StatsTableViewCell.swift in Sources */,
 				5DBED5F92BEE04A100FAB07A /* Constants.swift in Sources */,
 				5D89B5342BB2C91800EC3B6D /* AddCategoryViewController.swift in Sources */,
 				5DE853C22B146F400004750C /* SceneDelegate.swift in Sources */,

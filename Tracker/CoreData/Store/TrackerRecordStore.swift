@@ -62,7 +62,7 @@ extension TrackerRecordStore {
         request.predicate = NSPredicate(
             format: "(%K == %@) AND (%K == %@)",
             #keyPath(TrackerRecordCoreData.trackerID), id as CVarArg,
-            #keyPath(TrackerRecordCoreData.trackerDoneDate), date as CVarArg)
+            #keyPath(TrackerRecordCoreData.trackerDoneDate), date as NSDate)
         
         if let result = try? context.fetch(request) {
             for object in result {
@@ -87,4 +87,43 @@ extension TrackerRecordStore {
         let isSameDay = Calendar.current.isDate(trackerRecord.trackerDoneDate, inSameDayAs: date)
         return trackerRecord.trackerID == id && isSameDay
     }
+    
+    func getCompletedTrackers() -> Int {
+        guard let completedTrackers = try? fetchTrackerRecord() else { return 0 }
+        return completedTrackers.count
+    }
+    
+    func delTrackerRecords(_ id: UUID) throws {
+        let id = id
+        let request = NSFetchRequest<TrackerRecordCoreData>(entityName: "TrackerRecordCoreData")
+        request.returnsObjectsAsFaults = false
+        request.predicate = NSPredicate(
+            format: "(%K == %@)",
+            #keyPath(TrackerRecordCoreData.trackerID), id as CVarArg)
+        
+        if let result = try? context.fetch(request) {
+            for object in result {
+                context.delete(object)
+            }
+            do {
+                try context.save()
+            } catch {
+                throw TrackerRecordStoreError.decodingErrorInvalidTrackerID
+            }
+        }
+    }
+    
+    func getAverage() -> Int {
+        let request = NSFetchRequest<TrackerRecordCoreData>(entityName: "TrackerRecordCoreData")
+        request.resultType = .dictionaryResultType
+        request.returnsObjectsAsFaults = false
+        request.propertiesToFetch = ["trackerDoneDate"]
+        request.propertiesToGroupBy = ["trackerDoneDate", "trackerID"]
+        let trackerDays = try! context.fetch(request)
+        switch trackerDays.count == 0 {
+        case true: return 0
+        case false: return getCompletedTrackers() / trackerDays.count
+        }
+    }
+    
 }

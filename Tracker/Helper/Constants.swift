@@ -109,4 +109,13 @@ enum Constants {
     static let filterCompletedTrackers = NSLocalizedString("filterCompletedTrackers", comment: "")
     static let filterNotCompletedTrackers = NSLocalizedString("filterNotCompletedTrackers", comment: "")
     
+    //MARK: - StatsViewController
+    static let statsViewControllerName = NSLocalizedString("statsViewControllerName", comment: "")
+    static let statsPlaceholderLabel = NSLocalizedString("statsPlaceholderLabel", comment: "")
+    static let statsPlaceholderImage = "statsPlaceholder"
+    static let statsBestPeriod = NSLocalizedString("statsBestPeriod", comment: "")
+    static let statsPerfectDays = NSLocalizedString("statsPerfectDays", comment: "")
+    static let statsTrackersСompleted = NSLocalizedString("statsTrackersСompleted", comment: "")
+    static let statsAverageValue = NSLocalizedString("statsAverageValue", comment: "")
+    
 }

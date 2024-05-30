@@ -40,10 +40,10 @@ private extension TabBarController {
             switch $0 {
             case .trackers:
                 let trackersViewController = TrackersViewController()
-                return self.wrappedInNavigationControllr(with: trackersViewController, title: $0.title)
+                return self.wrappedInNavigationController(with: trackersViewController, title: $0.title)
             case .stats:
                 let statsViewController = StatsViewController()
-                return statsViewController
+                return self.wrappedInNavigationController(with: statsViewController, title: $0.title)
             }
         }
         self.viewControllers?.enumerated().forEach {
@@ -52,7 +52,7 @@ private extension TabBarController {
         }
     }
     
-    private func wrappedInNavigationControllr(with: UIViewController, title: Any?) -> UINavigationController {
+    private func wrappedInNavigationController(with: UIViewController, title: Any?) -> UINavigationController {
             return UINavigationController(rootViewController: with)
         }
 }

@@ -93,3 +93,11 @@
 "filterTodayTrackers" = "Трекеры на сегодня";
 "filterCompletedTrackers" = "Завершенные";
 "filterNotCompletedTrackers" = "Не завершенные";
+
+//MARK: - StatsViewController
+"statsViewControllerName" = "Статистика";
+"statsPlaceholderLabel" = "Анализировать пока нечего";
+"statsBestPeriod" = "Лучший период";
+"statsPerfectDays" = "Идеальные дни";
+"statsTrackersСompleted" = "Трекеров завершено";
+"statsAverageValue" = "Среднее значение";

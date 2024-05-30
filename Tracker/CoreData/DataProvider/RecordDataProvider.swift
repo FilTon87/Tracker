@@ -20,7 +20,8 @@ protocol RecordDataProviderDelegate: AnyObject {
 protocol RecordProtocol {
     func fetchTrackerRecord() throws -> [TrackerRecord]
     func addRecord(_ record: TrackerRecord) throws
-    func delRecord(_ record: TrackerRecord) throws
+    func delRecord(_ record: TrackerRecord)
+    func delTrackerRecords(_ id:UUID)
     func isTrackerCompletedToday(_ id: UUID, _ date: Date) -> Bool
 }
 
@@ -62,8 +63,8 @@ extension RecordDataProvider: RecordProtocol {
         try? dataStore.saveTrackerRecord(record)
     }
     
-    func delRecord(_ record: TrackerRecord) throws {
-        try? dataStore.delTrackerRecord(record)        
+    func delRecord(_ record: TrackerRecord) {
+        try? dataStore.delTrackerRecord(record)
     }
     
     func isTrackerCompletedToday(_ id: UUID, _ date: Date) -> Bool {
@@ -73,6 +74,11 @@ extension RecordDataProvider: RecordProtocol {
     func fetchTrackerRecord() throws -> [TrackerRecord] {
         try dataStore.fetchTrackerRecord()
     }
+    
+    func delTrackerRecords(_ id:UUID) {
+        try? dataStore.delTrackerRecords(id)
+    }
+    
 }
 
 
