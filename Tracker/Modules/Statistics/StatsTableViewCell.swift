@@ -72,6 +72,7 @@ final class StatsTableViewCell: UITableViewCell {
 
 private extension StatsTableViewCell {
     func setupCell() {
+        backgroundColor = .yWhite
         addLayout()
     }
     

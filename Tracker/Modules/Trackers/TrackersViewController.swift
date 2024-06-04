@@ -208,6 +208,7 @@ private extension TrackersViewController {
         view.addSubview(collectionView)
         collectionView.dataSource = self
         collectionView.delegate = self
+        collectionView.backgroundColor = .yWhite
         collectionView.allowsMultipleSelection = false
         
         collectionView.register(TrackerCollectionViewCell.self, forCellWithReuseIdentifier: TrackerCollectionViewCell.cellReuseIdentifier)
