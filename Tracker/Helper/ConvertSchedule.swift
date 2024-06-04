@@ -16,7 +16,7 @@ final class ConvertSchedule {
     func toWeekDays(_ value: Int32) -> [WeekDays] {
         var schedule: [WeekDays] = []
         let intArray = String(value).map({ Int(String($0))! })
-        intArray.map {
+        intArray.forEach {
             guard let weekDay = WeekDays(rawValue: $0) else { return }
             schedule.append(weekDay)
         }

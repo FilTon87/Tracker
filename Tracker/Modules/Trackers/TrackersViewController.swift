@@ -7,23 +7,26 @@
 
 import UIKit
 
+protocol TrackersViewControllerDelegate: AnyObject {
+    func applyFilter(_ filterNumber: Int)
+}
+
 final class TrackersViewController: UIViewController, UICollectionViewDelegateFlowLayout, NewTrackerViewControllerDelegate {
     func cancelTrackerCreation() {
         dismiss(animated: true)
     }
     
-
     // MARK: - Private Properties
+    private let defaults = UserDefaults.standard
     private var categories: [TrackerCategory] = []
     private var filteredCategories: [TrackerCategory] = []
-    private var completedTrackers: [TrackerRecord] = []
-    private var selectedDate = Date()
+    private var pinnedTrackers: [Tracker] = []
     private lazy var searchField = UISearchBar()
     private let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
     private let dataPlaceholder = TrackersPlaceholder(title: Constants.dataPlaceholderLabel, image: Constants.dataPlaceholderImage)
     private let searchPlaceholder = TrackersPlaceholder(title: Constants.searchPlaceholderLabel, image: Constants.searchPlaceholderImage)
     private let params = GeometricParams(cellCount: 4, leftInset: 16, rightInset: 16, cellSpacing: 9)
-
+    
     private lazy var datePicker: UIDatePicker = {
         let datePicker = UIDatePicker()
         datePicker.datePickerMode = .date
@@ -58,7 +61,7 @@ final class TrackersViewController: UIViewController, UICollectionViewDelegateFl
             return nil
         }
     }()
-
+    
     private lazy var recordDataProvider: RecordProtocol? = {
         let trackerRecordStore = TrackerRecordStore.shared
         do {
@@ -225,7 +228,7 @@ private extension TrackersViewController {
         dataPlaceholder.isHidden = true
         
         if !categories.isEmpty && filteredCategories.isEmpty {
-            dataPlaceholder.isHidden = false
+            searchPlaceholder.isHidden = false
         }
         if categories.isEmpty {
             dataPlaceholder.isHidden = false
@@ -234,16 +237,19 @@ private extension TrackersViewController {
     
     private func reloadData() {
         categories = categoryViewModel.getCategories()
+        searchPinTrackers(categories)
         dateChanged()
     }
     
     private func updateFilteredCategories() {
-        var pinnedTrackers: [Tracker] = []
-        
+        let filter = defaults.integer(forKey: "selectedFilter")
+        applyFilter(filter)
+    }
+    
+    private func filterCategories() {
         let calendar = Calendar.current
         let selectedWeekDay = calendar.component(.weekday, from: datePicker.date)
         let searchText = (searchField.text ?? "").lowercased()
-        
         
         filteredCategories = categories.compactMap { category in
             let trackers = category.trackers.filter { tracker in
@@ -252,13 +258,10 @@ private extension TrackersViewController {
                 let dateCondition = tracker.schedule?.contains { weekDay in
                     weekDay.rawValue == selectedWeekDay
                 } == true
-                if tracker.isPinned == true {
-                    pinnedTrackers.append(tracker)
-                }
-                
-                return textCondition && dateCondition
+                let pinCondition = tracker.isPinned != true
+                return textCondition && dateCondition && pinCondition
             }
-
+            
             if  trackers.isEmpty {
                 return nil
             }
@@ -269,13 +272,21 @@ private extension TrackersViewController {
             )
         }
         
-        if !pinnedTrackers.isEmpty {
-            let pinnedCategory = TrackerCategory(categoryTitle: "Pin", trackers: pinnedTrackers)
+        switch pinnedTrackers.isEmpty {
+        case true: break
+        case false: do {
+            let pinnedCategory = TrackerCategory(categoryTitle: Constants.pinnedCategory, trackers: pinnedTrackers)
             filteredCategories.insert(pinnedCategory, at: 0)
         }
-
+        }
+        
         collectionView.reloadData()
         reloadPlaceholder()
+        
+        switch filteredCategories.isEmpty {
+        case true: filtersButton.isHidden = true
+        case false: filtersButton.isHidden = false
+        }
     }
     
     @objc private func dateChanged() {
@@ -296,22 +307,64 @@ private extension TrackersViewController {
             id: filteredCategories[indexPath.section].trackers[indexPath.row].id,
             trackerName: filteredCategories[indexPath.section].trackers[indexPath.row].trackerName,
             trackerColor: filteredCategories[indexPath.section].trackers[indexPath.row].trackerColor,
+            trackerColorStr: filteredCategories[indexPath.section].trackers[indexPath.row].trackerColorStr,
             trackerEmoji: filteredCategories[indexPath.section].trackers[indexPath.row].trackerEmoji,
             schedule: filteredCategories[indexPath.section].trackers[indexPath.row].schedule,
             isHabit: filteredCategories[indexPath.section].trackers[indexPath.row].isHabit,
             isPinned: filteredCategories[indexPath.section].trackers[indexPath.row].isPinned)
+        viewController.editingCategory = TrackerCategory(
+            categoryTitle: filteredCategories[indexPath.section].categoryTitle,
+            trackers: filteredCategories[indexPath.section].trackers) 
+        let id = filteredCategories[indexPath.section].trackers[indexPath.row].id
+        viewController.completedDays = recordDataProvider?.getCompletedRecordsForTracker(id)
         viewController.modalPresentationStyle = .automatic
         present(UINavigationController(rootViewController: viewController), animated: true)
-        
     }
     
     private func pinTracker(_ indexPath: IndexPath) {
+        let pinedTracker = filteredCategories[indexPath.section].trackers[indexPath.item]
+        switch isPinned(indexPath) {
+        case true: do {
+            pinnedTrackers.removeAll { tracker in
+                tracker.id == pinedTracker.id
+            }
+            savePinTracker(pinedTracker.id)
+        }
+        case false: do {
+            trackerDataProvider?.pinTracker(pinedTracker.id)
+            reloadData()
+            updateFilteredCategories()
+        }
+        }
+    }
+    
+    private func isPinned(_ indexPath: IndexPath) -> Bool {
         let pinedTracker = filteredCategories[indexPath.section].trackers[indexPath.item].id
-        trackerDataProvider?.pinTracker(pinedTracker)
+        return pinnedTrackers.contains { tracker in
+            pinedTracker == tracker.id
+        }
+    }
+    
+    private func savePinTracker(_ id: UUID) {
+        trackerDataProvider?.pinTracker(id)
         reloadData()
         updateFilteredCategories()
-
     }
+    
+    private func searchPinTrackers (_ categories: [TrackerCategory]) {
+        for category in categories {
+            category.trackers.forEach {
+                switch $0.isPinned {
+                case true: do {
+                    pinnedTrackers.append($0)
+                    }
+                case false: break
+                }
+            }
+        }
+    }
+    
+
     
     private func delTracker(_ indexPath: IndexPath) {
         let delTracker = filteredCategories[indexPath.section].trackers[indexPath.item].id
@@ -333,8 +386,8 @@ private extension TrackersViewController {
     
     @objc private func didTapFiltersButton() {
         let viewController = FiltersViewController()
-//        viewController.delegate = self
-        present(UINavigationController(rootViewController: viewController), animated: true)        
+        viewController.delegate = self
+        present(UINavigationController(rootViewController: viewController), animated: true)
     }
 }
 
@@ -364,7 +417,6 @@ extension TrackersViewController: UICollectionViewDataSource {
             isCompletedToday: isCompletedToday,
             completedDays: completedDays!,
             at: indexPath)
-        
         return cell
     }
     
@@ -382,9 +434,10 @@ extension TrackersViewController: UICollectionViewDataSource {
         
         guard let indexPath = indexPaths.first else { return nil }
         
-        return UIContextMenuConfiguration(actionProvider: { action in
+        return UIContextMenuConfiguration(actionProvider: { [weak self] action in
+            guard let self = self else { return nil }
             return UIMenu(children: [
-                UIAction(title: Constants.contextMenuPinLabel) { [weak self] _ in
+                UIAction(title: self.isPinned(indexPath) ? Constants.contextMenuUnpinLabel: Constants.contextMenuPinLabel) { [weak self] _ in
                     guard let self = self else { return }
                     self.pinTracker(indexPath)
                 },
@@ -450,4 +503,65 @@ extension TrackersViewController: RecordDataProviderDelegate {
             collectionView.deleteItems(at: deletedIndexPath)
         }
     }
+}
+
+// MARK: - TrackersViewControllerDelegate
+extension TrackersViewController: TrackersViewControllerDelegate {
+    func applyFilter(_ filterNumber: Int) {
+        switch filterNumber {
+        case 0: filterAllTrackers()
+        case 1: filterTodayTrackers()
+        case 2: filterCompletedTrackers()
+        case 3: filterNotCompletedTrackers()
+        default: filterAllTrackers()
+        }
+    }
+}
+
+// MARK: - Filtration
+private extension TrackersViewController {
+    func filterAllTrackers() {
+        filterCategories()
+    }
+    
+    func filterTodayTrackers() {
+        datePicker.date = Date()
+        filterCategories()
+    }
+    
+    func filterCompletedTrackers() {
+        filteredCategories = categories.compactMap { category in
+            let trackers = category.trackers.filter { tracker in
+                let completedToday = isTrackerCompletedToday(id: tracker.id)
+                return completedToday
+            }
+            if trackers.isEmpty { return nil }
+            
+            return TrackerCategory(
+                categoryTitle: category.categoryTitle,
+                trackers: trackers
+            )
+        }
+        collectionView.reloadData()
+        reloadPlaceholder()
+    }
+    
+    
+    func filterNotCompletedTrackers() {
+        filteredCategories = categories.compactMap { category in
+            let trackers = category.trackers.filter { tracker in
+                let completedToday = !isTrackerCompletedToday(id: tracker.id)
+                return completedToday
+            }
+            if trackers.isEmpty { return nil }
+            
+            return TrackerCategory(
+                categoryTitle: category.categoryTitle,
+                trackers: trackers
+            )
+        }
+        collectionView.reloadData()
+        reloadPlaceholder()
+    }
+    
 }

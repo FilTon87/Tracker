@@ -23,6 +23,7 @@ protocol RecordProtocol {
     func delRecord(_ record: TrackerRecord)
     func delTrackerRecords(_ id:UUID)
     func isTrackerCompletedToday(_ id: UUID, _ date: Date) -> Bool
+    func getCompletedRecordsForTracker(_ id: UUID) -> Int
 }
 
 
@@ -77,6 +78,10 @@ extension RecordDataProvider: RecordProtocol {
     
     func delTrackerRecords(_ id:UUID) {
         try? dataStore.delTrackerRecords(id)
+    }
+    
+    func getCompletedRecordsForTracker(_ id: UUID) -> Int {
+        dataStore.getCompletedRecordsForTracker(id)
     }
     
 }

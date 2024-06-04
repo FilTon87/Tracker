@@ -18,10 +18,11 @@
 "searchPlaceholderLabel" = "Ничего не найдено";
 "trackersViewControllerName" = "Трекеры";
 "searchFieldPlaceholder" = "Поиск";
-
 "contextMenuPinLabel" = "Закрепить";
+"contextMenuUnpinLabel" = "Открепить";
 "contextMenuEditLabel" = "Редактировать";
 "contextMenuDelLabel" = "Удалить";
+"pinnedCategory" = "Закрепленные";
 
 "deleteAlertMessage" = "Уверены, что хотите удалить трекер?";
 
@@ -41,7 +42,7 @@
 "scheduleLabel" = "Расписание";
 "limitMessage" = "Ограничение %d символов";
 "editingLabel" = "Редактирование привычки";
-
+"saveButtonLabel" = "Сохранить";
 
 //MARK: - CategoryViewController
 "addCategoryButtonLabel" = "Добавить категорию";

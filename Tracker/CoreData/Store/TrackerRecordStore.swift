@@ -126,4 +126,18 @@ extension TrackerRecordStore {
         }
     }
     
+    func getCompletedRecordsForTracker(_ id: UUID) -> Int {
+        let id = id
+        var answer = 0
+        let request = NSFetchRequest<TrackerRecordCoreData>(entityName: "TrackerRecordCoreData")
+        request.returnsObjectsAsFaults = false
+        request.predicate = NSPredicate(
+            format: "(%K == %@)",
+            #keyPath(TrackerRecordCoreData.trackerID), id as CVarArg)
+        
+        if let result = try? context.fetch(request) {
+            answer = result.count
+        }
+        return answer
+    }
 }

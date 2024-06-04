@@ -77,9 +77,10 @@ private extension StatsTableViewCell {
     
     func addLayout() {
         contentView.addSubview(gradientView)
-        gradientView.addSubview(cellView)
+        contentView.addSubview(cellView)
         cellView.addSubview(statisticNameLabel)
         cellView.addSubview(statisticValueLabel)
+        gradientView.layer.addSublayer(gradientLayer)
         
         cellView.translatesAutoresizingMaskIntoConstraints = false
         gradientView.translatesAutoresizingMaskIntoConstraints = false

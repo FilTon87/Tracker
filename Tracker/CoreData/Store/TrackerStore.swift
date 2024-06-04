@@ -40,6 +40,7 @@ extension TrackerStore {
         trackerCoreData.id = tracker.id
         trackerCoreData.trackerName = tracker.trackerName
         trackerCoreData.trackerColor = colorMarshalling.hexString(tracker.trackerColor)
+        trackerCoreData.trackerColorStr = tracker.trackerColorStr
         trackerCoreData.trackerEmoji = tracker.trackerEmoji
         trackerCoreData.isHabit = tracker.isHabit
         trackerCoreData.isPinned = tracker.isPinned
@@ -57,6 +58,7 @@ extension TrackerStore {
         guard let id = trackerCoreData.id,
               let trackerName = trackerCoreData.trackerName,
               let trackerEmoji = trackerCoreData.trackerEmoji,
+              let trackerColorStr = trackerCoreData.trackerColorStr,
               let color = trackerCoreData.trackerColor else {
             throw TrackerStoreError.decodingErrorInvalidTracker
         }
@@ -69,6 +71,7 @@ extension TrackerStore {
             id: id,
             trackerName: trackerName,
             trackerColor: trackerColor,
+            trackerColorStr: trackerColorStr,
             trackerEmoji: trackerEmoji,
             schedule: trackerSchedule,
             isHabit: isHabit,
@@ -110,5 +113,5 @@ extension TrackerStore {
             }
         }
     }
-    
+
 }

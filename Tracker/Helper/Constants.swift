@@ -25,13 +25,12 @@ enum Constants {
     static let searchPlaceholderImage = "Error"
     static let trackersViewControllerName = NSLocalizedString("trackersViewControllerName", comment: "")
     static let searchFieldPlaceholder = NSLocalizedString("searchFieldPlaceholder", comment: "")
-    
     static let contextMenuPinLabel = NSLocalizedString("contextMenuPinLabel", comment: "")
+    static let contextMenuUnpinLabel = NSLocalizedString("contextMenuUnpinLabel", comment: "")
     static let contextMenuEditLabel = NSLocalizedString("contextMenuEditLabel", comment: "")
     static let contextMenuDelLabel = NSLocalizedString("contextMenuDelLabel", comment: "")
-    
+    static let pinnedCategory = NSLocalizedString("pinnedCategory", comment: "")
     static let deleteAlertMessage = NSLocalizedString("deleteAlertMessage", comment: "")
-    
     static let filtersButton = NSLocalizedString("filtersButton", comment: "")
     
     //MARK: - TrackerCollectionViewCell
@@ -52,8 +51,8 @@ enum Constants {
     static let localizedMessage = NSLocalizedString("limitMessage", comment: "")
     static let limit = 38
     static let limitMessage = String(format: localizedMessage, limit)
-    
     static let editingLabel = NSLocalizedString("editingLabel", comment: "")
+    static let saveButtonLabel = NSLocalizedString("saveButtonLabel", comment: "")
     
     //MARK: - CategoryViewController
     static let addCategoryButtonLabel = NSLocalizedString("addCategoryButtonLabel", comment: "")

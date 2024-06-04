@@ -18,10 +18,11 @@
 "searchPlaceholderLabel" = "Nothing was found";
 "trackersViewControllerName" = "Trackers";
 "searchFieldPlaceholder" = "Search";
-
 "contextMenuPinLabel" = "Pin";
+"contextMenuUnpinLabel" = "Unpin";
 "contextMenuEditLabel" = "Edit";
 "contextMenuDelLabel" = "Delete";
+"pinnedCategory" = "Pin";
 
 "deleteAlertMessage" = "Are you sure you want to delete the tracker?";
 
@@ -41,6 +42,7 @@
 "scheduleLabel" = "Schedule";
 "limitMessage" = "The limit is %d characters";
 "editingLabel" = "Editing a habit";
+"saveButtonLabel" = "Save";
 
 //MARK: - CategoryViewController
 "addCategoryButtonLabel" = "Add a category";

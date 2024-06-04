@@ -15,6 +15,7 @@ final class AddCategoryViewController: UIViewController {
     
     // MARK: - Public Properties
     weak var delegate: AddCategoryViewControllerDelegate?
+    var category: String?
     
     //MARK: - Private property
     private lazy var doneButton = BlackButton(title: Constants.doneButtonLabel)

@@ -71,6 +71,7 @@ private extension ScheduleViewController {
     func addTabelView() {
         tableView.delegate = self
         tableView.dataSource = self
+        tableView.allowsSelection = false
         tableView.register(ScheduleTabelViewCell.self, forCellReuseIdentifier: ScheduleTabelViewCell.reuseIdentifier)
     }
     

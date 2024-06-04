@@ -71,7 +71,6 @@ private extension TrackerCollectionViewCell {
         
         pinIcon.isHidden = true
         pinIcon.image = UIImage(named: "pinIcon")
-        
     }
     
     func addSubView() {
@@ -172,10 +171,9 @@ extension TrackerCollectionViewCell {
     }
     
     private func showPin() {
-        if isPinned {
-            pinIcon.isHidden = false
-        } else {
-            pinIcon.isHidden = true
+        switch isPinned {
+        case true: do { pinIcon.isHidden = false }
+        case false: do { pinIcon.isHidden = true }
         }
     }
 }

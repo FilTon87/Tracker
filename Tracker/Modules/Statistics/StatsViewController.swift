@@ -71,12 +71,15 @@ private extension StatsViewController {
         view.addSubview(tableView)
         tableView.delegate = self
         tableView.dataSource = self
+        tableView.backgroundColor = .yWhite
         tableView.translatesAutoresizingMaskIntoConstraints = false
+        tableView.allowsSelection = false
+        tableView.isScrollEnabled = false
         tableView.separatorColor = UIColor.clear
         tableView.register(StatsTableViewCell.self, forCellReuseIdentifier: StatsTableViewCell.reuseIdentifier)
         
         NSLayoutConstraint.activate([
-            tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 70),
+            tableView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
             tableView.heightAnchor.constraint(equalToConstant: 408),
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10),
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10)
@@ -112,10 +115,6 @@ extension StatsViewController: UITableViewDataSource {
         return cell
     }
     
-    func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: true)
-    }
-    
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         102
     }
@@ -123,18 +122,5 @@ extension StatsViewController: UITableViewDataSource {
 
 //MARK: - UITableViewDelegate
 extension StatsViewController: UITableViewDelegate {
-    
-    
-    
-//    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-//        let isLastCell = indexPath.row == statistics.count - 1
-//        let defaultInset = tableView.separatorInset
-//        
-//        if isLastCell {
-//            cell.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
-//        } else {
-//            cell.separatorInset = defaultInset
-//        }
-//    }
     
 }

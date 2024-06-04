@@ -11,9 +11,10 @@ import UIKit
 final class FiltersViewController: UIViewController {
     
     // MARK: - Public Properties
-//    weak var delegate: CategoryViewControllerDelegate?
+    weak var delegate: TrackersViewControllerDelegate?
     
     //MARK: - Private property
+    private let defaults = UserDefaults.standard
     private lazy var tableView = TableView(frame: .zero, style: .plain)
     private let filters: [String] = [Constants.filterAllTrackers, Constants.filterTodayTrackers, Constants.filterCompletedTrackers, Constants.filterNotCompletedTrackers]
     
@@ -21,6 +22,11 @@ final class FiltersViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViewController()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        addCheckmark()
     }
 }
 
@@ -33,6 +39,13 @@ private extension FiltersViewController {
         addLayout()
         addTableView()
     }
+    
+    func addCheckmark() {
+        var row: Int = 0
+        row = defaults.integer(forKey: "selectedFilter")
+        let indexPath = IndexPath(row: row, section: 0)
+        tableView.cellForRow(at: indexPath)?.accessoryType = .checkmark
+        }
     
     func addViewLabel() {
         navigationItem.title = Constants.filtersViewControllerName
@@ -59,6 +72,7 @@ private extension FiltersViewController {
         tableView.layer.cornerRadius = 16
         tableView.layer.masksToBounds = true
         tableView.register(CategoryTabelViewCell.self, forCellReuseIdentifier: CategoryTabelViewCell.reuseIdentifier)
+        addCheckmark()
     }
 }
 
@@ -73,13 +87,15 @@ extension FiltersViewController: UITableViewDataSource {
         cell.textLabel?.text = filters[indexPath.row]
         return cell
     }
+    
 }
 
 // MARK: - UITableViewDelegate
 extension FiltersViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.cellForRow(at: indexPath)?.accessoryType = .checkmark
-//        delegate?.configCategory(selectedCategory: selectedCategory)
+        delegate?.applyFilter(indexPath.row)
+        defaults.setValue(indexPath.row, forKey: "selectedFilter")
         dismiss(animated: true)
     }
     
