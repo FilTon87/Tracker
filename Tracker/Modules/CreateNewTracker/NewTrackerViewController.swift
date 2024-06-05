@@ -544,7 +544,6 @@ extension NewTrackerViewController: UICollectionViewDelegate {
                 preconditionFailure("Failed to cast UICollectionViewCell as NewTrackerCollectionViewCell")
             }
             cell.selectCell(model: propertiesData, at: indexPath)
-            print("selected indexPath = \(indexPath)")
             selectedColor = indexPath.row
             trackerColor = propertiesData.trackerProperties[indexPath.section].properties[indexPath.row]
             colorSelected = true
@@ -690,14 +689,7 @@ private extension NewTrackerViewController {
         if let emoji = editingTracker?.trackerEmoji {
             guard let index = propertiesData.trackerProperties[0].properties.firstIndex(of: emoji) else { return }
             let indexPath = IndexPath(row: index, section: 0)
-            guard let cell = collectionView.cellForItem(at: indexPath) as? NewTrackerCollectionViewCell
-            else {
-                preconditionFailure("Failed to cast UICollectionViewCell as NewTrackerCollectionViewCell")
-            }
-            cell.selectCell(model: propertiesData, at: indexPath)
-            selectedEmoji = indexPath.row
-            trackerEmoji = propertiesData.trackerProperties[indexPath.section].properties[indexPath.row]
-            emojiSelected = true
+            collectionView(collectionView, didSelectItemAt: indexPath)
         }
     }
     
@@ -705,12 +697,7 @@ private extension NewTrackerViewController {
         if let color = editingTracker?.trackerColorStr {
             guard let index = propertiesData.trackerProperties[1].properties.firstIndex(of: color) else { return }
             let indexPath = IndexPath(row: index, section: 1)
-            self.collectionView.selectItem(at: indexPath, animated: false, scrollPosition: [])
-            guard let cell = collectionView.cellForItem(at: indexPath) as? NewTrackerCollectionViewCell
-            else {
-                preconditionFailure("Failed to cast UICollectionViewCell as NewTrackerCollectionViewCell")
-            }
-            cell.selectCell(model: propertiesData, at: indexPath)
+            collectionView.layoutIfNeeded()
             selectedColor = indexPath.row
             trackerColor = propertiesData.trackerProperties[indexPath.section].properties[indexPath.row]
             colorSelected = true

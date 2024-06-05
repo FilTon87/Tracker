@@ -80,9 +80,9 @@ extension NewTrackerCollectionViewCell {
             cellLabel.backgroundColor = .yLightGray
         } else {
             let colorName = model.trackerProperties[indexPath.section].properties[indexPath.row]
-            let color = UIColor(named: "\(colorName)")
+            let color = UIColor(named: "\(colorName)")?.withAlphaComponent(0.3)
             cellView.layer.borderWidth = 3
-            cellView.layer.borderColor = color?.cgColor            
+            cellView.layer.borderColor = color?.cgColor
         }
     }
     
