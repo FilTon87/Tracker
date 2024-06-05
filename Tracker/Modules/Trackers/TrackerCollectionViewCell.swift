@@ -28,6 +28,7 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
     private let dayLabel = UILabel()
     private let doneTrackerButton = UIButton()
     private let pinIcon = UIImageView()
+    private let analyticsService = YandexMobileMetrica()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -37,11 +38,7 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
 }
-
-
-
 
 private extension TrackerCollectionViewCell {
     func setupCell() {
@@ -139,6 +136,7 @@ private extension TrackerCollectionViewCell {
             assertionFailure("No tracker ID or IndexPath")
             return
         }
+        analyticsService.report(event: "completeTrackerButtonTapped", params: ["event":"click", "screen":"Main", "item":"track"])
         
         if isCompletedToday {
             delegate?.uncompleteTracker(id: trackerId, indexPath: indexPath)
@@ -180,6 +178,7 @@ extension TrackerCollectionViewCell {
         case false: do { pinIcon.isHidden = true }
         }
     }
+    
 }
 
 extension UICollectionViewCell {

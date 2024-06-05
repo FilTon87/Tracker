@@ -26,6 +26,7 @@ final class TrackersViewController: UIViewController, UICollectionViewDelegateFl
     private let dataPlaceholder = TrackersPlaceholder(title: Constants.dataPlaceholderLabel, image: Constants.dataPlaceholderImage)
     private let searchPlaceholder = TrackersPlaceholder(title: Constants.searchPlaceholderLabel, image: Constants.searchPlaceholderImage)
     private let params = GeometricParams(cellCount: 4, leftInset: 16, rightInset: 16, cellSpacing: 9)
+    private let analyticsService = YandexMobileMetrica()
     
     private lazy var datePicker: UIDatePicker = {
         let datePicker = UIDatePicker()
@@ -74,6 +75,16 @@ final class TrackersViewController: UIViewController, UICollectionViewDelegateFl
     }()
     
     // MARK: - View Life Cycles
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        analyticsService.report(event: "openTrackersViewController", params: ["event":"open", "screen":"Main"])
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        analyticsService.report(event: "closeTrackersViewController", params: ["event":"close", "screen":"Main"])
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViewController()
@@ -138,6 +149,7 @@ private extension TrackersViewController {
     }
     
     private func addTrackerButton() -> UIBarButtonItem {
+        analyticsService.report(event: "addTrackerButtonTapped", params: ["event":"click", "screen":"Main", "item":"add_track"])
         let button = UIButton(type: .system)
         button.setImage(
             UIImage(named: "Plus")?.withRenderingMode(.alwaysTemplate),
@@ -386,6 +398,7 @@ private extension TrackersViewController {
     }
     
     @objc private func didTapFiltersButton() {
+        analyticsService.report(event: "filterButtonTapped", params: ["event":"click", "screen":"Main", "item":"filter"])
         let viewController = FiltersViewController()
         viewController.delegate = self
         present(UINavigationController(rootViewController: viewController), animated: true)
@@ -444,10 +457,12 @@ extension TrackersViewController: UICollectionViewDataSource {
                 },
                 UIAction(title: Constants.contextMenuEditLabel) { [weak self] _ in
                     guard let self = self else { return }
+                    analyticsService.report(event: "editTrackerSelected", params: ["event":"click", "screen":"Main", "item":"edit"])
                     self.editTracker(indexPath)
                 },
                 UIAction(title: Constants.contextMenuDelLabel, attributes: .destructive) { [weak self] _ in
                     guard let self = self else { return }
+                    analyticsService.report(event: "deleteTrackerSelected", params: ["event":"click", "screen":"Main", "item":"delete"])
                     self.delTracker(indexPath)
                 },
             ])

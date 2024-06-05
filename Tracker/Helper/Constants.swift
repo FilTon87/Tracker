@@ -117,4 +117,7 @@ enum Constants {
     static let statsTrackersСompleted = NSLocalizedString("statsTrackersСompleted", comment: "")
     static let statsAverageValue = NSLocalizedString("statsAverageValue", comment: "")
     
+    //MARK: - YandexMobileMetrica
+    static let apiKey = "87d0a1e3-d5e0-4667-a41c-98538160191b"
+    
 }
