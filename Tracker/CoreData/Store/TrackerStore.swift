@@ -103,8 +103,8 @@ extension TrackerStore {
             format: "%K == %@", (\TrackerCoreData.id)._kvcKeyPathString!, id as CVarArg)
         
         if let result = try? context.fetch(request) {
-            for object in result {
-                object.isPinned = !object.isPinned
+            result.forEach {
+                $0.isPinned.toggle()
             }
             do {
                 try context.save()
@@ -113,5 +113,21 @@ extension TrackerStore {
             }
         }
     }
-
+    
+    func getTracker(_ id: UUID) -> Tracker? {
+        var tracker: Tracker?
+        let request = NSFetchRequest<TrackerCoreData>(entityName: "TrackerCoreData")
+        request.returnsObjectsAsFaults = false
+        request.predicate = NSPredicate(
+            format: "%K == %@", (\TrackerCoreData.id)._kvcKeyPathString!, id as CVarArg)
+        
+        if let result = try? context.fetch(request) {
+            for object in result {
+                tracker = try! convertToTracker(object)
+            }
+        }
+        return tracker
+    }
+    
 }
+

@@ -18,25 +18,25 @@ enum WeekDays: Int, CaseIterable {
     
     var longWeekDaysName: String {
         switch self {
-        case .monday: return Constants.mondayLong
-        case .tuesday: return Constants.tuesdayLong
-        case .wednesday: return Constants.wednesdayLong
-        case .thursday: return Constants.thursdayLong
-        case .frieday: return Constants.friedayLong
-        case .saturday: return Constants.saturdayLong
-        case .sunday: return Constants.sundayLong
+        case .monday: return Localization.mondayLong
+        case .tuesday: return Localization.tuesdayLong
+        case .wednesday: return Localization.wednesdayLong
+        case .thursday: return Localization.thursdayLong
+        case .frieday: return Localization.friedayLong
+        case .saturday: return Localization.saturdayLong
+        case .sunday: return Localization.sundayLong
         }
     }
     
     var shortWeekDaysName: String {
         switch self {
-        case .monday: return Constants.mondayShort
-        case .tuesday: return Constants.tuesdayShort
-        case .wednesday: return Constants.wednesdayShort
-        case .thursday: return Constants.thursdayShort
-        case .frieday: return Constants.friedayShort
-        case .saturday: return Constants.saturdayShort
-        case .sunday: return Constants.sundayShort
+        case .monday: return Localization.mondayShort
+        case .tuesday: return Localization.tuesdayShort
+        case .wednesday: return Localization.wednesdayShort
+        case .thursday: return Localization.thursdayShort
+        case .frieday: return Localization.friedayShort
+        case .saturday: return Localization.saturdayShort
+        case .sunday: return Localization.sundayShort
         }
     }
 }

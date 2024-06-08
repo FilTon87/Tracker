@@ -10,7 +10,7 @@ import SnapshotTesting
 @testable import Tracker
 
 final class TrackerTests: XCTestCase {
-
+    
     func testMainViewController() {
         let vc = TrackersViewController()
         
@@ -22,5 +22,5 @@ final class TrackerTests: XCTestCase {
         
         assertSnapshots(matching: vc, as: [.image(traits: UITraitCollection(userInterfaceStyle: .dark))])
     }
-
+    
 }

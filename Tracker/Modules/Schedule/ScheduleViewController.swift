@@ -18,7 +18,7 @@ final class ScheduleViewController: UIViewController {
     
     
     //MARK: - Private property
-    private lazy var doneButton = BlackButton(title: Constants.doneButtonLabel)
+    private lazy var doneButton = BlackButton(title: Localization.doneButtonLabel)
     private lazy var tableView = TableView(frame: .zero, style: .plain)
     private var schedule: [Schedule] = []
     
@@ -40,7 +40,7 @@ private extension ScheduleViewController {
     }
     
     func addViewLabel() {
-        navigationItem.title = Constants.scheduleViewControllerName
+        navigationItem.title = Localization.scheduleViewControllerName
     }
     
     func addSubView() {

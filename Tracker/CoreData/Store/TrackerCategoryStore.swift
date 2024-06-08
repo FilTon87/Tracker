@@ -86,4 +86,5 @@ extension TrackerCategoryStore {
         
         if category.count > 0 { return category[0] } else { return nil }
     }
+    
 }

@@ -160,23 +160,15 @@ extension TrackerCollectionViewCell {
         
         let doneButtonImage = isCompletedToday ? UIImage(systemName: "checkmark") : UIImage(systemName: "plus")
         doneTrackerButton.setImage(doneButtonImage, for: .normal)
-        
-        showPin()
+        pinIcon.isHidden = !isPinned
     }
     
     private func configDaysLabel(with: Int) {
-        let key = Constants.numberOfDays
+        let key = Localization.numberOfDays
         let localizedFormat = String.localizedStringWithFormat(
             NSLocalizedString(key, tableName: key, comment: ""),
             with)
         dayLabel.text = localizedFormat
-    }
-    
-    private func showPin() {
-        switch isPinned {
-        case true: do { pinIcon.isHidden = false }
-        case false: do { pinIcon.isHidden = true }
-        }
     }
     
 }

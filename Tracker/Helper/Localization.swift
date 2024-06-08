@@ -7,12 +7,10 @@
 
 import Foundation
 
-enum Constants {
+enum Localization {
     
     //MARK: - OnboardingViewController
-    static let onboardingBlueImage = "blue"
     static let onboardingBlueLabel = NSLocalizedString("onboardingBlueLabel", comment:"")
-    static let onboardingRedImage = "red"
     static let onboardingRedLabel = NSLocalizedString("onboardingRedLabel", comment:"")
     
     //MARK: - OnboardingView
@@ -20,9 +18,7 @@ enum Constants {
     
     // MARK: - TrackersViewController
     static let dataPlaceholderLabel = NSLocalizedString("dataPlaceholderLabel", comment: "")
-    static let dataPlaceholderImage = "Start"
     static let searchPlaceholderLabel = NSLocalizedString("searchPlaceholderLabel", comment: "")
-    static let searchPlaceholderImage = "Error"
     static let trackersViewControllerName = NSLocalizedString("trackersViewControllerName", comment: "")
     static let searchFieldPlaceholder = NSLocalizedString("searchFieldPlaceholder", comment: "")
     static let contextMenuPinLabel = NSLocalizedString("contextMenuPinLabel", comment: "")
@@ -49,15 +45,13 @@ enum Constants {
     static let categoryLabel = NSLocalizedString("categoryLabel", comment: "")
     static let scheduleLabel = NSLocalizedString("scheduleLabel", comment: "")
     static let localizedMessage = NSLocalizedString("limitMessage", comment: "")
-    static let limit = 38
-    static let limitMessage = String(format: localizedMessage, limit)
+    static let limitMessage = String(format: localizedMessage, Constants.limit)
     static let editingLabel = NSLocalizedString("editingLabel", comment: "")
     static let saveButtonLabel = NSLocalizedString("saveButtonLabel", comment: "")
     
     //MARK: - CategoryViewController
     static let addCategoryButtonLabel = NSLocalizedString("addCategoryButtonLabel", comment: "")
     static let categoryPlaceholderLabel = NSLocalizedString("categoryPlaceholderLabel", comment: "")
-    static let categoryPlaceholderImage =  "Start"
     static let categoryViewControllerName = NSLocalizedString("categoryViewControllerName", comment: "")
     
     //MARK: - AddCategoryViewController
@@ -70,9 +64,7 @@ enum Constants {
     
     //MARK: - TabBarController
     static let trackersLabel = NSLocalizedString("trackersLabel", comment: "")
-    static let trackersIcon = "trackers"
     static let statisticsLabel = NSLocalizedString("statisticsLabel", comment: "")
-    static let statisticsIcon = "stats"
     
     //MARK: - CancelButton
     static let cancelButton = NSLocalizedString("cancelButton", comment: "")
@@ -111,13 +103,40 @@ enum Constants {
     //MARK: - StatsViewController
     static let statsViewControllerName = NSLocalizedString("statsViewControllerName", comment: "")
     static let statsPlaceholderLabel = NSLocalizedString("statsPlaceholderLabel", comment: "")
-    static let statsPlaceholderImage = "statsPlaceholder"
     static let statsBestPeriod = NSLocalizedString("statsBestPeriod", comment: "")
     static let statsPerfectDays = NSLocalizedString("statsPerfectDays", comment: "")
     static let statsTrackersСompleted = NSLocalizedString("statsTrackersСompleted", comment: "")
     static let statsAverageValue = NSLocalizedString("statsAverageValue", comment: "")
     
+}
+
+enum Images {
+    //MARK: - OnboardingViewController
+    static let onboardingBlueImage = "blue"
+    static let onboardingRedImage = "red"
+    
+    // MARK: - TrackersViewController
+    static let dataPlaceholderImage = "Start"
+    static let searchPlaceholderImage = "Error"
+    
+    //MARK: - CategoryViewController
+    static let categoryPlaceholderImage =  "Start"
+    
+    //MARK: - TabBarController
+    static let trackersIcon = "trackers"
+    static let statisticsIcon = "stats"
+    
+    //MARK: - StatsViewController
+    static let statsPlaceholderImage = "statsPlaceholder"
+}
+
+enum Constants {
+    //MARK: - NewTrackerViewController
+    static let limit = 38
+    
     //MARK: - YandexMobileMetrica
     static let apiKey = "87d0a1e3-d5e0-4667-a41c-98538160191b"
     
 }
+
+

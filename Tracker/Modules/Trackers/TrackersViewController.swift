@@ -23,8 +23,8 @@ final class TrackersViewController: UIViewController, UICollectionViewDelegateFl
     private var pinnedTrackers: [Tracker] = []
     private lazy var searchField = UISearchBar()
     private let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
-    private let dataPlaceholder = TrackersPlaceholder(title: Constants.dataPlaceholderLabel, image: Constants.dataPlaceholderImage)
-    private let searchPlaceholder = TrackersPlaceholder(title: Constants.searchPlaceholderLabel, image: Constants.searchPlaceholderImage)
+    private let dataPlaceholder = TrackersPlaceholder(title: Localization.dataPlaceholderLabel, image: Images.dataPlaceholderImage)
+    private let searchPlaceholder = TrackersPlaceholder(title: Localization.searchPlaceholderLabel, image: Images.searchPlaceholderImage)
     private let params = GeometricParams(cellCount: 4, leftInset: 16, rightInset: 16, cellSpacing: 9)
     private let analyticsService = YandexMobileMetrica()
     
@@ -40,7 +40,7 @@ final class TrackersViewController: UIViewController, UICollectionViewDelegateFl
     
     private lazy var filtersButton: UIButton = {
         let button = UIButton()
-        button.setTitle(Constants.filtersButton, for: .normal)
+        button.setTitle(Localization.filtersButton, for: .normal)
         button.titleLabel?.font = .systemFont(ofSize: 17)
         button.backgroundColor = .yBlue
         button.layer.cornerRadius = 16
@@ -135,7 +135,7 @@ private extension TrackersViewController {
         navigationItem.rightBarButtonItem = addDateButton()
         navigationController?.navigationBar.backgroundColor = .yWhite
         navigationController?.navigationBar.prefersLargeTitles = true
-        navigationItem.title = Constants.trackersViewControllerName
+        navigationItem.title = Localization.trackersViewControllerName
         addSearchField()
     }
     
@@ -170,7 +170,7 @@ private extension TrackersViewController {
     private func addSearchField() {
         view.addSubview(searchField)
         searchField.delegate = self
-        searchField.placeholder = Constants.searchFieldPlaceholder
+        searchField.placeholder = Localization.searchFieldPlaceholder
         searchField.translatesAutoresizingMaskIntoConstraints = false
         searchField.searchBarStyle = .minimal
         
@@ -249,6 +249,7 @@ private extension TrackersViewController {
     }
     
     private func reloadData() {
+        pinnedTrackers.removeAll()
         categories = categoryViewModel.getCategories()
         searchPinTrackers(categories)
         dateChanged()
@@ -288,7 +289,7 @@ private extension TrackersViewController {
         switch pinnedTrackers.isEmpty {
         case true: break
         case false: do {
-            let pinnedCategory = TrackerCategory(categoryTitle: Constants.pinnedCategory, trackers: pinnedTrackers)
+            let pinnedCategory = TrackerCategory(categoryTitle: Localization.pinnedCategory, trackers: pinnedTrackers)
             filteredCategories.insert(pinnedCategory, at: 0)
         }
         }
@@ -313,25 +314,36 @@ private extension TrackersViewController {
     
     private func editTracker(_ indexPath: IndexPath) {
         let viewController = NewTrackerViewController()
+        let id = filteredCategories[indexPath.section].trackers[indexPath.row].id
         viewController.delegate = self
         viewController.isEdit = true
         viewController.createHabit = filteredCategories[indexPath.section].trackers[indexPath.row].isHabit
-        viewController.editingTracker = Tracker(
-            id: filteredCategories[indexPath.section].trackers[indexPath.row].id,
-            trackerName: filteredCategories[indexPath.section].trackers[indexPath.row].trackerName,
-            trackerColor: filteredCategories[indexPath.section].trackers[indexPath.row].trackerColor,
-            trackerColorStr: filteredCategories[indexPath.section].trackers[indexPath.row].trackerColorStr,
-            trackerEmoji: filteredCategories[indexPath.section].trackers[indexPath.row].trackerEmoji,
-            schedule: filteredCategories[indexPath.section].trackers[indexPath.row].schedule,
-            isHabit: filteredCategories[indexPath.section].trackers[indexPath.row].isHabit,
-            isPinned: filteredCategories[indexPath.section].trackers[indexPath.row].isPinned)
-        viewController.editingCategory = TrackerCategory(
-            categoryTitle: filteredCategories[indexPath.section].categoryTitle,
-            trackers: filteredCategories[indexPath.section].trackers) 
-        let id = filteredCategories[indexPath.section].trackers[indexPath.row].id
+        viewController.editingTracker = getTrackerForEdit(id)
+        viewController.editingCategory = getCategoryForEdit(id)
         viewController.completedDays = recordDataProvider?.getCompletedRecordsForTracker(id)
         viewController.modalPresentationStyle = .automatic
         present(UINavigationController(rootViewController: viewController), animated: true)
+    }
+    
+    private func getTrackerForEdit(_ id: UUID) -> Tracker {
+        let emptyTracker = Tracker(id: UUID(),
+                                   trackerName: "",
+                                   trackerColor: .colorSelection1,
+                                   trackerColorStr: "",
+                                   trackerEmoji: "",
+                                   schedule: [.monday],
+                                   isHabit: false,
+                                   isPinned: false)
+        guard let trackerForEdit = trackerDataProvider?.getTracker(id)  else { return emptyTracker}
+        return trackerForEdit
+    }
+    
+    private func getCategoryForEdit(_ id: UUID) -> String {
+        let categoryTitleIndex = categories.firstIndex(where: { category in
+            category.trackers.contains(where:  {tracker in
+                tracker.id == id })})        
+        let categoryTitle = categories[categoryTitleIndex!].categoryTitle
+        return categoryTitle
     }
     
     private func pinTracker(_ indexPath: IndexPath) {
@@ -370,30 +382,30 @@ private extension TrackersViewController {
                 switch $0.isPinned {
                 case true: do {
                     pinnedTrackers.append($0)
-                    }
+                }
                 case false: break
                 }
             }
         }
     }
     
-
-    
     private func delTracker(_ indexPath: IndexPath) {
         let delTracker = filteredCategories[indexPath.section].trackers[indexPath.item].id
         let alert = UIAlertController(
             title: "",
-            message: Constants.deleteAlertMessage,
+            message: Localization.deleteAlertMessage,
             preferredStyle: .actionSheet)
         
-        alert.addAction(UIAlertAction(title: Constants.contextMenuDelLabel, style: .destructive, handler: { [weak self] action in
+        alert.addAction(UIAlertAction(title: Localization.contextMenuDelLabel, style: .destructive, handler: { [weak self] action in
             guard let self = self else { return }
             self.trackerDataProvider?.delTracker(delTracker)
             self.recordDataProvider?.delTrackerRecords(delTracker)
+            pinnedTrackers.removeAll(where: { tracker in
+                tracker.id == delTracker
+            })
             reloadData()
         }))
-        alert.addAction(UIAlertAction(title: Constants.cancelButton, style: .cancel))
-        
+        alert.addAction(UIAlertAction(title: Localization.cancelButton, style: .cancel))
         self.present(alert, animated: true)
     }
     
@@ -451,16 +463,16 @@ extension TrackersViewController: UICollectionViewDataSource {
         return UIContextMenuConfiguration(actionProvider: { [weak self] action in
             guard let self = self else { return nil }
             return UIMenu(children: [
-                UIAction(title: self.isPinned(indexPath) ? Constants.contextMenuUnpinLabel: Constants.contextMenuPinLabel) { [weak self] _ in
+                UIAction(title: self.isPinned(indexPath) ? Localization.contextMenuUnpinLabel: Localization.contextMenuPinLabel) { [weak self] _ in
                     guard let self = self else { return }
                     self.pinTracker(indexPath)
                 },
-                UIAction(title: Constants.contextMenuEditLabel) { [weak self] _ in
+                UIAction(title: Localization.contextMenuEditLabel) { [weak self] _ in
                     guard let self = self else { return }
                     analyticsService.report(event: "editTrackerSelected", params: ["event":"click", "screen":"Main", "item":"edit"])
                     self.editTracker(indexPath)
                 },
-                UIAction(title: Constants.contextMenuDelLabel, attributes: .destructive) { [weak self] _ in
+                UIAction(title: Localization.contextMenuDelLabel, attributes: .destructive) { [weak self] _ in
                     guard let self = self else { return }
                     analyticsService.report(event: "deleteTrackerSelected", params: ["event":"click", "screen":"Main", "item":"delete"])
                     self.delTracker(indexPath)

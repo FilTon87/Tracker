@@ -23,9 +23,7 @@
 "contextMenuEditLabel" = "Редактировать";
 "contextMenuDelLabel" = "Удалить";
 "pinnedCategory" = "Закрепленные";
-
 "deleteAlertMessage" = "Уверены, что хотите удалить трекер?";
-
 "filtersButton" = "Фильтры";
 
 //MARK: - AddTrackerViewController

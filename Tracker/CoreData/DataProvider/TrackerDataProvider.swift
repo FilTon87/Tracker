@@ -12,10 +12,11 @@ protocol TrackerProtocol {
     func addTracker(_ tracker: Tracker, _ category: String) throws
     func delTracker(_ id: UUID)
     func pinTracker(_ id: UUID)
+    func getTracker(_ id: UUID) -> Tracker?
 }
 
 final class TrackerDataProvider: NSObject {
-
+    
     private let context: NSManagedObjectContext
     private let dataStore: TrackerStore
     
@@ -35,7 +36,7 @@ final class TrackerDataProvider: NSObject {
         return fetchedResultsController
     }()
     
-      init(_ dataStore: TrackerStore) throws {
+    init(_ dataStore: TrackerStore) throws {
         self.dataStore = dataStore
         self.context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     }
@@ -52,5 +53,9 @@ extension TrackerDataProvider: TrackerProtocol {
     
     func pinTracker(_ id: UUID) {
         try? dataStore.pinTracker(id)
+    }
+    
+    func getTracker(_ id: UUID) -> Tracker? {
+        dataStore.getTracker(id)
     }
 }

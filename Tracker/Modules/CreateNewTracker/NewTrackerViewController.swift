@@ -18,23 +18,39 @@ final class NewTrackerViewController: UIViewController {
     var createHabit: Bool = false
     var isEdit: Bool = false
     var editingTracker: Tracker?
-    var editingCategory: TrackerCategory?
+    var editingCategory: String?
     var completedDays: Int?
     
     weak var delegate: NewTrackerViewControllerDelegate?
     
     //MARK: - Private property
-    private lazy var textField = TextField(placeholder: Constants.textFieldLabel)
+    private lazy var textField = TextField(placeholder: Localization.textFieldLabel)
     private lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
     private let params = GeometricParams(cellCount: 18, leftInset: 19, rightInset: 18, cellSpacing: 5)
     private lazy var cancelButton = CancelButton()
     private lazy var createButton = CreateButton()
     private lazy var tableView = TableView(frame: .zero, style: .plain)
+    
     private lazy var scrollView: UIScrollView = {
         let scrollView = UIScrollView()
+        scrollView.backgroundColor = .yWhite
+        scrollView.frame = view.bounds
+        scrollView.contentSize = contentSize
         scrollView.showsHorizontalScrollIndicator = false
         return scrollView
     }()
+    
+    private lazy var contentView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .yWhite
+        view.frame.size = contentSize
+        return view
+    }()
+    
+    private var contentSize: CGSize {
+        CGSize(width: view.frame.width, height: view.frame.height)
+    }
+    
     private lazy var mainStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .vertical
@@ -53,7 +69,7 @@ final class NewTrackerViewController: UIViewController {
     
     private lazy var limitLabel: UILabel = {
         let label = UILabel()
-        label.text = Constants.limitMessage
+        label.text = Localization.limitMessage
         label.textColor = .yRed
         label.isHidden = true
         return label
@@ -125,10 +141,10 @@ private extension NewTrackerViewController {
     
     func addViewLabel() {
         let textLabel = switch isEdit {
-        case true: Constants.editingLabel
+        case true: Localization.editingLabel
         case false: switch createHabit {
-        case true: Constants.newHabbit
-        case false: Constants.newEvent
+        case true: Localization.newHabbit
+        case false: Localization.newEvent
         }
         }
         navigationItem.title = textLabel
@@ -146,7 +162,8 @@ private extension NewTrackerViewController {
             view.addSubview($0)
         }
         
-        scrollView.addSubview(mainStackView)
+        scrollView.addSubview(contentView)
+        contentView.addSubview(mainStackView)
         
         [completedDaysLabel,
          textField,
@@ -159,6 +176,7 @@ private extension NewTrackerViewController {
          collectionView].forEach {
             mainStackView.addArrangedSubview($0)
         }
+        
     }
     
     func addTarget() {
@@ -294,8 +312,8 @@ private extension NewTrackerViewController {
             completedDaysLabel.isHidden = false
             completedDaysLabel.translatesAutoresizingMaskIntoConstraints = false
             NSLayoutConstraint.activate([
-                completedDaysLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-                completedDaysLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 24)
+                completedDaysLabel.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+                completedDaysLabel.topAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.topAnchor, constant: 24)
             ])
             if let completedDays = completedDays {
                 configDaysLabel(with: completedDays)
@@ -306,7 +324,7 @@ private extension NewTrackerViewController {
     }
     
     func configDaysLabel(with: Int) {
-        let key = Constants.numberOfDays
+        let key = Localization.numberOfDays
         let localizedFormat = String.localizedStringWithFormat(
             NSLocalizedString(key, tableName: key, comment: ""),
             with)
@@ -319,8 +337,8 @@ private extension NewTrackerViewController {
 private extension NewTrackerViewController {
     func addLayout() {
         [scrollView,
-         mainStackView,
          textFieldStackView,
+         mainStackView,
          textField,
          cancelButton,
          createButton,
@@ -335,14 +353,18 @@ private extension NewTrackerViewController {
             scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             scrollView.bottomAnchor.constraint(equalTo: createButton.topAnchor),
             
-            mainStackView.topAnchor.constraint(equalTo: scrollView.topAnchor),
-            mainStackView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
-            mainStackView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
-            mainStackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
+            contentView.topAnchor.constraint(equalTo: scrollView.topAnchor),
+            contentView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
+            contentView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
+            contentView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
             
-            textFieldStackView.topAnchor.constraint(equalTo: mainStackView.topAnchor),
-            textFieldStackView.leadingAnchor.constraint(equalTo: mainStackView.leadingAnchor),
-            textFieldStackView.trailingAnchor.constraint(equalTo: mainStackView.trailingAnchor),
+            mainStackView.topAnchor.constraint(equalTo: contentView.topAnchor),
+            mainStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            mainStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            
+            textFieldStackView.topAnchor.constraint(equalTo: contentView.topAnchor),
+            textFieldStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            textFieldStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             
             textField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             textField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
@@ -353,8 +375,8 @@ private extension NewTrackerViewController {
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
             
             collectionView.topAnchor.constraint(equalTo: tableView.bottomAnchor, constant: 32),
-            collectionView.leadingAnchor.constraint(equalTo: mainStackView.leadingAnchor),
-            collectionView.trailingAnchor.constraint(equalTo: mainStackView.trailingAnchor),
+            collectionView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            collectionView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             collectionView.bottomAnchor.constraint(equalTo: createButton.topAnchor, constant: -16),
             
             cancelButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
@@ -388,7 +410,7 @@ extension NewTrackerViewController: UITableViewDataSource, UITableViewDelegate {
     
     private func addCategory() {
         settings.append( NewTracker(
-            name: Constants.categoryLabel,
+            name: Localization.categoryLabel,
             handler: { [weak self] in
                 guard let self = self else { return }
                 self.selectСategory()
@@ -398,7 +420,7 @@ extension NewTrackerViewController: UITableViewDataSource, UITableViewDelegate {
     private func addShedule() {
         settings.append(
             NewTracker(
-                name: Constants.scheduleLabel,
+                name: Localization.scheduleLabel,
                 handler: { [weak self] in
                     guard let self = self else { return }
                     self.selectShedule()
@@ -450,6 +472,7 @@ extension NewTrackerViewController: UICollectionViewDelegateFlowLayout {
     private func addCollectionView() {
         collectionView.dataSource = self
         collectionView.delegate = self
+        collectionView.isScrollEnabled = false
         
         collectionView.register(NewTrackerCollectionViewCell.self, forCellWithReuseIdentifier: NewTrackerCollectionViewCell.cellReuseIdentifier)
         collectionView.register(TrackerHeaderCollectionView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: TrackerHeaderCollectionView.headerReuseIdentifier)
@@ -595,7 +618,7 @@ extension NewTrackerViewController: ScheduleViewControllerDelegate {
         selectedSchedule = schedule
         let subText: String
         if schedule.count == WeekDays.allCases.count {
-            subText = Constants.everyDaySubtext
+            subText = Localization.everyDaySubtext
         } else {
             subText = schedule.map { $0.weekDay.shortWeekDaysName}.joined(separator: ", ")
         }
@@ -649,7 +672,7 @@ private extension NewTrackerViewController {
     }
     
     func configCreateButton() {
-        createButton.setTitle(Constants.saveButtonLabel, for: .normal)
+        createButton.setTitle(Localization.saveButtonLabel, for: .normal)
         createButton.isEnabled = true
         createButton.backgroundColor = .yBlack
     }
@@ -660,7 +683,7 @@ private extension NewTrackerViewController {
     }
     
     func setCategory() {
-        if let categoryTitle = editingCategory?.categoryTitle {
+        if let categoryTitle = editingCategory {
             updateCell(subText: categoryTitle, indexPath: IndexPath(row: 0, section: 0))
             categorySelected = true
             checkTracker()
@@ -668,22 +691,22 @@ private extension NewTrackerViewController {
     }
     
     func setSchedule() {
-            switch createHabit {
-            case true: do {
-                if let schedule = editingTracker?.schedule {
-                    let text = schedule.map { $0.shortWeekDaysName}.joined(separator: ", ")
-                    updateCell(subText: text, indexPath: IndexPath(row: 1, section: 0))
-                    schedule.forEach {
-                        let selectedDay = Schedule(weekDay: $0, isOn: true)
-                        selectedSchedule.append(selectedDay)
-                    }
-                    scheduleSelected = true
-                    checkTracker()
+        switch createHabit {
+        case true: do {
+            if let schedule = editingTracker?.schedule {
+                let text = schedule.map { $0.shortWeekDaysName}.joined(separator: ", ")
+                updateCell(subText: text, indexPath: IndexPath(row: 1, section: 0))
+                schedule.forEach {
+                    let selectedDay = Schedule(weekDay: $0, isOn: true)
+                    selectedSchedule.append(selectedDay)
                 }
-            }
-            case false: break
+                scheduleSelected = true
+                checkTracker()
             }
         }
+        case false: break
+        }
+    }
     
     func setEmoji() {
         if let emoji = editingTracker?.trackerEmoji {

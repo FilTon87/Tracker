@@ -18,8 +18,8 @@ final class AddCategoryViewController: UIViewController {
     var category: String?
     
     //MARK: - Private property
-    private lazy var doneButton = BlackButton(title: Constants.doneButtonLabel)
-    private lazy var textField = TextField(placeholder: Constants.categoryNamePlaceholderLabel)
+    private lazy var doneButton = BlackButton(title: Localization.doneButtonLabel)
+    private lazy var textField = TextField(placeholder: Localization.categoryNamePlaceholderLabel)
     private let categoryStore = TrackerCategoryStore.shared
     
     // MARK: - View Life Cycles
@@ -46,7 +46,7 @@ private extension AddCategoryViewController {
     }
     
     func addViewLabel() {
-        navigationItem.title = Constants.addCategoryViewControllerName
+        navigationItem.title = Localization.addCategoryViewControllerName
     }
     
     func addSubView() {

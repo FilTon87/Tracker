@@ -9,22 +9,21 @@ import UIKit
 
 final class StatsViewController: UIViewController {
     
-    private let statsPlaceholder = TrackersPlaceholder(title: Constants.statsPlaceholderLabel, image: Constants.statsPlaceholderImage)
+    private let statsPlaceholder = TrackersPlaceholder(title: Localization.statsPlaceholderLabel, image: Images.statsPlaceholderImage)
     private lazy var tableView = TableView(frame: .zero, style: .plain)
     
     private let recordStore = TrackerRecordStore.shared
     
     private var statistics: [Statistic] = [
-        Statistic(statisticName: Constants.statsBestPeriod, statisticValue: 0),
-        Statistic(statisticName: Constants.statsPerfectDays, statisticValue: 0),
-        Statistic(statisticName: Constants.statsTrackersСompleted, statisticValue: 0),
-        Statistic(statisticName: Constants.statsAverageValue, statisticValue: 0),
+        Statistic(statisticName: Localization.statsBestPeriod, statisticValue: 0),
+        Statistic(statisticName: Localization.statsPerfectDays, statisticValue: 0),
+        Statistic(statisticName: Localization.statsTrackersСompleted, statisticValue: 0),
+        Statistic(statisticName: Localization.statsAverageValue, statisticValue: 0),
     ]
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         getStatistics()
-        
     }
     
     override func viewDidLoad() {
@@ -42,7 +41,7 @@ private extension StatsViewController {
         view.backgroundColor = .yWhite
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationController?.navigationBar.backgroundColor = .yWhite
-        navigationItem.title = Constants.statsViewControllerName
+        navigationItem.title = Localization.statsViewControllerName
     }
     
     func addPlaceholder() {
@@ -57,30 +56,25 @@ private extension StatsViewController {
         ])
     }
     
-    func showPlaceholder() {
-        statsPlaceholder.isHidden = false
-        tableView.isHidden = true
-    }
-    
-    func hidePlaceholder() {
-        statsPlaceholder.isHidden = true
-        tableView.isHidden = false
+    func changeStatePlaceholder(isHidden: Bool) {
+        statsPlaceholder.isHidden = isHidden
+        tableView.isHidden = !isHidden
     }
     
     func addTableView() {
         view.addSubview(tableView)
-        tableView.delegate = self
         tableView.dataSource = self
         tableView.backgroundColor = .yWhite
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.allowsSelection = false
         tableView.isScrollEnabled = false
         tableView.separatorColor = UIColor.clear
+        tableView.rowHeight = 97
         tableView.register(StatsTableViewCell.self, forCellReuseIdentifier: StatsTableViewCell.reuseIdentifier)
         
         NSLayoutConstraint.activate([
             tableView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-            tableView.heightAnchor.constraint(equalToConstant: 408),
+            tableView.heightAnchor.constraint(equalToConstant: 388),
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10),
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10)
         ])
@@ -89,18 +83,17 @@ private extension StatsViewController {
     func getStatistics() {
         let trackersСompleted = recordStore.getCompletedTrackers()
         switch trackersСompleted > 0 {
-        case true: hidePlaceholder()
-        case false: showPlaceholder()
+        case true: changeStatePlaceholder(isHidden: true)
+        case false: changeStatePlaceholder(isHidden: false)
         }
-        statistics[2] = Statistic(statisticName: Constants.statsTrackersСompleted, statisticValue: trackersСompleted)
+        statistics[2] = Statistic(statisticName: Localization.statsTrackersСompleted, statisticValue: trackersСompleted)
         
         let average = recordStore.getAverage()
-        statistics[3] = Statistic(statisticName: Constants.statsAverageValue, statisticValue: average)
-        
+        statistics[3] = Statistic(statisticName: Localization.statsAverageValue, statisticValue: average)
         
         tableView.reloadData()
     }
-
+    
 }
 
 //MARK: - UITableViewDataSource
@@ -114,13 +107,5 @@ extension StatsViewController: UITableViewDataSource {
         cell.configCell(statistics, indexPath)
         return cell
     }
-    
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        102
-    }
-}
-
-//MARK: - UITableViewDelegate
-extension StatsViewController: UITableViewDelegate {
     
 }

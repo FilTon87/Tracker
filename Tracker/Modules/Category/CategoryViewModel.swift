@@ -8,7 +8,7 @@
 import Foundation
 
 final class CategoryViewModel {
-
+    
     var isData: Observable<Bool> = Observable(false)
     var numbersOfRows: Int = 0
     
@@ -18,11 +18,7 @@ final class CategoryViewModel {
     private let dataStore = TrackerCategoryStore.shared
     
     func getCategories() -> [TrackerCategory] {
-        do {
-            categories = try dataStore.fetchCategory()
-        } catch {
-            assertionFailure("Faild do recive Categories")
-        }
+        updateCategories()
         checkData()
         return categories
     }
@@ -41,14 +37,24 @@ final class CategoryViewModel {
     
     func addCategory(_ category: TrackerCategory) throws {
         try? dataStore.addCategory(category)
-        getCategories()
+        updateCategories()
+        checkData()
     }
     
     func getIndexPath(_ selectedCategory: String) -> Int {
-        getCategories()
+        updateCategories()
+        checkData()
         let searchingCategory = TrackerCategory(categoryTitle: selectedCategory, trackers: [])
         guard let index = categories.firstIndex(of: searchingCategory) else { return 0 }
         return index
     }
-
+    
+    func updateCategories() {
+        do {
+            categories = try dataStore.fetchCategory()
+        } catch {
+            assertionFailure("Faild do recive Categories")
+        }
+    }
+    
 }

@@ -23,7 +23,7 @@ final class CancelButton: UIButton {
     private func setupCancelButton() {
         backgroundColor = .yWhite
         tintColor = .yRed
-        setTitle(Constants.cancelButton, for: .normal)
+        setTitle(Localization.cancelButton, for: .normal)
         setTitleColor(.yRed, for: .normal)
         layer.borderWidth = 1
         layer.borderColor = (UIColor.yRed).cgColor

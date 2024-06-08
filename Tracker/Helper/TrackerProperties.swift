@@ -16,9 +16,9 @@ final class TrackerProperties {
     static let shared = TrackerProperties()
     
     var trackerProperties: [Properties] = [
-        Properties(name: Constants.emojiLabel,
+        Properties(name: Localization.emojiLabel,
                    properties: ["🙂","😻","🌸","🐶","❤️","😱","😇","😡","🥶","🤔","🙌","🍔","🥦","🏓","🥇","🎸","🏝️","🥲"]),
-        Properties(name: Constants.colorLabel,
+        Properties(name: Localization.colorLabel,
                    properties: ["Color selection 1",
                                 "Color selection 2",
                                 "Color selection 3",

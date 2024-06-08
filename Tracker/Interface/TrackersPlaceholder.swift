@@ -20,7 +20,7 @@ final class TrackersPlaceholder: UIView {
         let placeholderImage = UIImageView()
         return placeholderImage
     }()
-
+    
     init(title: String, image: String) {
         super.init(frame: .zero)
         setupPlaceholder(title: title, image: image)
@@ -50,9 +50,9 @@ private extension TrackersPlaceholder {
         placeholderImage.image = UIImage(named: image)
     }
     
-   func addSubView() {
-       addSubview(placeholderLabel)
-       addSubview(placeholderImage)
+    func addSubView() {
+        addSubview(placeholderLabel)
+        addSubview(placeholderImage)
     }
     
     func addLayout() {

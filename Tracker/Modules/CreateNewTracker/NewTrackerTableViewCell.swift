@@ -28,7 +28,7 @@ private extension NewTrackerTableViewCell {
         backgroundColor = .yBackground
         accessoryType = .disclosureIndicator
     }
-
+    
 }
 
 extension UITableViewCell {

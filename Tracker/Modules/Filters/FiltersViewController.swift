@@ -16,7 +16,7 @@ final class FiltersViewController: UIViewController {
     //MARK: - Private property
     private let defaults = UserDefaults.standard
     private lazy var tableView = TableView(frame: .zero, style: .plain)
-    private let filters: [String] = [Constants.filterAllTrackers, Constants.filterTodayTrackers, Constants.filterCompletedTrackers, Constants.filterNotCompletedTrackers]
+    private let filters: [String] = [Localization.filterAllTrackers, Localization.filterTodayTrackers, Localization.filterCompletedTrackers, Localization.filterNotCompletedTrackers]
     
     // MARK: - View Life Cycles
     override func viewDidLoad() {
@@ -45,10 +45,10 @@ private extension FiltersViewController {
         row = defaults.integer(forKey: "selectedFilter")
         let indexPath = IndexPath(row: row, section: 0)
         tableView.cellForRow(at: indexPath)?.accessoryType = .checkmark
-        }
+    }
     
     func addViewLabel() {
-        navigationItem.title = Constants.filtersViewControllerName
+        navigationItem.title = Localization.filtersViewControllerName
     }
     
     func addSubView() {

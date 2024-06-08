@@ -105,17 +105,17 @@ extension RecordDataProvider: NSFetchedResultsControllerDelegate {
         at indexPath: IndexPath?,
         for type: NSFetchedResultsChangeType,
         newIndexPath: IndexPath?) {
-        switch type {
-        case .insert:
-            if let indexPath = newIndexPath {
-                insertedIndexes?.insert(indexPath.item)
+            switch type {
+            case .insert:
+                if let indexPath = newIndexPath {
+                    insertedIndexes?.insert(indexPath.item)
+                }
+            case .delete:
+                if let indexPath = indexPath {
+                    deleteIndexes?.insert(indexPath.item)
+                }
+            default: break
             }
-        case .delete:
-            if let indexPath = indexPath {
-                deleteIndexes?.insert(indexPath.item)
-            }
-        default: break
         }
-    }
 }
 

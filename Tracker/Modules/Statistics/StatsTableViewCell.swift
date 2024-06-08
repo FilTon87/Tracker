@@ -9,8 +9,8 @@ import UIKit
 
 final class StatsTableViewCell: UITableViewCell {
     
-    override func layoutSubviews() {
-        super.layoutSubviews()
+    override func layoutIfNeeded() {
+        super.layoutIfNeeded()
         gradientLayer.frame = gradientView.bounds
     }
     
@@ -39,9 +39,9 @@ final class StatsTableViewCell: UITableViewCell {
     private let gradientLayer: CAGradientLayer = {
         let gradient = CAGradientLayer()
         gradient.colors = [
-            UIColor(named: "Color selection 1")!.cgColor,
-            UIColor(named: "Color selection 9")!.cgColor,
-            UIColor(named: "Color selection 3")!.cgColor
+            CGColor(red: 0.992, green: 0.298, blue: 0.286, alpha: 100),
+            CGColor(red: 0.275, green: 0.902, blue: 0.616, alpha: 100),
+            CGColor(red: 0.0, green: 0.482, blue: 0.980, alpha: 100)
         ]
         gradient.cornerRadius = 16
         gradient.masksToBounds = true
@@ -50,13 +50,12 @@ final class StatsTableViewCell: UITableViewCell {
         return gradient
     }()
     
-    
     private let gradientView: UIView = {
         let view = UIView()
+        view.layer.cornerRadius = 16
+        view.layer.masksToBounds = true
         return view
     }()
-    
-    
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -69,7 +68,6 @@ final class StatsTableViewCell: UITableViewCell {
     }
 }
 
-
 private extension StatsTableViewCell {
     func setupCell() {
         backgroundColor = .yWhite
@@ -77,16 +75,25 @@ private extension StatsTableViewCell {
     }
     
     func addLayout() {
-        contentView.addSubview(gradientView)
-        contentView.addSubview(cellView)
-        cellView.addSubview(statisticNameLabel)
-        cellView.addSubview(statisticValueLabel)
+        [gradientView,
+         cellView].forEach {
+            contentView.addSubview($0)
+        }
+        
         gradientView.layer.addSublayer(gradientLayer)
         
-        cellView.translatesAutoresizingMaskIntoConstraints = false
-        gradientView.translatesAutoresizingMaskIntoConstraints = false
-        statisticNameLabel.translatesAutoresizingMaskIntoConstraints = false
-        statisticValueLabel.translatesAutoresizingMaskIntoConstraints = false
+        
+        [statisticNameLabel,
+         statisticValueLabel].forEach {
+            cellView.addSubview($0)
+        }
+        
+        [cellView,
+         gradientView,
+         statisticNameLabel,
+         statisticValueLabel].forEach {
+            $0.translatesAutoresizingMaskIntoConstraints = false
+        }
         
         NSLayoutConstraint.activate([
             cellView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 6),
@@ -103,7 +110,7 @@ private extension StatsTableViewCell {
             statisticValueLabel.leadingAnchor.constraint(equalTo: cellView.leadingAnchor, constant: 12),
             statisticValueLabel.trailingAnchor.constraint(equalTo: cellView.trailingAnchor, constant: -12),
             
-            statisticNameLabel.topAnchor.constraint(equalTo: cellView.topAnchor, constant: 60),
+            statisticNameLabel.topAnchor.constraint(equalTo: statisticValueLabel.bottomAnchor, constant: 7),
             statisticNameLabel.leadingAnchor.constraint(equalTo: cellView.leadingAnchor, constant: 12),
             statisticNameLabel.trailingAnchor.constraint(equalTo: cellView.trailingAnchor, constant: -12),
         ])

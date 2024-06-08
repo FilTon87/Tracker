@@ -56,13 +56,19 @@ extension TrackerRecordStore {
     
     func delTrackerRecord(_ record: TrackerRecord) throws {
         let id = record.trackerID
-        let date = record.trackerDoneDate
+        let startOfDay = Calendar.current.startOfDay(for: record.trackerDoneDate)
+        var endOfDay: Date {
+            var components = DateComponents()
+            components.day = 1
+            components.second = -1
+            return Calendar.current.date(byAdding: components, to: startOfDay)!
+        }
         let request = NSFetchRequest<TrackerRecordCoreData>(entityName: "TrackerRecordCoreData")
         request.returnsObjectsAsFaults = false
         request.predicate = NSPredicate(
-            format: "(%K == %@) AND (%K == %@)",
+            format: "(%K == %@) AND (%K BETWEEN {%@, %@})",
             #keyPath(TrackerRecordCoreData.trackerID), id as CVarArg,
-            #keyPath(TrackerRecordCoreData.trackerDoneDate), date as NSDate)
+            #keyPath(TrackerRecordCoreData.trackerDoneDate), startOfDay as NSDate, endOfDay as NSDate)
         
         if let result = try? context.fetch(request) {
             for object in result {
@@ -94,7 +100,6 @@ extension TrackerRecordStore {
     }
     
     func delTrackerRecords(_ id: UUID) throws {
-        let id = id
         let request = NSFetchRequest<TrackerRecordCoreData>(entityName: "TrackerRecordCoreData")
         request.returnsObjectsAsFaults = false
         request.predicate = NSPredicate(
@@ -127,7 +132,6 @@ extension TrackerRecordStore {
     }
     
     func getCompletedRecordsForTracker(_ id: UUID) -> Int {
-        let id = id
         var answer = 0
         let request = NSFetchRequest<TrackerRecordCoreData>(entityName: "TrackerRecordCoreData")
         request.returnsObjectsAsFaults = false

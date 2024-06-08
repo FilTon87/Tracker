@@ -21,15 +21,15 @@ private extension TabBarController {
         
         var title: String {
             switch self {
-            case .trackers: return Constants.trackersLabel
-            case .stats: return Constants.statisticsLabel
+            case .trackers: return Localization.trackersLabel
+            case .stats: return Localization.statisticsLabel
             }
         }
         
         var iconName: String {
             switch self {
-            case .trackers: return Constants.trackersIcon
-            case .stats: return Constants.statisticsIcon
+            case .trackers: return Images.trackersIcon
+            case .stats: return Images.statisticsIcon
             }
         }
     }
@@ -53,6 +53,6 @@ private extension TabBarController {
     }
     
     private func wrappedInNavigationController(with: UIViewController, title: Any?) -> UINavigationController {
-            return UINavigationController(rootViewController: with)
-        }
+        return UINavigationController(rootViewController: with)
+    }
 }
