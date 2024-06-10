@@ -67,7 +67,7 @@ private extension NewTrackerCollectionViewCell {
 extension NewTrackerCollectionViewCell {
     func fillCell(model: TrackerProperties, at indexPath: IndexPath) {
         self.indexPath = indexPath
-        if model.trackerProperties[indexPath.section].name == "Emoji" {
+        if model.trackerProperties[indexPath.section].name == Localization.emojiLabel {
             cellLabel.text = model.trackerProperties[0].properties[indexPath.row]
         } else {
             let color = model.trackerProperties[1].properties[indexPath.row]
@@ -80,9 +80,9 @@ extension NewTrackerCollectionViewCell {
             cellLabel.backgroundColor = .yLightGray
         } else {
             let colorName = model.trackerProperties[indexPath.section].properties[indexPath.row]
-            let color = UIColor(named: "\(colorName)")
+            let color = UIColor(named: "\(colorName)")?.withAlphaComponent(0.3)
             cellView.layer.borderWidth = 3
-            cellView.layer.borderColor = color?.cgColor            
+            cellView.layer.borderColor = color?.cgColor
         }
     }
     

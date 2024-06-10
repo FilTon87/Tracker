@@ -18,14 +18,15 @@ final class CategoryViewController: UIViewController {
     var viewModel = CategoryViewModel()
     
     //MARK: - Private property
-    private lazy var addCategoryButton = Constants.addCategoryButton
-    private lazy var placeholder = Constants.categoryPlaceholder
+    private lazy var addCategoryButton = BlackButton(title: Localization.addCategoryButtonLabel)
+    private lazy var placeholder = TrackersPlaceholder(title: Localization.categoryPlaceholderLabel, image: Images.categoryPlaceholderImage)
     private lazy var tableView = TableView(frame: .zero, style: .plain)
-        
+    
     // MARK: - View Life Cycles
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        viewModel.getCategories()
+        viewModel.updateCategories()
+        viewModel.checkData()
     }
     
     override func viewDidLoad() {
@@ -34,19 +35,20 @@ final class CategoryViewController: UIViewController {
     }
 }
 
+// MARK: - setupViewController
 private extension CategoryViewController {
     func setupViewController() {
-        view.backgroundColor = .white
+        view.backgroundColor = .yWhite
         addViewLabel()
         addSubView()
         addLayout()
         addTarget()
-        addTabelView()
+        addTableView()
         bindViewModel()
     }
     
     func addViewLabel() {
-        navigationItem.title = Constants.categoryViewControllerName
+        navigationItem.title = Localization.categoryViewControllerName
     }
     
     func addSubView() {
@@ -69,7 +71,7 @@ private extension CategoryViewController {
             placeholder.centerYAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerYAnchor),
             
             tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 16),
-            tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: 16),
+            tableView.bottomAnchor.constraint(equalTo: addCategoryButton.topAnchor, constant: 16),
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
             
@@ -82,25 +84,20 @@ private extension CategoryViewController {
     func bindViewModel() {
         viewModel.isData.bind { [weak self] isData in
             guard let self, let isData else { return }
-            isData ? hidePlaceholder() : showPlaceholder()
-        }   
+            isData ? showPlaceholder(false) : showPlaceholder(true)
+        }
     }
     
-    func showPlaceholder() {
-        tableView.isHidden = true
-        placeholder.isHidden = false
-    }
-    
-    func hidePlaceholder() {
-        tableView.isHidden = false
-        placeholder.isHidden = true
+    func showPlaceholder(_ isHidden: Bool) {
+        tableView.isHidden = isHidden
+        placeholder.isHidden = !isHidden
     }
     
     func addTarget() {
         addCategoryButton.addTarget(self, action: #selector(didTapAddButton), for: .touchUpInside)
     }
     
-    func addTabelView() {
+    func addTableView() {
         tableView.delegate = self
         tableView.dataSource = self
         tableView.register(CategoryTabelViewCell.self, forCellReuseIdentifier: CategoryTabelViewCell.reuseIdentifier)
@@ -113,9 +110,10 @@ private extension CategoryViewController {
     }
 }
 
+// MARK: - UITableViewDataSource, UITableViewDelegate
 extension CategoryViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        viewModel.numbersOfRows
+        return viewModel.numbersOfRows
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -145,9 +143,18 @@ extension CategoryViewController: UITableViewDataSource, UITableViewDelegate {
     }
 }
 
+// MARK: - AddCategoryViewControllerDelegate
 extension CategoryViewController: AddCategoryViewControllerDelegate {
     func addCategory(_ newCategory: TrackerCategory) {
         try? viewModel.addCategory(newCategory)
         tableView.reloadData()
+    }
+}
+
+extension CategoryViewController {
+    func selectCategory(_ selectedCategory: String) {
+        let index = viewModel.getIndexPath(selectedCategory)
+        let indexPath: IndexPath = [0, index]
+        tableView.cellForRow(at: indexPath)?.accessoryType = .checkmark
     }
 }

@@ -20,8 +20,10 @@ protocol RecordDataProviderDelegate: AnyObject {
 protocol RecordProtocol {
     func fetchTrackerRecord() throws -> [TrackerRecord]
     func addRecord(_ record: TrackerRecord) throws
-    func delRecord(_ record: TrackerRecord) throws
+    func delRecord(_ record: TrackerRecord)
+    func delTrackerRecords(_ id:UUID)
     func isTrackerCompletedToday(_ id: UUID, _ date: Date) -> Bool
+    func getCompletedRecordsForTracker(_ id: UUID) -> Int
 }
 
 
@@ -62,8 +64,8 @@ extension RecordDataProvider: RecordProtocol {
         try? dataStore.saveTrackerRecord(record)
     }
     
-    func delRecord(_ record: TrackerRecord) throws {
-        try? dataStore.delTrackerRecord(record)        
+    func delRecord(_ record: TrackerRecord) {
+        try? dataStore.delTrackerRecord(record)
     }
     
     func isTrackerCompletedToday(_ id: UUID, _ date: Date) -> Bool {
@@ -73,6 +75,15 @@ extension RecordDataProvider: RecordProtocol {
     func fetchTrackerRecord() throws -> [TrackerRecord] {
         try dataStore.fetchTrackerRecord()
     }
+    
+    func delTrackerRecords(_ id:UUID) {
+        try? dataStore.delTrackerRecords(id)
+    }
+    
+    func getCompletedRecordsForTracker(_ id: UUID) -> Int {
+        dataStore.getCompletedRecordsForTracker(id)
+    }
+    
 }
 
 
@@ -94,17 +105,17 @@ extension RecordDataProvider: NSFetchedResultsControllerDelegate {
         at indexPath: IndexPath?,
         for type: NSFetchedResultsChangeType,
         newIndexPath: IndexPath?) {
-        switch type {
-        case .insert:
-            if let indexPath = newIndexPath {
-                insertedIndexes?.insert(indexPath.item)
+            switch type {
+            case .insert:
+                if let indexPath = newIndexPath {
+                    insertedIndexes?.insert(indexPath.item)
+                }
+            case .delete:
+                if let indexPath = indexPath {
+                    deleteIndexes?.insert(indexPath.item)
+                }
+            default: break
             }
-        case .delete:
-            if let indexPath = indexPath {
-                deleteIndexes?.insert(indexPath.item)
-            }
-        default: break
         }
-    }
 }
 

@@ -8,37 +8,53 @@
 import Foundation
 
 final class CategoryViewModel {
-
+    
     var isData: Observable<Bool> = Observable(false)
     var numbersOfRows: Int = 0
     
-    var categories: [TrackerCategory]?
+    private var categories: [TrackerCategory] = []
+    private var loadedCategories: [TrackerCategory] = []
     
     private let dataStore = TrackerCategoryStore.shared
     
-    func getCategories() {
-        do {
-            categories = try dataStore.fetchCategory()
-        } catch {
-            assertionFailure("Faild do recive Categories")
-        }
+    func getCategories() -> [TrackerCategory] {
+        updateCategories()
         checkData()
+        return categories
     }
     
     func checkData() {
-        if categories?.count ?? 0 > 0 {
+        if categories.count > 0 {
             isData.value = true
-            numbersOfRows = categories?.count ?? 0
+            numbersOfRows = categories.count
         }
     }
     
     func object(at indexPath: IndexPath) -> TrackerCategory? {
-        let object = categories?[indexPath.row]
+        let object = categories[indexPath.row]
         return object
     }
     
     func addCategory(_ category: TrackerCategory) throws {
         try? dataStore.addCategory(category)
-        getCategories()
+        updateCategories()
+        checkData()
     }
+    
+    func getIndexPath(_ selectedCategory: String) -> Int {
+        updateCategories()
+        checkData()
+        let searchingCategory = TrackerCategory(categoryTitle: selectedCategory, trackers: [])
+        guard let index = categories.firstIndex(of: searchingCategory) else { return 0 }
+        return index
+    }
+    
+    func updateCategories() {
+        do {
+            categories = try dataStore.fetchCategory()
+        } catch {
+            assertionFailure("Faild do recive Categories")
+        }
+    }
+    
 }

@@ -25,6 +25,7 @@ final class BlackButton: UIButton {
         tintColor = .yWhite
         setTitle(title, for: .normal)
         titleLabel?.font = .systemFont(ofSize: 16)
+        setTitleColor(.yWhite, for: .normal)
         layer.cornerRadius = 16
         heightAnchor.constraint(equalToConstant: 60).isActive = true
     }

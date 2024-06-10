@@ -19,8 +19,8 @@ final class AddTrackerViewController: UIViewController {
     
     //MARK: - Private property
     private lazy var label = UILabel()
-    private lazy var habitButton = Constants.habitButton
-    private lazy var eventButton = Constants.eventButton
+    private lazy var habitButton = BlackButton(title: Localization.habitButtonLabel)
+    private lazy var eventButton = BlackButton(title: Localization.eventButtonLabel)
     
     // MARK: - View Life Cycles
     override func viewDidLoad() {
@@ -33,7 +33,7 @@ final class AddTrackerViewController: UIViewController {
 //MARK: - View Settings
 private extension AddTrackerViewController {
     func setupViewController() {
-        view.backgroundColor = .white
+        view.backgroundColor = .yWhite
         addViewLabel()
         addSubView()
         addLayout()
@@ -41,7 +41,7 @@ private extension AddTrackerViewController {
     }
     
     func addViewLabel() {
-        navigationItem.title = Constants.addTrackerViewControllerName
+        navigationItem.title = Localization.addTrackerViewControllerName
     }
 }
 
@@ -58,7 +58,7 @@ private extension AddTrackerViewController {
     }
     
     @objc private func selection(_ sender: UIButton) {
-        if sender.titleLabel?.text == "Привычка" {
+        if sender.titleLabel?.text == Localization.habitButtonLabel {
             let viewController = NewTrackerViewController()
             viewController.createHabit = true
             viewController.delegate = self

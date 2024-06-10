@@ -28,7 +28,7 @@ private extension TrackerHeaderCollectionView {
     }
     
     func settingElements() {
-        categoryLabel.textColor = .black
+        categoryLabel.textColor = .yBlack
         categoryLabel.font = .systemFont(ofSize: 19, weight: .bold)
     }
     

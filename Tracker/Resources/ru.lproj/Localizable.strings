@@ -1,0 +1,102 @@
+/* 
+  Localizable.strings
+  Tracker
+
+  Created by Anton Filipchuk on 18.05.2024.
+  
+*/
+
+//MARK: - OnboardingViewController
+"onboardingBlueLabel" = "Отслеживайте только \n то, что хотите";
+"onboardingRedLabel" = "Даже если это \n не литры воды и йога";
+
+//MARK: - OnboardingView
+"onboardingButton" = "Вот это технологии!";
+
+// MARK: - TrackersViewController
+"dataPlaceholderLabel" = "Что будем отслеживать?";
+"searchPlaceholderLabel" = "Ничего не найдено";
+"trackersViewControllerName" = "Трекеры";
+"searchFieldPlaceholder" = "Поиск";
+"contextMenuPinLabel" = "Закрепить";
+"contextMenuUnpinLabel" = "Открепить";
+"contextMenuEditLabel" = "Редактировать";
+"contextMenuDelLabel" = "Удалить";
+"pinnedCategory" = "Закрепленные";
+"deleteAlertMessage" = "Уверены, что хотите удалить трекер?";
+"filtersButton" = "Фильтры";
+
+//MARK: - AddTrackerViewController
+"habitButtonLabel" = "Привычка";
+"eventButtonLabel" = "Нерегулярное событие";
+"addTrackerViewControllerName" = "Создание трекера";
+
+//MARK: - NewTrackerViewController
+"newHabbit" = "Новая привычка";
+"newEvent" = "Новое нерегулярное событие";
+"textFieldLabel" = "Введите название трекера";
+"everyDaySubtext" = "Каждый день";
+"categoryLabel" = "Категория";
+"scheduleLabel" = "Расписание";
+"limitMessage" = "Ограничение %d символов";
+"editingLabel" = "Редактирование привычки";
+"saveButtonLabel" = "Сохранить";
+
+//MARK: - CategoryViewController
+"addCategoryButtonLabel" = "Добавить категорию";
+"categoryPlaceholderLabel" = "Привычки и события можно\nобъединять по смыслу";
+"categoryViewControllerName" = "Категория";
+
+//MARK: - AddCategoryViewController
+"doneButtonLabel" = "Готово";
+"categoryNamePlaceholderLabel" = "Введите название категории";
+"addCategoryViewControllerName" = "Новая категория";
+
+//MARK: - ScheduleViewController
+"scheduleViewControllerName" = "Расписание";
+
+//MARK: - TabBarController
+"trackersLabel" = "Трекеры";
+"statisticsLabel" = "Статистика";
+
+//MARK: - CancelButton
+"cancelButton" = "Отменить";
+
+//MARK: - CreateButton
+"createButton" = "Создать";
+
+//MARK: - TrackerProperties
+"emojiLabel" = "Emoji";
+"colorLabel" = "Цвет";
+
+//MARK: - WeekDays
+"mondayLong" = "Понедельник";
+"tuesdayLong" = "Вторник";
+"wednesdayLong" = "Среда";
+"thursdayLong" = "Четверг";
+"friedayLong" = "Пятница";
+"saturdayLong" = "Суббота";
+"sundayLong" = "Воскресенье";
+
+"mondayShort" = "Пн";
+"tuesdayShort" = "Вт";
+"wednesdayShort" = "Ср";
+"thursdayShort" = "Чт";
+"friedayShort" = "Пт";
+"saturdayShort" = "Сб";
+"sundayShort" = "Вс";
+
+//MARK: - FiltersViewController
+"filtersViewControllerName" = "Фильтры";
+"filterAllTrackers" = "Все трекеры";
+"filterTodayTrackers" = "Трекеры на сегодня";
+"filterCompletedTrackers" = "Завершенные";
+"filterNotCompletedTrackers" = "Не завершенные";
+
+//MARK: - StatsViewController
+"statsViewControllerName" = "Статистика";
+"statsPlaceholderLabel" = "Анализировать пока нечего";
+"statsBestPeriod" = "Лучший период";
+"statsPerfectDays" = "Идеальные дни";
+"statsTrackersСompleted" = "Трекеров завершено";
+"statsAverageValue" = "Среднее значение";

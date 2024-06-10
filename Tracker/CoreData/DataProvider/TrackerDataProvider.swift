@@ -8,19 +8,17 @@
 import UIKit
 import CoreData
 
-protocol TrackerDataProviderDelegate: AnyObject { }
-
 protocol TrackerProtocol {
     func addTracker(_ tracker: Tracker, _ category: String) throws
+    func delTracker(_ id: UUID)
+    func pinTracker(_ id: UUID)
+    func getTracker(_ id: UUID) -> Tracker?
 }
 
 final class TrackerDataProvider: NSObject {
     
-    weak var delegate: TrackerDataProviderDelegate?
     private let context: NSManagedObjectContext
     private let dataStore: TrackerStore
-    private var insertedIndexes: IndexSet?
-    private var deleteIndexes: IndexSet?
     
     private lazy var fetchedResultsController: NSFetchedResultsController<TrackerCoreData> = {
         let fetchRequest = TrackerCoreData.fetchRequest()
@@ -34,13 +32,11 @@ final class TrackerDataProvider: NSObject {
             sectionNameKeyPath: nil,
             cacheName: nil)
         
-        fetchedResultsController.delegate = self
         try? fetchedResultsController.performFetch()
         return fetchedResultsController
     }()
     
-    init(_ dataStore: TrackerStore, delegate: TrackerDataProviderDelegate) throws {
-        self.delegate = delegate
+    init(_ dataStore: TrackerStore) throws {
         self.dataStore = dataStore
         self.context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     }
@@ -50,7 +46,16 @@ extension TrackerDataProvider: TrackerProtocol {
     func addTracker(_ tracker: Tracker, _ category: String) throws {
         try? dataStore.addNewTracker(tracker, category)
     }
+    
+    func delTracker(_ id: UUID) {
+        try? dataStore.delTracker(id)
+    }
+    
+    func pinTracker(_ id: UUID) {
+        try? dataStore.pinTracker(id)
+    }
+    
+    func getTracker(_ id: UUID) -> Tracker? {
+        dataStore.getTracker(id)
+    }
 }
-
-
-extension TrackerDataProvider: NSFetchedResultsControllerDelegate { }

@@ -15,10 +15,11 @@ final class AddCategoryViewController: UIViewController {
     
     // MARK: - Public Properties
     weak var delegate: AddCategoryViewControllerDelegate?
+    var category: String?
     
     //MARK: - Private property
-    private lazy var doneButton = Constants.doneButton
-    private lazy var textField = Constants.categoryName
+    private lazy var doneButton = BlackButton(title: Localization.doneButtonLabel)
+    private lazy var textField = TextField(placeholder: Localization.categoryNamePlaceholderLabel)
     private let categoryStore = TrackerCategoryStore.shared
     
     // MARK: - View Life Cycles
@@ -30,7 +31,7 @@ final class AddCategoryViewController: UIViewController {
 
 private extension AddCategoryViewController {
     func setupViewController() {
-        view.backgroundColor = .white
+        view.backgroundColor = .yWhite
         textField.delegate = self
         turnOffDoneButton()
         addViewLabel()
@@ -45,7 +46,7 @@ private extension AddCategoryViewController {
     }
     
     func addViewLabel() {
-        navigationItem.title = Constants.addCategoryViewControllerName
+        navigationItem.title = Localization.addCategoryViewControllerName
     }
     
     func addSubView() {

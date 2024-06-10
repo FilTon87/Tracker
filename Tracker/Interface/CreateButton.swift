@@ -23,7 +23,7 @@ final class CreateButton: UIButton {
     private func setupCreateButton() {
         backgroundColor = .yGray
         tintColor = .yGray
-        setTitle(Constants.createButton, for: .normal)
+        setTitle(Localization.createButton, for: .normal)
         setTitleColor(.yWhite, for: .normal)
         titleLabel?.font = .systemFont(ofSize: 16)
         layer.cornerRadius = 16

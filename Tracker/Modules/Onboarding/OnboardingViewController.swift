@@ -9,8 +9,8 @@ import UIKit
 
 final class OnboardingViewController: UIPageViewController {
     private lazy var pages: [UIViewController] = {
-        let blue = Constants.onboardingBlue
-        let red = Constants.onboardingRed
+        let blue = OnboardingView(Images.onboardingBlueImage, Localization.onboardingBlueLabel)
+        let red = OnboardingView(Images.onboardingRedImage, Localization.onboardingRedLabel)
         return [blue, red]
     }()
     
@@ -23,7 +23,7 @@ final class OnboardingViewController: UIPageViewController {
         pc.translatesAutoresizingMaskIntoConstraints = false
         return pc
     }()
-
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()

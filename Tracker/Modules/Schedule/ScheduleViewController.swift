@@ -18,7 +18,7 @@ final class ScheduleViewController: UIViewController {
     
     
     //MARK: - Private property
-    private lazy var doneButton = Constants.doneButton
+    private lazy var doneButton = BlackButton(title: Localization.doneButtonLabel)
     private lazy var tableView = TableView(frame: .zero, style: .plain)
     private var schedule: [Schedule] = []
     
@@ -31,7 +31,7 @@ final class ScheduleViewController: UIViewController {
 
 private extension ScheduleViewController {
     func setupViewController() {
-        view.backgroundColor = .white
+        view.backgroundColor = .yWhite
         addViewLabel()
         addSubView()
         addLayout()
@@ -40,7 +40,7 @@ private extension ScheduleViewController {
     }
     
     func addViewLabel() {
-        navigationItem.title = Constants.scheduleViewControllerName
+        navigationItem.title = Localization.scheduleViewControllerName
     }
     
     func addSubView() {
@@ -71,13 +71,13 @@ private extension ScheduleViewController {
     func addTabelView() {
         tableView.delegate = self
         tableView.dataSource = self
+        tableView.allowsSelection = false
         tableView.register(ScheduleTabelViewCell.self, forCellReuseIdentifier: ScheduleTabelViewCell.reuseIdentifier)
     }
     
     @objc func didTapDoneButton() {
         schedule = schedule.sorted(by: {$0.weekDay.rawValue < $1.weekDay.rawValue})
         delegate?.configSchedule(schedule: schedule)
-        NewTrackerViewController().callback = self
         dismiss(animated: true)
     }
 }
@@ -121,12 +121,4 @@ extension ScheduleViewController: ScheduleTabelViewCellDelegate {
             }
         }
     }
-}
-
-extension ScheduleViewController: NewTrackerViewControllerCallback {
-    func returnSchedule(_ schedule: [Schedule]) {
-        print(schedule)
-    }
-    
-    
 }
